@@ -4,6 +4,7 @@
 \usepackage[ansinew]{inputenc}
 \usepackage{geometry}
 \usepackage{bbold}
+\usepackage{subcaption}
 \geometry{a4paper,left=2.5cm,right=2.5cm, top=2.5cm, bottom=3cm}
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
 
@@ -84,19 +85,207 @@
 
 
 \begin{abstract}
-Quantitative measurement of cancer drug response is esential to objectively gauge the efficacy of cancer drugs. So far, there has been no method to track and  quantitatively measure single-cell response of of cancer drug treatment. A novel pipeline is presented in this thesis. First, a high-throughput method to track cells and quantitatively analyze single-cell response to drugs. We investigate the response of model cancer cell lineagues, MOLM and Jurkat, to known anti-cancer drugs Vincristine and Doxorubicine. Second, a machine learning-based was developed which was able to predict cancer cells' time-to-death upon the introduction of the medications, based on the differential cellular morphology of the cells alone. While these two-fold methods enabled accurate and high-throughput analysis of cancer treatment \textit{in vitro}, our pipeline could also be adapted in varios contexts involving single-cell analysis.
+Quantitative measurement of cancer drug response is esential to objectively gauge the efficacy of cancer drugs. So far, there has been no method to track and  quantitatively measure single-cell response of of cancer drug treatment. A novel pipeline is presented in this thesis. First, a quasi-high-throughput method to track cells and quantitatively analyze single-cell response to drugs. We investigate the response of model cancer cell lineagues, MOLM and Jurkat, to known anti-cancer drugs Vincristine and Doxorubicine. Second, a machine learning-based was developed which was able to predict cancer cells' time-to-death upon the introduction of the medications, based on the differential cellular morphology of the cells alone. While these two-fold methods enabled relatively accurate and quasi-high-throughput analysis of cancer treatment \textit{in vitro}, our pipeline could also be adapted in varios contexts involving single-cell analysis with only reasonable amount of modifications necessary.
 \end{abstract}
 
 \newpage
 
 
 
-\chapter{Intro}
+\chapter{Introduction}
 
 Lorem ipsum
 
 \chapter{Background}
 
+Lorem ipsum dolor si amet
 
+\chapter{Methods}
+
+\section{Laplacian of Gaussian (LoG) Cell Recognition}
+
+\section{Image Encoding}
+
+Consider whether image encoding shoud contain Lena's picture instead.
+
+\section{Shift Correction}
+
+Consider following picture:
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.5\textwidth]{lenna_marked}
+\label{fig:lena}
+\caption{Lenna}
+
+\end{figure}
+
+There are many encodings that could be used to internally store this picture. Many such encodings utilized this so-called Red-Green-Blue encodings (RGB). RGB encoding represents the color of a pixel as a combination of red, green and blue color. This encoding is known to various spectra of human visible color and useful enough for most use cases (citation). To give representation on how the encoding works, the RGB encoding of some part of above picture is shown in Figure \ref{fig:lenas}. For an image of size $m \times n$ pixels, the RGB encoding is thus a 4-dimensional matrix of dimension $m \times n \times 3$. For time-lapsed images accordingly, the RGB encoding of the video of length $T$ is a 5-dimensional matrix of shape $t \times m \times n \times 3$.
+
+%An expansion of such encoding, the RGBH encoding, expands the representation by adding the brightness of the pixel -- known as 'hue'.
+
+\begin{figure}[h]
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=.8\linewidth]{lenna_marked_small}
+  \caption{1a}
+  \label{fig:lenas1}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=.8\linewidth]{lenna_small}
+  \caption{1b}
+  \label{fig:lenas2}
+\end{subfigure}
+\centering
+\begin{subfigure}{.5\textwidth}
+  \includegraphics[width=.8\linewidth]{lenna_rbg}
+  \caption{1b}
+  \label{fig:lenas3}
+\end{subfigure}
+\caption{Figure \ref{fig:lenas1} shows the content of red marked region in Figure \ref{fig:lena}. Figure\ref{fig:lenas2} shows the zoomed part around Lena's right eye and matrix represented in Figure \ref{fig:lenas3} shows the RGB representation of the eye.}
+\label{fig:lenas}
+\end{figure}
+
+
+Now, consider a case in which an image shifts. No rotation of camera is assumed, hence there are only two degree of freedoms (vertical and horizontal). Thus, a shift could be defined as a vector movement $\vec{v}$ of all points $x_{i,j} \in M_{t_i}$ in the time-lapse from time $t_i$ to $t_{i+1}$. Given two degrees of freedom and discreteness of the problem due to pixel representation, the task is reduced to finding difference in x- and y-axis ($\delta_x$ and $\delta_y$), so that the difference of transormed pixels at $t_i$ and the pixels at $t_{i+1}$, i.e.:
+
+$$
+argmin_{\delta_x, \delta_y} \{d(M_x, M_y)\}
+$$
+
+For distance function $d$, all-channels absolute difference function is used, which is defined as:
+
+$$
+d(M, N) = \sum_{c \, \in \, \{R, B, G\}} \sum_{x} \sum_{y} \Vert M_{c, x, y} - N_{c, x, y}\Vert
+$$
+
+Since some pixels are lost from the field of view during the view, only a subset of both pictures are used to determine the distance, preferably those around the center point. The search for $(\delta_x, \delta_y)$ pair is then implemented as grid search along x- and y-axis. An example of the search grid is shown in Figure \ref{fig:searchgrid}. In the example, the point that returns the minimum distance was marked with thick black dot and is returned after every grid-search call as inferred shift.\\
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.5\textwidth]{search_grid}
+\caption{Search grid shift for Position 26. The search was conducted for shift between the last time point before and the first time point after the drugs treatment. The minimum is marked with thick black dot. The shift was inferred to be 8 pixels upwards and 5 pixels leftwards. Notice the repeating pattern of relatively favorable configurations after approximately 50 horizontal and 100 vertical pixels caused by lattice nature of the slits.}
+\label{fig:searchgrid}
+\end{figure}
+
+Since the time-lapsed data consists mainly of grayscale image, the RGB encoding could be the directly transformed to grayscale encoding. Using the transformed method also speeds up the calculation process since the distance function only computes the difference of grayscale channel's values:
+
+$$
+d(M, N) =  \sum_{x} \sum_{y} \Vert M_{c, x, y}^{gray} - N_{x, y}^{gray}\Vert
+$$
+
+Due to lost pixels around the margin of before and after pictures, only the overlapping part of both slides are included after the correction. Thus, for an inferred shift of $(\delta_x, \delta_y)$, the new dimension of the pictures is then $(m - \delta_x) \times (n - \delta_y)$. This change would then propagation to the other time-lapse images to maintain consistency of the images.
+
+Ideally, the frame correction should be done for each position to reduce the track dropout rate caused by image shifts. This is however computationally very expensive and, as could be seen in Figure \ref{fig:pixdiff}, not really necessary since the biggest shift indeed only happens right before and after the treatment, as it was expected during the experiment setting.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{pixdiff}
+\caption{TODO comment}
+\label{fig:pixdiff}
+\end{figure}
+
+\chapter{Pipeline}
+
+\chapter{Quantitative Analysis}
+
+\chapter{Summary and Outlook}
+
+\chapter*{Appendix A: Algorithms}
+
+\section*{LALA}
+
+TODO: put algo on upper part
+
+\begin{verbatim}
+def correct_shifts(path="../test/eli-new-unsync-bf-%s/",
+                   highest_shift=30,
+                   pos_start=1,
+                   pos_end=63):
+
+    positions = list(range(pos_end + 1))[pos_start:]
+    for pos in positions:
+        if pos < 10:
+            pst = "0%d" % pos
+        else:
+            pst = str(pos)
+        
+        t1 = time.time()
+        print("correcting frames for position %s" % pst)
+
+        path = path % pst
+
+        diff = infer_shift(pst, path, verbose=False)
+        print("    Inferred diff " + str(diff))
+    
+        if (abs(diff[0]) == 0) and 
+           (abs(diff[1]) == 0):
+            print("Perfect alignment, no frame adjustment will be done")
+    
+        elif (abs(diff[0]) < highest_shift) and (abs(diff[1]) < highest_shift):
+
+            casp = os.path.join(path, 
+                       "caspase/caspasexy%sc1.tif" % pst)
+            pi1 = os.path.join(path,
+                       "pi/before/pi_in-focusxy%sc1.tif" % pst)
+            pi2 = os.path.join(path,
+                       "pi/after/pixy%sc1.tif" % pst)
+            in1 = os.path.join(path,
+                       "in-focus/before/bf_in-focusxy%sc1c1.tif" % pst)
+            in2 = os.path.join(path,
+                       "in-focus/after/bf_in-focusxy%sc1.tif" % pst)
+            out1 = os.path.join(path,
+                       "out-focus/before/bfxy%sc1.tif" % pst)
+            out2 = os.path.join(path,
+                       "out-focus/after/bfxy%sc1.tif" % pst)
+
+            caspv = get_video(casp)
+            pi1v = get_video(pi1)
+            pi2v = get_video(pi2)
+            in1v = get_video(in1)
+            in2v = get_video(in2)
+            out1v = get_video(out1)
+            out2v = get_video(out2)
+
+            print("    Video importing done. Inferring shift and adjusting frames")
+
+            diff = int(diff[0]), int(diff[1])
+
+            if abs(diff[0]) != 0:
+                caspv_cropped = [sld[-diff[0]:,:] if diff[0] < 0 else sld[:-(diff[0]),:] for sld in caspv]
+                pi2v_cropped = [sld[-diff[0]:,:] if diff[0] < 0 else sld[:-(diff[0]),:] for sld in pi2v]
+                in2v_cropped = [sld[-diff[0]:,:] if diff[0] < 0 else sld[:-(diff[0]),:] for sld in in2v]
+                out2v_cropped = [sld[-diff[0]:,:] if diff[0] < 0 else sld[:-(diff[0]),:] for sld in out2v]
+        
+                pi1v_cropped = [sld[:diff[0],:] if diff[0] < 0 else sld[diff[0]:,:] for sld in pi1v]
+                in1v_cropped = [sld[:diff[0],:] if diff[0] < 0 else sld[diff[0]:,:] for sld in in1v]
+                out1v_cropped = [sld[:diff[0],:] if diff[0] < 0 else sld[diff[0]:,:] for sld in out1v]
+            
+            if abs(diff[1]) != 0:
+        
+                caspv_cropped = [sld[:,-diff[1]:] if diff[1] <= 0 else sld[:,:-(diff[1])] for sld in caspv_cropped]
+                pi2v_cropped = [sld[:,-diff[1]:] if diff[1] <= 0 else sld[:,:-(diff[1])] for sld in pi2v_cropped]
+                in2v_cropped = [sld[:,-diff[1]:] if diff[1] <= 0 else sld[:,:-(diff[1])] for sld in in2v_cropped]
+                out2v_cropped = [sld[:,-diff[1]:] if diff[1] <= 0 else sld[:,:-(diff[1])] for sld in out2v_cropped]
+        
+                pi1v_cropped = [sld[:,:diff[1]] if diff[1] <= 0 else sld[:,diff[1]:] for sld in pi1v_cropped]
+                in1v_cropped = [sld[:,:diff[1]] if diff[1] <= 0 else sld[:,diff[1]:] for sld in in1v_cropped]
+                out1v_cropped = [sld[:,:diff[1]] if diff[1] <= 0 else sld[:,diff[1]:] for sld in out1v_cropped]
+
+            print("    Adjustment done. Writing results...")
+
+            imsave(casp, np.array(caspv_cropped))
+            imsave(pi1, np.array(pi1v_cropped))
+            imsave(pi2, np.array(pi2v_cropped))
+            imsave(in1, np.array(in1v_cropped))
+            imsave(in2, np.array(in2v_cropped))
+            imsave(out1, np.array(out1v_cropped))
+            imsave(out2, np.array(out2v_cropped))
+
+            print("time elapsed: %f" % (time.time() - t1))
+        else:
+            print("Inferred shift too large")
+\end{verbatim}
 
 \end{document}
