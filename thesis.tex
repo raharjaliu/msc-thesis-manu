@@ -4,6 +4,8 @@
 \usepackage[ansinew]{inputenc}
 \usepackage{geometry}
 \usepackage{bbold}
+\usepackage{program}
+\usepackage[toc,page]{appendix}
 \usepackage{subcaption}
 \geometry{a4paper,left=2.5cm,right=2.5cm, top=2.5cm, bottom=3cm}
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
@@ -85,7 +87,7 @@
 
 
 \begin{abstract}
-Quantitative measurement of cancer drug response is esential to objectively gauge the efficacy of cancer drugs. So far, there has been no method to track and  quantitatively measure single-cell response of of cancer drug treatment. A novel pipeline is presented in this thesis. First, a quasi-high-throughput method to track cells and quantitatively analyze single-cell response to drugs. We investigate the response of model cancer cell lineagues, MOLM and Jurkat, to known anti-cancer drugs Vincristine and Doxorubicine. Second, a machine learning-based was developed which was able to predict cancer cells' time-to-death upon the introduction of the medications, based on the differential cellular morphology of the cells alone. While these two-fold methods enabled relatively accurate and quasi-high-throughput analysis of cancer treatment \textit{in vitro}, our pipeline could also be adapted in varios contexts involving single-cell analysis with only reasonable amount of modifications necessary.
+Quantitative measurement of cancer drug response is esential to objectively gauge the efficacy of cancer drugs. So far, there has been no method to track and  quantitatively measure single-cell response of of cancer drug treatment. A novel pipeline is presented in this thesis. First, a quasi-high-throughput method to track cells and quantitatively analyze single-cell response to drugs. We investigate the response of model cancer cell lineagues, MOLM and Jurkat, to known anti-cancer drugs Vincristine and Doxorubicine. While the method enabled relatively easy and quasi-high-throughput analysis of cancer treatment \textit{in vitro}, our pipeline could also be adapted in varios contexts involving single-cell analysis with reasonable amount of modifications necessary.
 \end{abstract}
 
 \newpage
@@ -179,113 +181,89 @@ Due to lost pixels around the margin of before and after pictures, only the over
 
 Ideally, the frame correction should be done for each position to reduce the track dropout rate caused by image shifts. This is however computationally very expensive and, as could be seen in Figure \ref{fig:pixdiff}, not really necessary since the biggest shift indeed only happens right before and after the treatment, as it was expected during the experiment setting.
 
+The algorithm for shift inference could be seen in Appendix \ref{appendix:graph}.
+
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.8\textwidth]{pixdiff}
-\caption{TODO comment}
+\caption{Sum of absolute differences of consecutive stacks for Position 26.}
 \label{fig:pixdiff}
 \end{figure}
 
 \chapter{Pipeline}
+Lorem ipsum
 
 \chapter{Quantitative Analysis}
+Lorem ipsum
 
 \chapter{Summary and Outlook}
+Lorem ipsum
 
-\chapter*{Appendix A: Algorithms}
+\begin{appendices}
 
-\section*{LALA}
+\chapter{Algorithms}\label{appendix:graph}
 
-TODO: put algo on upper part
+
+\section*{Shift Inference} 
 
 \begin{verbatim}
-def correct_shifts(path="../test/eli-new-unsync-bf-%s/",
-                   highest_shift=30,
-                   pos_start=1,
-                   pos_end=63):
-
-    positions = list(range(pos_end + 1))[pos_start:]
-    for pos in positions:
-        if pos < 10:
-            pst = "0%d" % pos
-        else:
-            pst = str(pos)
-        
-        t1 = time.time()
-        print("correcting frames for position %s" % pst)
-
-        path = path % pst
-
-        diff = infer_shift(pst, path, verbose=False)
-        print("    Inferred diff " + str(diff))
+def infer_shift(last_slide, first_slide, search_space=(200, 200)):
     
-        if (abs(diff[0]) == 0) and 
-           (abs(diff[1]) == 0):
-            print("Perfect alignment, no frame adjustment will be done")
+  if (search_space[0] % 2 != 0) or (search_space[1] % 2 != 0):
+    print("Search spaces have to be even!")
+    return None
+  else:
     
-        elif (abs(diff[0]) < highest_shift) and (abs(diff[1]) < highest_shift):
-
-            casp = os.path.join(path, 
-                       "caspase/caspasexy%sc1.tif" % pst)
-            pi1 = os.path.join(path,
-                       "pi/before/pi_in-focusxy%sc1.tif" % pst)
-            pi2 = os.path.join(path,
-                       "pi/after/pixy%sc1.tif" % pst)
-            in1 = os.path.join(path,
-                       "in-focus/before/bf_in-focusxy%sc1c1.tif" % pst)
-            in2 = os.path.join(path,
-                       "in-focus/after/bf_in-focusxy%sc1.tif" % pst)
-            out1 = os.path.join(path,
-                       "out-focus/before/bfxy%sc1.tif" % pst)
-            out2 = os.path.join(path,
-                       "out-focus/after/bfxy%sc1.tif" % pst)
-
-            caspv = get_video(casp)
-            pi1v = get_video(pi1)
-            pi2v = get_video(pi2)
-            in1v = get_video(in1)
-            in2v = get_video(in2)
-            out1v = get_video(out1)
-            out2v = get_video(out2)
-
-            print("    Video importing done. Inferring shift and adjusting frames")
-
-            diff = int(diff[0]), int(diff[1])
-
-            if abs(diff[0]) != 0:
-                caspv_cropped = [sld[-diff[0]:,:] if diff[0] < 0 else sld[:-(diff[0]),:] for sld in caspv]
-                pi2v_cropped = [sld[-diff[0]:,:] if diff[0] < 0 else sld[:-(diff[0]),:] for sld in pi2v]
-                in2v_cropped = [sld[-diff[0]:,:] if diff[0] < 0 else sld[:-(diff[0]),:] for sld in in2v]
-                out2v_cropped = [sld[-diff[0]:,:] if diff[0] < 0 else sld[:-(diff[0]),:] for sld in out2v]
+    ## calculate absolute difference for various shifts
+    x1 = search_space[0]
+    x2 = search_space[0]
+    y1 = search_space[1]
+    y2 = search_space[1]
+    mid = f1.shape[0] // 2, f1.shape[1] // 2
         
-                pi1v_cropped = [sld[:diff[0],:] if diff[0] < 0 else sld[diff[0]:,:] for sld in pi1v]
-                in1v_cropped = [sld[:diff[0],:] if diff[0] < 0 else sld[diff[0]:,:] for sld in in1v]
-                out1v_cropped = [sld[:diff[0],:] if diff[0] < 0 else sld[diff[0]:,:] for sld in out1v]
-            
-            if abs(diff[1]) != 0:
+    ## results storage        
+    absdiffs = np.zeros((search_space[0] + 1, search_space[1] + 1))
+
+    ## last slide before treatment
+    f1sub = f1[(mid[0] - x1):(mid[0] + x2), (mid[1] - y1):(mid[1] + y2)]
+    
+    ## search space 
+    xdiff1 = -int(search_space[0] / 2)
+    xdiff2 = int(search_space[0] / 2) + 1
+    ydiff1 = -int(search_space[1] / 2)
+    ydiff2 = int(search_space[1] / 2) + 1
+    
+    for xdiff in range(xdiff1, xdiff2):
+      for ydiff in range(ydiff1, ydiff2):
+      
+        ## calculate absolute difference for shift
+        f2sub = f2[(mid[0] - x1 + xdiff):(mid[0] + x2 + xdiff), 
+                   (mid[1] - y1 + ydiff):(mid[1] + y2 + ydiff)]
+        x = xdiff + int(search_space[0] / 2)
+        y = ydiff + int(search_space[1] / 2)
+        absdiff_xy = np.sum(cv2.absdiff(f1sub, f2sub).ravel())
+        absdiffs[x][y] = absdiff_xy
         
-                caspv_cropped = [sld[:,-diff[1]:] if diff[1] <= 0 else sld[:,:-(diff[1])] for sld in caspv_cropped]
-                pi2v_cropped = [sld[:,-diff[1]:] if diff[1] <= 0 else sld[:,:-(diff[1])] for sld in pi2v_cropped]
-                in2v_cropped = [sld[:,-diff[1]:] if diff[1] <= 0 else sld[:,:-(diff[1])] for sld in in2v_cropped]
-                out2v_cropped = [sld[:,-diff[1]:] if diff[1] <= 0 else sld[:,:-(diff[1])] for sld in out2v_cropped]
         
-                pi1v_cropped = [sld[:,:diff[1]] if diff[1] <= 0 else sld[:,diff[1]:] for sld in pi1v_cropped]
-                in1v_cropped = [sld[:,:diff[1]] if diff[1] <= 0 else sld[:,diff[1]:] for sld in in1v_cropped]
-                out1v_cropped = [sld[:,:diff[1]] if diff[1] <= 0 else sld[:,diff[1]:] for sld in out1v_cropped]
+    ## calculate shift based on calibration data
+    x = np.argmin(absdiffs) // absdiffs.shape[0]
+    y = np.argmin(absdiffs) % absdiffs.shape[0]
+    
+    """
+    True shift is the opposite of coordinate encoded
+    in absdiff
+    
+    Let X2 the second picture and X1 the first picture.
+    If the sub-picture of first slide of X2 centered
+    at (c1 + s1, c2 + s2) fits the most with the sub-picture
+    of the last slide of X1 centered at (c1, c2)
+    then the pictures shift by (-s1, -s2) upon treatment
+    """
+    diff = -(x - search_space[0] / 2), -(y - search_space[1] / 2)
 
-            print("    Adjustment done. Writing results...")
-
-            imsave(casp, np.array(caspv_cropped))
-            imsave(pi1, np.array(pi1v_cropped))
-            imsave(pi2, np.array(pi2v_cropped))
-            imsave(in1, np.array(in1v_cropped))
-            imsave(in2, np.array(in2v_cropped))
-            imsave(out1, np.array(out1v_cropped))
-            imsave(out2, np.array(out2v_cropped))
-
-            print("time elapsed: %f" % (time.time() - t1))
-        else:
-            print("Inferred shift too large")
+    return diff
 \end{verbatim}
+
+\end{appendices}
 
 \end{document}
