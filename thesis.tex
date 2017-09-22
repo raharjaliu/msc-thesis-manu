@@ -10,6 +10,17 @@
 \geometry{a4paper,left=2.5cm,right=2.5cm, top=2.5cm, bottom=3cm}
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
 
+% definition for ToC
+
+\usepackage{lipsum}% http://ctan.org/pkg/lipsum
+\usepackage{titletoc}% http://ctan.org/pkg/titletoc
+\titlecontents*{chapter}% <section-type>
+  [0pt]% <left>
+  {}% <above-code>
+  {\bfseries\chaptername\ \thecontentslabel\quad}% <numbered-entry-format>
+  {}% <numberless-entry-format>
+  {\bfseries\hfill\contentspage}% <filler-page-format>
+
 \begin{document}
 \begin{titlepage}
 
@@ -92,37 +103,68 @@ Quantitative measurement of cancer drug response is esential to objectively gaug
 
 \newpage
 
+\tableofcontents
 
+\newpage
 
-\chapter{Introduction}
+\chapter{Introduction} \lipsum[1]
 
-Lorem ipsum
+\begin{verbatim}
+I.
+- readable to people without background in the fields
+- non technical at all
+II.
+- what have the researches done
+-- biologics
+-- technicals
+III.
+thesis overview
+4~8 pages
+\end{verbatim}
 
-\chapter{Background}
+\section{Test}
 
-Lorem ipsum dolor si amet
+\lipsum[2]
 
-\chapter{Methods}
+\chapter{Data and Methods}
 
-\section{Laplacian of Gaussian (LoG) Cell Recognition}
+This chapter will consider two aspects of the project: the experiment setting and the data analyis pipeline. In the first half of the chapter, the cell environment is brouht forth. After that, the cell lines used in this experiment are explained with context of the aim of the experiment. Later on, the experiment treatment and the hypothesis is presented.
 
-\section{Image Encoding}
+The second part deals mostly with the quantitative methods used to process data into meaninful observations. Here, the theoretical aspect of each part is brought forward with several rationale explaining the reasons of using the method.
 
-Consider whether image encoding shoud contain Lena's picture instead.
+\section{Experimental Setting and Data}
 
-\section{Shift Correction}
+\lipsum[1]
+
+\section{Methods}
+
+\lipsum[1]
+
+\subsection{Definitions}
+
+Mathematical definitions used in the thesis
+
+\subsection{Laplacian of Gaussian (LoG) Cell Recognition}
+
+\lipsum[1]
+
+\subsection{Image Encoding}
+
+Consider whether image encoding shoud contain Lenna's picture instead.
+
+\subsection{Shift Correction}
 
 Consider following picture:
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.5\textwidth]{lenna_marked}
-\label{fig:lena}
+\label{fig:lenna}
 \caption{Lenna}
 
 \end{figure}
 
-There are many encodings that could be used to internally store this picture. Many such encodings utilized this so-called Red-Green-Blue encodings (RGB). RGB encoding represents the color of a pixel as a combination of red, green and blue color. This encoding is known to various spectra of human visible color and useful enough for most use cases (citation). To give representation on how the encoding works, the RGB encoding of some part of above picture is shown in Figure \ref{fig:lenas}. For an image of size $m \times n$ pixels, the RGB encoding is thus a 4-dimensional matrix of dimension $m \times n \times 3$. For time-lapsed images accordingly, the RGB encoding of the video of length $T$ is a 5-dimensional matrix of shape $t \times m \times n \times 3$.
+There are numerous encodings that could be used to internally represent this picture. Many such encodings derived from the so-called Red-Green-Blue (RGB) encodings. RGB encoding represents the pixel as a combination of red, green and blue color. This encoding is able to represent various spectra of human visible color and useful enough for most use cases (citation). To give representation on how the encoding works, the RGB encoding of some part of Figure \ref{fig:lenna} is shown in Figure \ref{fig:lennas}. For an image of size $m \times n$ pixels, the RGB encoding is thus a 3-dimensional matrix of dimension $m \times n \times 3$. For time-lapsed images accordingly, the RGB encoding of a video of length $T$ is a 5-dimensional matrix of shape $T \times m \times n \times 3$. TODO: put graphical explanation of data here.
 
 %An expansion of such encoding, the RGBH encoding, expands the representation by adding the brightness of the pixel -- known as 'hue'.
 
@@ -131,78 +173,101 @@ There are many encodings that could be used to internally store this picture. Ma
   \centering
   \includegraphics[width=.8\linewidth]{lenna_marked_small}
   \caption{1a}
-  \label{fig:lenas1}
+  \label{fig:lennas1}
 \end{subfigure}%
 \begin{subfigure}{.5\textwidth}
   \centering
   \includegraphics[width=.8\linewidth]{lenna_small}
   \caption{1b}
-  \label{fig:lenas2}
+  \label{fig:lennas2}
 \end{subfigure}
 \centering
 \begin{subfigure}{.5\textwidth}
   \includegraphics[width=.8\linewidth]{lenna_rbg}
   \caption{1b}
-  \label{fig:lenas3}
+  \label{fig:lennas3}
 \end{subfigure}
-\caption{Figure \ref{fig:lenas1} shows the content of red marked region in Figure \ref{fig:lena}. Figure\ref{fig:lenas2} shows the zoomed part around Lena's right eye and matrix represented in Figure \ref{fig:lenas3} shows the RGB representation of the eye.}
-\label{fig:lenas}
+\caption{Figure \ref{fig:lennas1} shows the content of red marked region in Figure \ref{fig:lena}. Figure\ref{fig:lennas2} shows the zoomed part around Lena's right eye and matrix represented in Figure \ref{fig:lennas3} shows the RGB representation of the eye.}
+\label{fig:lennas}
 \end{figure}
 
 
-Now, consider a case in which an image shifts. No rotation of camera is assumed, hence there are only two degree of freedoms (vertical and horizontal). Thus, a shift could be defined as a vector movement $\vec{v}$ of all points $x_{i,j} \in M_{t_i}$ in the time-lapse from time $t_i$ to $t_{i+1}$. Given two degrees of freedom and discreteness of the problem due to pixel representation, the task is reduced to finding difference in x- and y-axis ($\delta_x$ and $\delta_y$), so that the difference of transormed pixels at $t_i$ and the pixels at $t_{i+1}$, i.e.:
+Now, consider a case in which images are shifted in a time-lapsed movie. TODO: explain mechanism. No rotation of camera is assumed, hence there are only two degree of freedoms (vertical and horizontal). Thus, a shift can be defined as a vector movement $\vec{v}$ of all points $x_{i,j} \in M_{t_i}$ in the time-lapse from time $t_i$ to $t_{i+1}$. Given two degrees of freedom and discreteness of the problem due to pixel representation, the task is reduced to finding difference in x- and y-axis ($\delta_x$ and $\delta_y$), so that the difference of transformed pixels at $t_i$ and $t_{i+1}$ are minimized, i.e.:
 
 $$
-argmin_{\delta_x, \delta_y} \{d(M_x, M_y)\}
+argmin_{\delta_x, \delta_y} \{d(M_{t_i}, M_{t_{i+1}}^{\delta_x, \delta_y} + (\delta_x, \delta_y)^T)\}
 $$
 
-For distance function $d$, all-channels absolute difference function is used, which is defined as:
+Where $M_{t_{i+1}}^{\delta_x, \delta_y}$ is the entries of matrix $M_{t_{i+1}}$ after applying the shift $\vec{v} := (\delta_x, \delta_y)^T$, i.e.
+
+$$M_{t_{i+1}, \, x, \, y}^{\delta_x, \delta_y} = M_{t_{i+1}, \, x - \delta_x, \, y - \delta_y}$$
+
+For the distance function $d$, the in all channels absolute difference function is used, which is defined as:
 
 $$
-d(M, N) = \sum_{c \, \in \, \{R, B, G\}} \sum_{x} \sum_{y} \Vert M_{c, x, y} - N_{c, x, y}\Vert
+d(M_i, M_j) = \sum_{c \, \in \, \{R, B, G\}} \sum_{x} \sum_{y} \vert M_{i, c, x, y} - M_{j, c, x, y} \vert
 $$
 
-Since some pixels are lost from the field of view during the view, only a subset of both pictures are used to determine the distance, preferably those around the center point. The search for $(\delta_x, \delta_y)$ pair is then implemented as grid search along x- and y-axis. An example of the search grid is shown in Figure \ref{fig:searchgrid}. In the example, the point that returns the minimum distance was marked with thick black dot and is returned after every grid-search call as inferred shift.\\
+
+Since some pixels are lost from the field of view during a shift, only a subset of subsequent pictures is used to determine the shift, preferably those around the center point. This will allow the largest search space possible, since the distance to all four margins of the picture is maximized at the center point. The search for the optimal $(\delta_x, \delta_y)$ pair is implemented as a grid search along the x- and y-axis. An example of the search grid is shown in Figure \ref{fig:searchgrid}.\\
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.5\textwidth]{search_grid}
-\caption{Search grid shift for Position 26. The search was conducted for shift between the last time point before and the first time point after the drugs treatment. The minimum is marked with thick black dot. The shift was inferred to be 8 pixels upwards and 5 pixels leftwards. Notice the repeating pattern of relatively favorable configurations after approximately 50 horizontal and 100 vertical pixels caused by lattice nature of the slits.}
+\caption{Search grid shift for Position 26. The search was conducted for shift between the last time point before and the first time point after the drugs treatment. The minimum is marked with thick black dot, which is returned after every grid-search call as inferred shift. In the position, the shift was inferred to be 8 pixels upwards and 5 pixels leftwards. Notice the repeating pattern of relatively favorable configurations after approximately 50 horizontal and 100 vertical pixels caused by lattice nature of the slits.}
 \label{fig:searchgrid}
 \end{figure}
+
+%% TODO: RESTRUCTURE THE CHAPTER
 
 Since the time-lapsed data consists mainly of grayscale image, the RGB encoding could be the directly transformed to grayscale encoding. Using the transformed method also speeds up the calculation process since the distance function only computes the difference of grayscale channel's values:
 
 $$
-d(M, N) =  \sum_{x} \sum_{y} \Vert M_{c, x, y}^{gray} - N_{x, y}^{gray}\Vert
+d(M, N) =  \sum_{x} \sum_{y} \vert M_{c, x, y}^{gray} - N_{x, y}^{gray}\vert
 $$
 
-Due to lost pixels around the margin of before and after pictures, only the overlapping part of both slides are included after the correction. Thus, for an inferred shift of $(\delta_x, \delta_y)$, the new dimension of the pictures is then $(m - \delta_x) \times (n - \delta_y)$. This change would then propagation to the other time-lapse images to maintain consistency of the images.
+Due to lost pixels around the margin of before and after pictures, only the overlapping part of both slides are included after the correction. Thus, for an inferred shift of $(\delta_x, \delta_y)$, the new dimension of the pictures is then $(m - \delta_x) \times (n - \delta_y)$. This change would then propagation to the other time-lapse images to maintain consistency of the images.\\
 
-Ideally, the frame correction should be done for each position to reduce the track dropout rate caused by image shifts. This is however computationally very expensive and, as could be seen in Figure \ref{fig:pixdiff}, not really necessary since the biggest shift indeed only happens right before and after the treatment, as it was expected during the experiment setting.
+Ideally, the shift correction should be done for each position to reduce the track dropout rate caused by image shifts. This is however computationally very expensive and, as seen in Figure \ref{fig:pixdiff}, not really necessary since the biggest shift indeed only happens right before and after the treatment, as it was expected during the experiment setting. As seen in Chapter XX (TODO: quote), the tracking allows certain amount of tolerance. In this regard, the other frame shifts are way within the tolerance of our tracking algorithm. As shown in Figure YY (TODO: add droput rate), the dropouts caused by frame shifts in the other time points are basically noisy dropout caused by random noise in time-lapse movie being tracked as cells (TODO: add reference about this phenomena).
 
 The algorithm for shift inference could be seen in Appendix \ref{appendix:graph}.
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.8\textwidth]{pixdiff}
-\caption{Sum of absolute differences of consecutive stacks for Position 26.}
+\caption{Pixel difference between consecutive frames at Position 26. In most cases, the pixel difference between the frames is mainly caused by moving cells. The diference during the treatment, on the other hand, is caused by physical shift of the frame. While moving cells mostly caused minimum noise-like pixel difference, the physical shift of field of view distorts the physical alignment and evokes immense pixel difference.}
 \label{fig:pixdiff}
 \end{figure}
 
-\chapter{Pipeline}
-Lorem ipsum
+\chapter{Results}
 
-\chapter{Quantitative Analysis}
-Lorem ipsum
+\lipsum[1]
+
+\begin{verbatim}
+I. Pipeline
+
+II. Quantitative Analysis
+\end{verbatim}
 
 \chapter{Summary and Outlook}
-Lorem ipsum
+
+\lipsum[1]
+
+\begin{verbatim}
+I. Summary (and discussion?)
+Connect Results with Background
+
+II. Outlook
+Improvemnt capability
+\end{verbatim}
+
+\lipsum[1]
 
 \begin{appendices}
 
 \chapter{Algorithms}\label{appendix:graph}
 
+\lipsum[1]
 
 \section*{Shift Inference} 
 
