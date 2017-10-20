@@ -107,7 +107,13 @@ Quantitative measurement of cancer drug response is esential to objectively gaug
 
 \newpage
 
-\chapter{Introduction} \lipsum[1]
+\chapter{Introduction}
+
+In almost every part of the world, cancer is either the most or second most deadly family of diseases. 
+
+Cancer is among the most deadly family of diseases ever known to human being. In 2016, TODO: put study
+
+\lipsum[1]
 
 \begin{verbatim}
 I.
@@ -128,21 +134,21 @@ thesis overview
 
 \chapter{Data and Methods}
 
-This chapter will consider two aspects of the project: the experiment setting and the data analyis pipeline. In the first half of the chapter, the cell environment is brouht forth. After that, the cell lines used in this experiment are explained with context of the aim of the experiment. Later on, the experiment treatment and the hypothesis is presented.
+This chapter will consider two aspects of the project: the experiment setting and the data analyis pipeline. In the first half of the chapter, the cell environment is brouht forth. The highlight of this experiment, the microslit setup for cell containment, is elucidated in this part. Also, the drugs that are tested on the cell cultures are exhibited. After that, the cell lines used in this experiment are explained with context of the aim of the experiment. Later on, the experiment treatment and the hypothesis is presented.
 
-The second part deals mostly with the quantitative methods used to process data into meaninful observations. Here, the theoretical aspect of each part is brought forward with several rationale explaining the reasons of using the method.
+The second part deals mostly with the quantitative methods used to process data into meaninful observations. The part is opened with definitions used in the methods section. Afterwards, each method developed/used in the pipeline is brought forward. For each method, the rationale explaining the reason of using the method is also accompanied in the subsection.
 
 \section{Experimental Setting and Data}
 
 \lipsum[1]
 
+\section{Definitions}
+
+Mathematical definitions used in the thesis
+
 \section{Methods}
 
 \lipsum[1]
-
-\subsection{Definitions}
-
-Mathematical definitions used in the thesis
 
 \subsection{Laplacian of Gaussian (LoG) Cell Recognition}
 
@@ -238,6 +244,18 @@ The algorithm for shift inference could be seen in Appendix \ref{appendix:graph}
 \caption{Pixel difference between consecutive frames at Position 26. In most cases, the pixel difference between the frames is mainly caused by moving cells. The diference during the treatment, on the other hand, is caused by physical shift of the frame. While moving cells mostly caused minimum noise-like pixel difference, the physical shift of field of view distorts the physical alignment and evokes immense pixel difference.}
 \label{fig:pixdiff}
 \end{figure}
+
+\subsection{Cell death signals}
+
+Measuring cell death is a crucial part of the experiment, as the exact determination of it is the basis of most analysis in this thesis. There are several way to measure cell deaths with varying complexity and accuracy. Each method contains certain assumptions of cell death. For example, determining cell death by cell movement assumes death of a cell if no movement beyond random flux is observed in certain amount of time. This obviously has certain drawbacks, such as when the observation is done in non-static environment. Moreover, defining the limit of the random flux, above which a given cell is assumed to actively move, is not a trivial task. Some kind of gold standard for a given cell line and environment has to be established manualy, which is very time consuming. This fact is again made even more complicated by the fact that many cells show different movement pattern upon introduction of treatment (TODO citation). It is well known that some cells tend to move faster or slower under stress (TODO citation), the situation many cancerous cells in our experiment will experience upon addition of cancer drugs treatment (TODO citation).
+
+The secon method is using cell size.
+
+
+
+
+In this experiment, two cell signals are used as indicator of cell death.
+
 
 \chapter{Results}
 
