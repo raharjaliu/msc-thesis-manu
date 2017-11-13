@@ -8,6 +8,7 @@
 \usepackage[toc,page]{appendix}
 \usepackage{subcaption}
 \usepackage{url}
+\usepackage{textcomp}
 \geometry{a4paper,left=2.5cm,right=2.5cm, top=2.5cm, bottom=3cm}
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
 
@@ -112,10 +113,7 @@ Quantitative measurement of cancer drug response is esential to objectively gaug
 
 Cancer is among the deadliest diseases ever known to human being. It is a leading cause of death in 2009, second only to cardiovascular diseases \cite{sudhakar2009history}. The numbers are discontenting, especially in the developed world. In the United States alone, half of men and a third of women are expected to develop some kind of cancer. According to US government, in 2016 alone, an estimated 1,685,210 people will be diagnosed with cancer, while 595,690 more will be die from it \cite{cancergov2017stat}.
 
-Worldwide, the International Agency for Research on Cancer's GLOBOCAN series report that, in 2014, \cite{ferlay2015cancer}
-.
-
-\lipsum[1]
+Worldwide, the International Agency for Research on Cancer's GLOBOCAN series report that, in 2014, \cite{ferlay2015cancer}.
 
 \begin{verbatim}
 I.
@@ -142,14 +140,56 @@ The second part deals mostly with the quantitative methods and algorithms used t
 
 \section{Experimental Setting and Data}
 
+\subsection{Cell Culture}
+
+For easier analysis and comparison of experiment resutlts vis-a-vis related experiments, a model cell line is used. In this project, a strain of acute monocytic leukimia (AML) in used: the AML-M5a MOLM-13 cell line. The line used in this experiment derived itself from the cell line initially described by Matsuo \textit{et al} in 1997 \cite{matsuo1997two}. In the paper, the authors developed the line from the peripheral blood of a relapse patient with acute monocytic leukemia (AML) of subtype FAB M5a, which is characterized by predominantly monoblastic leukemia cells in patient sample \cite{arber20162016}. Various studies on the cell lines have made it an ideal candidate for studying \textit{in vitro} study of monocytic differentiation, leukemogenesis and treatment dynamics \cite{matsuo1997two, kelly2002ct53518}.
+
+For the experiment, the acute monocytic leukemia (AML-M5a) MOLM-13 cell line was cultured in Gibco\textsuperscript{\textregistered} RPMI 1640 GlutaMAX medium, produced by Life Technologies \cite{gibcocellculture2017}. The medium is a popular option in human cell biology for experiment and biological synthesis based on human cells and their derivatives \cite{blight2000efficient, shimizu2002fabrication}. It is pre-supplemented with stable form of L-glutamine to prevent ammonia buildup, a common and serious problem in cell culture due to its cell toxicity\cite{satter1974effect}. The medium is further supplemented with Gibco\textsuperscript{\textregistered} Fetal Bovine Serum (FBS), also offered by Life Technologies \cite{gibcofbs2017}, as supplement for the AML-M5a MOLM-13 cell culture.
+
 \subsection{Microfluidics environment}
 
-Microfluidic methods for analysis and manipulation of biological cells have been done in various way and form. The miniscule spatial setting means that the family of methods is compatible for single-cell resolution analysis. For example, optical-based microfluidic methods have been used for example to sort cells with very high accuracy
-\cite{macdonald2003microfluidic, wang2005microfluidic, baret2009fluorescence}. 
+The general term of microfluidics concerns the wide application of micro-sized devices which hold and control the state of liquid. This includes cell culture medium. There are two categories of microfluidics: active and passive devises. The separation is based on the device's ability to actively manipulate the flow and control of devices. Active devices such as micro-valves can perform sophisticated chemical processes \cite{marsden1993interdisciplinary}. This goes as far as reactions at individual cell level \cite{eyer2012microchamber}. While passive devices, such as micro-arrays, provide a rapid parallel observation platform.
+
+Active microfluidic methods for analysis and manipulation of biological cells have been done in various way and form. In 2003, Wheeler \textit{et al} developed a novel microfluidic device from poly-dimethylsioxane using multilayer soft lithography technology for the analysis of single cells \cite{wheeler2003microfluidic}. The microfluidic setup facilitates the passive and gentle separation of a single cell from the bulk cell suspension. This in turn enables the precise delivery of reagents as little as one nanoliter to the cell. In other use cases, the optical-based microfluidic methods have been used to sort cell with very high accuracy \cite{macdonald2003microfluidic}. This family of method utilizes the fact that different dielectric particles respond differently to an applied light field \cite{tatarkova2003brownian}. Combined with the miniscule spatial setting, the methods are compatible for single-cell resolution analysis. For example, optical-based microfluidic methods have been used to sort cells with very high accuracy \cite{macdonald2003microfluidic, wang2005microfluidic, baret2009fluorescence}.
+
+As a method, passive mocrofluidic methods are mostly used to provide specialized environment in cell-size resoultion. For example, microfluidic settings have been used to keep spatio-temporal identity of single cell for the analysis of the underlying biological dynamics of the isolated cells \cite{mu2013microfluidics, sekhavati2015marker}, which form the methods the design and synthesis of our microtrench environment are based on.
+
+In order to track in a label-free manner non-adherent cells over several generations, we designed and fabricated micro-trenches ($30 \times 120 \, \mu m$) out of PEG-DA (Polyethylene(glycol) Diacrylate), which can accommodate four to six cells. The proposed platform facilitated cell tracking leading to the observation of hundreds of families of cells, derived from one single mother at each case. This enabled us firstly to study the distribution of division times among single cells and also to correlate the division times between sister cells, which are genetically identical. Secondly, the array of micro-trenches enabled the study of the response dynamics of single-cells to doxorubicin, a widely used chemotherapeutic drug, and the comparison of the response to this agent between a chemically synchronized and a non-synchronized population. The detailed methods and protocols for the fabrication of the microfluidics system used in the experiment could be found in Appendix \ref{appendix:microtrench}. Figure 
+
+The experiment setting looks as follows:
+
+\subsubsection*{The microtrench environment:}
+
+The smallest structure of the setting
+
+
+
+\begin{itemize}
+\item The macro-container chosen for containing the wafers with microtrench is ibidi\textsuperscript{\textregistered} sticky-Slide 8 Well (see Figure \ref{fig:ibidi})
+\end{itemize}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\textwidth]{images/sticky-slide-8-well}
+\caption{ibidi\textsuperscript{\textregistered} sticky-Slide 8 Well. The base SU-8 wafer is located in each of the containment box. The wafer in turn holds the manufactured microstructure. Note that each containment box is upside-open. Petri dish-combined installation is done to prevent the ingress of foreign materials into the medium. Picture taken from ibidi website.}
+\label{fig:ibidi}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\textwidth]{images/trenches-sekhavati}
+\caption{The structure of microslits: \textbf{(A)} 3D model of microslit on surface with cells inside. \textbf{(B)} The schematic representation of a time-lapse in a trench. First, a singly-placed cell is tracked in a slit. At time $t_0$, the cell divides into two daughter cells. The two cells will be kept tracked until at one point each of the daughter cells will divide at the same time at time $t_{div}$. Note the simplification of the sample. First, not every cell is singly-placed inside a trench. Indeed, not every trench is occupied by cells. Second, not every cell divides. Third, not every cell line observed has three generations in it. And finally, not every children's division times are at the same time. Indeed, this special case almost never happens in real life. \textbf{(C)} The sample view into the environment with cells occupying some slits. Here, the microslits have dimension of 120 $\mu m$ long and 30 $\mu m$ wide. Note also the pointish characteristic of the cells taken in out-of-focus fashion. This improves the performance of the tracking algorithms.}
+\label{fig:ibidi}
+\end{figure}
+
+In our cases, the microfluidic settings trace back to the works of our partner lab in 2013 \cite{marel2013arraying} and 2015 \cite{sekhavati2015marker, sekhavati2015dynamic}. The method utilizes the use of 
+
+
 
 For the duration of the experiment, the cells are contained inside the so-called microtrench assay. There are several mentions of microtrench in the past from both our partner lab and several other groups(TODO cite, cite, cite). In our case, the design is based on previous work by the biophysics group of LMU M\"unchen, which are also the experimentalists in this project.
 
-\lipsum[1]
+
+
 
 \section{Definitions}
 
@@ -165,28 +205,24 @@ Mathematical definitions used in the thesis
 
 \subsection{Image Encoding}
 
-Consider whether image encoding shoud contain Lenna's picture instead.
-
-\subsection{Shift Correction}
-
 Consider following picture:
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.5\textwidth]{lenna_marked}
+\includegraphics[width=0.5\textwidth]{images/lenna_marked}
 \label{fig:lenna}
 \caption{Lenna}
 
 \end{figure}
 
-There are numerous encodings that could be used to internally represent this picture. Many such encodings derived from the so-called Red-Green-Blue (RGB) encodings. RGB encoding represents the pixel as a combination of red, green and blue color. This encoding is able to represent various spectra of human visible color and useful enough for most use cases (citation). To give representation on how the encoding works, the RGB encoding of some part of Figure \ref{fig:lenna} is shown in Figure \ref{fig:lennas}. For an image of size $m \times n$ pixels, the RGB encoding is thus a 3-dimensional matrix of dimension $m \times n \times 3$. For time-lapsed images accordingly, the RGB encoding of a video of length $T$ is a 5-dimensional matrix of shape $T \times m \times n \times 3$. TODO: put graphical explanation of data here.
+There are numerous encodings that could be used to internally represent this picture. Many such encodings derived from the so-called Red-Green-Blue (RGB) encodings \cite{sonka2014image}. RGB encoding represents the pixel as a combination of red, green and blue color. This encoding is able to represent various spectra of human visible color and useful enough for most use cases \cite{jayant1993signal}. To give representation on how the encoding works, the RGB encoding of some part of Figure \ref{fig:lenna} is shown in Figure \ref{fig:lennas}. For an image of size $m \times n$ pixels, the RGB encoding is thus a 3-dimensional matrix of dimension $m \times n \times 3$. For time-lapsed images accordingly, the RGB encoding of a video of length $T$ is a 5-dimensional matrix of shape $T \times m \times n \times 3$. TODO: put graphical explanation of data here.
 
 %An expansion of such encoding, the RGBH encoding, expands the representation by adding the brightness of the pixel -- known as 'hue'.
 
 \begin{figure}[h]
 \begin{subfigure}{.5\textwidth}
   \centering
-  \includegraphics[width=.8\linewidth]{lenna_marked_small}
+  \includegraphics[width=.8\linewidth]{images/lenna_marked_small}
   \caption{1a}
   \label{fig:lennas1}
 \end{subfigure}%
@@ -206,6 +242,8 @@ There are numerous encodings that could be used to internally represent this pic
 \label{fig:lennas}
 \end{figure}
 
+
+\subsection{Shift Correction}
 
 Now, consider a case in which images are shifted in a time-lapsed movie. TODO: explain mechanism. No rotation of camera is assumed, hence there are only two degree of freedoms (vertical and horizontal). Thus, a shift can be defined as a vector movement $\vec{v}$ of all points $x_{i,j} \in M_{t_i}$ in the time-lapse from time $t_i$ to $t_{i+1}$. Given two degrees of freedom and discreteness of the problem due to pixel representation, the task is reduced to finding difference in x- and y-axis ($\delta_x$ and $\delta_y$), so that the difference of transformed pixels at $t_i$ and $t_{i+1}$ are minimized, i.e.:
 
@@ -228,7 +266,7 @@ Since some pixels are lost from the field of view during a shift, only a subset 
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.5\textwidth]{search_grid}
+\includegraphics[width=0.5\textwidth]{images/search_grid}
 \caption{Search grid shift for Position 26. The search was conducted for shift between the last time point before and the first time point after the drugs treatment. The minimum is marked with thick black dot, which is returned after every grid-search call as inferred shift. In the position, the shift was inferred to be 8 pixels upwards and 5 pixels leftwards. Notice the repeating pattern of relatively favorable configurations after approximately 50 horizontal and 100 vertical pixels caused by lattice nature of the slits.}
 \label{fig:searchgrid}
 \end{figure}
@@ -243,13 +281,13 @@ $$
 
 Due to lost pixels around the margin of before and after pictures, only the overlapping part of both slides are included after the correction. Thus, for an inferred shift of $(\delta_x, \delta_y)$, the new dimension of the pictures is then $(m - \delta_x) \times (n - \delta_y)$. This change would then propagation to the other time-lapse images to maintain consistency of the images.\\
 
-Ideally, the shift correction should be done for each position to reduce the track dropout rate caused by image shifts. This is however computationally very expensive and, as seen in Figure \ref{fig:pixdiff}, not really necessary since the biggest shift indeed only happens right before and after the treatment, as it was expected during the experiment setting. As seen in Chapter XX (TODO: quote), the tracking allows certain amount of tolerance. In this regard, the other frame shifts are way within the tolerance of our tracking algorithm. As shown in Figure YY (TODO: add droput rate), the dropouts caused by frame shifts in the other time points are basically noisy dropout caused by random noise in time-lapse movie being tracked as cells (TODO: add reference about this phenomena).
+Ideally, the shift correction should be done for each position to reduce the track dropout rate caused by image shifts. This is however computationally very expensive and, as seen in Figure \ref{fig:pixdiff}, not really necessary since the biggest shift indeed only happens right before and after the treatment, as it was expected during the experiment setting. As seen in Chapter XX (TODO: quote), the tracking allows certain amount of tolerance. In this regard, the other frame shifts are way within the tolerance of our tracking algorithm. As shown in Figure YY (TODO: add droput rate), the dropouts caused by frame shifts in the other time points are basically noisy dropout caused by random noise in time-lapse movie being tracked as cells \cite{jaqaman2008robust}.
 
-The algorithm for shift inference could be seen in Appendix \ref{appendix:graph}.
+The algorithm for shift inference could be seen in Appendix \ref{appendix:algo}.
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.8\textwidth]{pixdiff}
+\includegraphics[width=0.8\textwidth]{images/pixdiff}
 \caption{Pixel difference between consecutive frames at Position 26. In most cases, the pixel difference between the frames is mainly caused by moving cells. The diference during the treatment, on the other hand, is caused by physical shift of the frame. While moving cells mostly caused minimum noise-like pixel difference, the physical shift of field of view distorts the physical alignment and evokes immense pixel difference.}
 \label{fig:pixdiff}
 \end{figure}
@@ -258,19 +296,14 @@ The algorithm for shift inference could be seen in Appendix \ref{appendix:graph}
 
 Measuring cell death is a crucial part of the experiment, as the reliable determination of it is the basis of most analysis in this thesis. There are several way to measure cell deaths with varying complexity and accuracy. Each method contains certain assumptions of cell death.\\
 
-For example, determining cell death by cell movement assumes death of a cell if no movement beyond random flux is observed in certain amount of time. This obviously has certain drawbacks, such as when the observation is done in non-static environment. Moreover, defining the limit of the random flux, above which a given cell is assumed to actively move, is not a trivial task. Some kind of gold standard for a given cell line and environment has to be established manualy, which is very time consuming. This fact is again made even more complicated by the fact that many cells show different movement pattern upon introduction of treatment (TODO citation). It is well known that some cells tend to move faster or slower under stress (TODO citation), the situation many cancerous cells in our experiment will experience upon addition of cancer drugs treatment (TODO citation).\\
+For example, determining cell death by cell movement assumes death of a cell if no movement beyond random flux is observed in certain amount of time. This obviously has certain drawbacks, such as when the observation is done in non-static environment. Moreover, defining the limit of the random flux, above which a given cell is assumed to actively move, is not a trivial task. Some kind of gold standard for a given cell line and environment has to be established manualy, which is very time consuming. This fact is again made even more complicated by the fact that many cells show different movement pattern upon introduction of treatment. It is well known that some cells tend to move faster or slower under stress, the situation many cancerous cells in our experiment will experience upon addition of cancer drugs treatment \cite{pienta1991effects, fenteany2003small, ruocco2012suppressing}.\\
 
-The second method is using cell size. During apopotosis, the cells would shrink. Given It is known that cell size 
+The second method is using cell size. During apopotosis, the cells would shrink. Given It is known that cell size TODO continue.
 
-
-
-
-In this experiment, two cell signals are used as indicator of cell death.
+In this experiment, two cell signals are used as indicator of cell death. TODO continue
 
 
 \chapter{Results}
-
-\lipsum[1]
 
 \begin{verbatim}
 I. Pipeline
@@ -280,8 +313,6 @@ II. Quantitative Analysis
 
 \chapter{Summary and Outlook}
 
-\lipsum[1]
-
 \begin{verbatim}
 I. Summary (and discussion?)
 Connect Results with Background
@@ -290,14 +321,28 @@ II. Outlook
 Improvemnt capability
 \end{verbatim}
 
-\lipsum[1]
+%% BIBLIOGRAPHY %%
 
 \bibliographystyle{unsrt}
 \bibliography{mabib}
 
+%% APPENDICES %%
+
 \begin{appendices}
 
-\chapter{Algorithms}\label{appendix:graph}
+\chapter{Annex: Methods}
+
+\section*{Micro-trenches array fabrication} \label{appendix:microtrench}
+
+\subsection*{Photolithography of the SU-8 wafer}
+
+The fabrication of the SU-8 (MicroChem Corp, USA) wafer was executed in a in-house cleanroom facility using a ProtoLaser LDI system (LPKF Laser \& Electronika, Naklo, Slovenia), with a 375 nm wavelength laser and 1 μm spot diameter.
+
+\subsection*{Softlithography and Micromolding}
+
+Polydimethylsiloxane (PDMS) prepolymer solution is mixed with the crosslinker in a 10:1 ratio (w/w) (Sylgard 184, Dow Corning, USA) and then degassed under vacuum. PDMS is then purred on the SU-8 wafer, degassed and cured in 50 oC. The resulting PDMS stamp is peeled off the wafer and cut into appropriate shapes. The PDMS pieces, with 25 ¼ͭ pillars in height, are activated with argon plasma and then immediately placed upside down on a silanized with TMSPMA (3-(Trimethoxysilyl)propyl methacrylate, Sigma-Aldrich) glass coverslip. A solution of PEG-DA (Mn=258) containing 2\% v/v of the 2-hydroxy-2methylpropiophenone (both from Sigma-Aldrich, Germany) is freshly prepared and then a drop is deposited at the edge of the PDMS stamp. The PDMS stamp is filled by capillary force induced flow. PEG-DA is then polymerized in an UV-ozone cleaning system (UVOH 150 LAB, FHR, Ottendorf, Germany). Next, the PDMS stamps are peeled off and the resulting micro-trenches of cross-linked PEG-DA are dried in an oven (Binder GmbH, Tuttlingen, Germany) overnight at 50oC. Finally, the slides are sonicated with 70\% ethanol and distilled water before a sticky slide is attached on top (8-well sticky slide, ibidi GmbH, Munich, Germany).
+
+\chapter{Algorithms}\label{appendix:algo}
 
 \lipsum[1]
 
