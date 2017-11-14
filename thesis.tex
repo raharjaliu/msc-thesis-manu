@@ -158,23 +158,23 @@ Active microfluidic methods for analysis and manipulation of biological cells ha
 
 As a method, passive mocrofluidic methods are mostly used to provide specialized environment in cell-size resoultion. For example, microfluidic settings have been used to keep spatio-temporal identity of single cell for the analysis of the underlying biological dynamics of the isolated cells \cite{mu2013microfluidics, sekhavati2015marker}, which form the methods the design and synthesis of our microtrench environment are based on.
 
-In order to track in a label-free manner non-adherent cells over several generations, we designed and fabricated micro-trenches ($30 \times 120 \, \mu m$) out of PEG-DA (Polyethylene(glycol) Diacrylate), which can accommodate four to six cells. The proposed platform facilitated cell tracking leading to the observation of hundreds of families of cells, derived from one single mother at each case. This enabled us firstly to study the distribution of division times among single cells and also to correlate the division times between sister cells, which are genetically identical. Secondly, the array of micro-trenches enabled the study of the response dynamics of single-cells to doxorubicin, a widely used chemotherapeutic drug, and the comparison of the response to this agent between a chemically synchronized and a non-synchronized population. The detailed methods and protocols for the fabrication of the microfluidics system used in the experiment could be found in Appendix \ref{appendix:microtrench}. Figure 
+In our cases, the microfluidic settings trace back to the works of our partner lab at Biophysics Department at Ludwig-Maximillians-Universit\"at M\"unchen in 2013 \cite{marel2013arraying} and 2015 \cite{sekhavati2015marker, sekhavati2015dynamic}.
+
+In order to track in a label-free manner non-adherent cells over several generations, we designed and fabricated micro-trenches ($30 \times 120 \, \mu m$) out of PEG-DA (Polyethylene(glycol) Diacrylate), which can accommodate four to six cells. The proposed platform facilitated cell tracking leading to the observation of hundreds of families of cells, derived from one single mother at each case. This enabled us firstly to study the distribution of division times among single cells and also to correlate the division times between sister cells, which are genetically identical. Secondly, the array of micro-trenches enabled the study of the response dynamics of single-cells to doxorubicin, a widely used chemotherapeutic drug, and the comparison of the response to this agent between a chemically synchronized and a non-synchronized population. The detailed methods and protocols for the fabrication of the microfluidics system used in the experiment could be found in Appendix \ref{appendix:microtrench}. The design of the microslit and the schematic representative of cell tracking are seen in Figure \ref{fig:microslit_design}.
 
 The experiment setting looks as follows:
 
-\subsubsection*{The microtrench environment:}
+\subsubsection*{The microtrenches:}
 
-The smallest structure of the setting, measuring about 
+The smallest structure of the setting, measuring about 120 microns by 30 microns. The base of the slit is made of Polyethylene (glycol) Diacrylate (PEGDA), an inert substance commonly found as construction material in microfluidics system \cite{sekhavati2015marker}. Each tretment contains about 2400 microtrenches (See \textbf{Results} section) contained in one containment box.
 
-TODO continue
+\subsubsection*{The containment system:}
 
-\begin{itemize}
-\item The macro-container chosen for containing the wafers with microtrench is ibidi\textsuperscript{\textregistered} sticky-Slide 8 Well (see Figure \ref{fig:ibidi})
-\end{itemize}
+The trench could contain up to 8 cells. The macro-container chosen for containing the wafers holding the microtrenches is ibidi\textsuperscript{\textregistered} sticky-Slide 8 Well (see Figure \ref{fig:ibidi}). In the project, each cell treatment is isolated in one containment box. This ensure the separations of different chemicals used in each treatment. 
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=1\textwidth]{images/sticky-slide-8-well-marked}
+\includegraphics[width=0.8\textwidth]{images/sticky-slide-8-well-marked}
 \caption{ibidi\textsuperscript{\textregistered} sticky-Slide 8 Well. The base SU-8 wafer is located in each of the containment box \textbf{(A)}. The SU-8 wafer is then fabricated in the surface of each containment box using nano photolitographic printing. The microfluidics system is then poured and stamped on top the wafer (see Appendix \ref{appendix:microtrench} for detailed manufacturing process). Note that each containment box is upside-open. The cap (\textbf{(B)} is used to prevent the ingress of foreign materials into the medium. \textit{Image taken and modified from ibidi GmbH's website}.}
 \label{fig:ibidi}
 \end{figure}
@@ -183,17 +183,15 @@ TODO continue
 \centering
 \includegraphics[width=1\textwidth]{images/trenches-sekhavati}
 \caption{The structure of microslits: \textbf{(A)} 3D model of microslit on surface with cells inside. \textbf{(B)} The schematic representation of a time-lapse in a trench. First, a singly-placed cell is tracked in a slit. At time $t_0$, the cell divides into two daughter cells. The two cells will be kept tracked until at one point each of the daughter cells will divide at the same time at time $t_{div}$. Note the simplification of the sample. First, not every cell is singly-placed inside a trench. Indeed, not every trench is occupied by cells. Second, not every cell divides. Third, not every cell line observed has three generations in it. And finally, not every children's division times are at the same time. Indeed, this special case almost never happens in real life. \textbf{(C)} The sample view into the environment with cells occupying some slits. Here, the microslits have dimension of 120 $\mu m$ long and 30 $\mu m$ wide. Note also the pointish characteristic of the cells taken in out-of-focus fashion. This improves the performance of the tracking algorithms. \textit{Figure taken from (Sekhavati, 2015) \cite{sekhavati2015dynamic}}.}
-\label{fig:ibidi}
+\label{fig:microslit_design}
 \end{figure}
 
-In our cases, the microfluidic settings trace back to the works of our partner lab in 2013 \cite{marel2013arraying} and 2015 \cite{sekhavati2015marker, sekhavati2015dynamic}. The method utilizes the use of 
-
-
-
-For the duration of the experiment, the cells are contained inside the so-called microtrench assay. There are several mentions of microtrench in the past from both our partner lab and several other groups(TODO cite, cite, cite). In our case, the design is based on previous work by the biophysics group of LMU M\"unchen, which are also the experimentalists in this project.
-
-
-
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{images/microslit_in}
+\caption{The typical view of microslit setting. Some slits contai no cell at all \textbf{(A)}. Several slits contain exactly one cell \textbf{(B)}. A few more slits contain two cells \textbf{(C)} while in rare cases the slit could contain more than two cells \textbf{(D)}.}
+\label{fig:microslit_sample}
+\end{figure}
 
 \section{Definitions}
 
@@ -287,7 +285,7 @@ Due to lost pixels around the margin of before and after pictures, only the over
 
 Ideally, the shift correction should be done for each position to reduce the track dropout rate caused by image shifts. This is however computationally very expensive and, as seen in Figure \ref{fig:pixdiff}, not really necessary since the biggest shift indeed only happens right before and after the treatment, as it was expected during the experiment setting. As seen in Chapter XX (TODO: quote), the tracking allows certain amount of tolerance. In this regard, the other frame shifts are way within the tolerance of our tracking algorithm. As shown in Figure YY (TODO: add droput rate), the dropouts caused by frame shifts in the other time points are basically noisy dropout caused by random noise in time-lapse movie being tracked as cells \cite{jaqaman2008robust}.
 
-The algorithm for shift inference could be seen in Appendix \ref{appendix:algo}.
+The algorithm for shift inference is available in Appendix \ref{appendix:algo}.
 
 \begin{figure}[h]
 \centering
@@ -344,11 +342,9 @@ The fabrication of the SU-8 (MicroChem Corp, USA) wafer was executed in a in-hou
 
 \subsection*{Softlithography and Micromolding}
 
-Polydimethylsiloxane (PDMS) prepolymer solution is mixed with the crosslinker in a 10:1 ratio (w/w) (Sylgard 184, Dow Corning, USA) and then degassed under vacuum. PDMS is then purred on the SU-8 wafer, degassed and cured in 50 oC. The resulting PDMS stamp is peeled off the wafer and cut into appropriate shapes. The PDMS pieces, with 25 ¼ͭ pillars in height, are activated with argon plasma and then immediately placed upside down on a silanized with TMSPMA (3-(Trimethoxysilyl)propyl methacrylate, Sigma-Aldrich) glass coverslip. A solution of PEG-DA (Mn=258) containing 2\% v/v of the 2-hydroxy-2methylpropiophenone (both from Sigma-Aldrich, Germany) is freshly prepared and then a drop is deposited at the edge of the PDMS stamp. The PDMS stamp is filled by capillary force induced flow. PEG-DA is then polymerized in an UV-ozone cleaning system (UVOH 150 LAB, FHR, Ottendorf, Germany). Next, the PDMS stamps are peeled off and the resulting micro-trenches of cross-linked PEG-DA are dried in an oven (Binder GmbH, Tuttlingen, Germany) overnight at 50oC. Finally, the slides are sonicated with 70\% ethanol and distilled water before a sticky slide is attached on top (8-well sticky slide, ibidi GmbH, Munich, Germany).
+Polydimethylsiloxane (PDMS) prepolymer solution is mixed with the crosslinker in a 10:1 ratio (w/w) (Sylgard 184, Dow Corning, USA) and then degassed under vacuum. PDMS is then purred on the SU-8 wafer, degassed and cured in 50 oC. The resulting PDMS stamp is peeled off the wafer and cut into appropriate shapes. The PDMS pieces, with 25 1/4 pillars in height, are activated with argon plasma and then immediately placed upside down on a silanized with TMSPMA (3-(Trimethoxysilyl)propyl methacrylate, Sigma-Aldrich) glass coverslip. A solution of PEG-DA (Mn=258) containing 2\% v/v of the 2-hydroxy-2methylpropiophenone (both from Sigma-Aldrich, Germany) is freshly prepared and then a drop is deposited at the edge of the PDMS stamp. The PDMS stamp is filled by capillary force induced flow. PEG-DA is then polymerized in an UV-ozone cleaning system (UVOH 150 LAB, FHR, Ottendorf, Germany). Next, the PDMS stamps are peeled off and the resulting micro-trenches of cross-linked PEG-DA are dried in an oven (Binder GmbH, Tuttlingen, Germany) overnight at 50oC. Finally, the slides are sonicated with 70\% ethanol and distilled water before a sticky slide is attached on top (8-well sticky slide, ibidi GmbH, Munich, Germany).
 
 \chapter{Algorithms}\label{appendix:algo}
-
-\lipsum[1]
 
 \section*{Shift Inference} 
 
