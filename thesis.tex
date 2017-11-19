@@ -26,7 +26,6 @@
 \begin{document}
 \begin{titlepage}
 
-
 %%LR
 \sffamily
 
@@ -130,7 +129,6 @@ thesis overview
 
 \section{The structure of the thesis}
 
-\lipsum[2]
 
 \chapter{Data and Methods}
 
@@ -174,7 +172,7 @@ The trench could contain up to 8 cells. The macro-container chosen for containin
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.8\textwidth]{images/sticky-slide-8-well-marked}
+\includegraphics[width=0.6\textwidth]{images/sticky-slide-8-well-marked}
 \caption{ibidi\textsuperscript{\textregistered} sticky-Slide 8 Well. The base SU-8 wafer is located in each of the containment box \textbf{(A)}. The SU-8 wafer is then fabricated in the surface of each containment box using nano photolitographic printing. The microfluidics system is then poured and stamped on top the wafer (see Appendix \ref{appendix:microtrench} for detailed manufacturing process). Note that each containment box is upside-open. The cap (\textbf{(B)} is used to prevent the ingress of foreign materials into the medium. \textit{Image taken and modified from ibidi GmbH's website}.}
 \label{fig:ibidi}
 \end{figure}
@@ -193,31 +191,30 @@ The trench could contain up to 8 cells. The macro-container chosen for containin
 \label{fig:microslit_sample}
 \end{figure}
 
+\subsection{Treatments}
+
+Some treatment regimes have been use for leukimia-based experiments.
+
 \section{Definitions}
 
 Mathematical definitions used in the thesis
 
 \section{Methods}
 
-\lipsum[1]
-
 \subsection{Laplacian of Gaussian (LoG) Cell Recognition}
-
-\lipsum[1]
 
 \subsection{Image Encoding}
 
-Consider following picture:
+Consider the picture of Lenna (Figure \ref{fig:lennasample}).
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.5\textwidth]{images/lenna_marked}
-\label{fig:lenna}
+\label{fig:lennasample}
 \caption{Lenna}
-
 \end{figure}
 
-There are numerous encodings that could be used to internally represent this picture. Many such encodings derived from the so-called Red-Green-Blue (RGB) encodings \cite{sonka2014image}. RGB encoding represents the pixel as a combination of red, green and blue color. This encoding is able to represent various spectra of human visible color and useful enough for most use cases \cite{sonka2014image, jayant1993signal}. To give representation on how the encoding works, the RGB encoding of some part of Figure \ref{fig:lenna} is shown in Figure \ref{fig:lennas}. For an image of size $m \times n$ pixels, the RGB encoding is thus a 3-dimensional matrix of dimension $m \times n \times 3$. For time-lapsed images accordingly, the RGB encoding of a video of length $T$ is a 5-dimensional matrix of shape $T \times m \times n \times 3$. TODO: put graphical explanation of data here.
+There are numerous encodings that could be used to internally represent this picture. Many such encodings derived from the so-called Red-Green-Blue (RGB) encodings \cite{sonka2014image}. RGB encoding represents the pixel as a combination of red, green and blue color. This encoding is able to represent various spectra of human visible color and useful enough for most use cases \cite{sonka2014image, jayant1993signal}. To give representation on how the encoding works, the RGB encoding of some part of Figure \ref{fig:lennasample} is shown in Figure \ref{fig:lennas}. For an image of size $m \times n$ pixels, the RGB encoding is thus a 3-dimensional matrix of dimension $m \times n \times 3$. For time-lapsed images accordingly, the RGB encoding of a video of length $T$ is a 5-dimensional matrix of shape $T \times m \times n \times 3$. TODO: put graphical explanation of data here.
 
 %An expansion of such encoding, the RGBH encoding, expands the representation by adding the brightness of the pixel -- known as 'hue'.
 
