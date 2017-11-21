@@ -12,6 +12,7 @@
 \geometry{a4paper,left=2.5cm,right=2.5cm, top=2.5cm, bottom=3cm}
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
 
+
 % definition for ToC
 
 \usepackage{lipsum}% http://ctan.org/pkg/lipsum
@@ -54,7 +55,8 @@
 \vfill
 \end{center}
 \end{titlepage}
-\pagestyle{empty}
+%% THIS REMOVES PAGE NUMBER
+%%\pagestyle{empty}
 
 %%LR comprehensive title
 \begin{titlepage}
@@ -132,23 +134,27 @@ thesis overview
 
 \chapter{Data and Methods}
 
-This chapter considers two aspects of the project: the experiment setting and the data analysis pipeline. In the first half of the chapter, the cell environment is brought forth. The highlight of this experiment, the microfluidics setup for cell containment, is elucidated in this part. Some biomedical and biochemistry aspects of the experiment are also mentioned. This includes the drugs and the auxiliary chemicals of interest used in the experiment and the cell lines probed for the experiment. Later on, the hypothesis underlying the experiment is presented.
+As mentioned in previous parts of this thesis: this project consists of three part -- the problem statement regarding the dynamics of cancerous single-cells under pressure of treatment, the microfluidic environment which enables the single-cell protocol and the software implementation used to process and analyze the time-lapse data coming out of the experiment. 
+
+This chapter considers two aspects of the project: the experiment setting and the data analysis pipeline. In the first half of the chapter, we dealt mostly with the experimental background and the underlying questions of single cell dynamics of cancer cell under stress with focus on chemotherapeutic pressure. Henceforth, the cell environment is brought forth. The highlight of this experiment, the microfluidics setup for cell containment, is elucidated in this part. In conjunction with the stup, Some biomedical and biochemistry aspects of the experiment are also mentioned. This includes the drugs and the auxiliary chemicals of interest used in the experiment and the cell lines probed for the experiment. Later on, the hypothesis underlying the experiment is presented.
 
 The second part deals mostly with the quantitative methods and algorithms used to process data into meaningful observations. The part is opened with definitions used in the methods section. Afterwards, each method developed/used in the pipeline is brought forward. For each method, the rationale explaining the reason of using the method is also accompanied in the subsection.
 
 \section{Experimental Setting and Data}
 
 \subsection{Cell Culture}
+\label{subsection:cell_culture}
 
 For easier analysis and comparison of experiment resutlts vis-a-vis related experiments, a model cell line is used. In this project, a strain of acute monocytic leukimia (AML) in used: the AML-M5a MOLM-13 cell line. The line used in this experiment derived itself from the cell line initially described by Matsuo \textit{et al} in 1997 \cite{matsuo1997two}. In the paper, the authors developed the line from the peripheral blood of a relapse patient with acute monocytic leukemia (AML) of subtype FAB M5a, which is characterized by predominantly monoblastic leukemia cells in patient sample \cite{arber20162016}. Various studies on the cell lines have made it an ideal candidate for studying \textit{in vitro} study of monocytic differentiation, leukemogenesis and treatment dynamics \cite{matsuo1997two, kelly2002ct53518}.
 
 For the experiment, the acute monocytic leukemia (AML-M5a) MOLM-13 cell line was cultured in Gibco\textsuperscript{\textregistered} RPMI 1640 GlutaMAX medium, produced by Life Technologies \cite{gibcocellculture2017}. The medium is a popular option in human cell biology for experiment and biological synthesis based on human cells and their derivatives \cite{blight2000efficient, shimizu2002fabrication}. It is pre-supplemented with stable form of L-glutamine to prevent ammonia buildup, a common and serious problem in cell culture due to its cell toxicity\cite{satter1974effect}. The medium is further supplemented with Gibco\textsuperscript{\textregistered} Fetal Bovine Serum (FBS), also offered by Life Technologies \cite{gibcofbs2017}, as supplement for the AML-M5a MOLM-13 cell culture.
 
 
-Some other cell lines were also appraised as potential cell line of interest in this experiment. One of them is Jurkat Cell, a model cell commonly used to study T Cell Leukimia, T cell signalling mechanism and the expression of various HIV-related chemokines \cite{schneider1977characterization}. The cell line was a considered since it is well-studied \cite{johnson2007genome, schena1996parallel}. This is especially true if we consider apoptotic mechanism of the cell line, a problem this project and other related projects by our  and partner labs are trying to investigate. There are several seminal publications about the dynamics of apoptotic mechanism of Jurkat cells we could well compare our results to \cite{gottlieb1996apoptosis}. Samali \textit{et al} \cite{samali1999presence} even studies the dynamics of caspase expression in Jurkat cells, a topic dealt a lot in this project as the chapters progress (see for example Section TODO fill on cell death signal) while Kasai \textit{et al} considers the aspect of spindle checkpoint in the context of apopototic cell death \cite{kasai2002prevalent}. However, we figured out early on that the cell motility of the Jurkat cell line was increased dramatically (a phenomenon observed by others before us \cite{barnhart2004cd95}) upon the introduction of chemotherapeutic treatment -- the increase dramatic enough that the cells managed to escape the microslit it initially landed in.
+Some other cell lines were also appraised as potential cell line of interest in this experiment. One of them is Jurkat Cell, a model cell commonly used to study T Cell Leukimia, T cell signalling mechanism and the expression of various HIV-related chemokines \cite{schneider1977characterization}. The cell line was a considered since it is well-studied \cite{johnson2007genome, schena1996parallel}. This is especially true if we consider apoptotic mechanism of the cell line, a problem this project and other related projects by our  and partner labs are trying to investigate. There are several seminal publications about the dynamics of apoptotic mechanism of Jurkat cells we could well compare our results to \cite{gottlieb1996apoptosis}. Samali \textit{et al} \cite{samali1999presence} even studies the dynamics of caspase expression in Jurkat cells, a topic dealt a lot in this project as the chapters progress (see for example Subsection \ref{subsection:treatment}) while Kasai \textit{et al} considers the aspect of spindle checkpoint in the context of apopototic cell death \cite{kasai2002prevalent}. However, we figured out early on that the cell motility of the Jurkat cell line was increased dramatically (a phenomenon observed by others before us \cite{barnhart2004cd95}) upon the introduction of chemotherapeutic treatment -- the increase dramatic enough that the cells managed to escape the microslit it initially landed in.
 
 
 \subsection{Microfluidics environment}
+\label{subsection:microfluid_env}
 
 The general term of microfluidics concerns the wide application of micro-sized devices which hold and control the state of liquid. This includes cell culture medium. There are two categories of microfluidics: active and passive devises. The separation is based on the device's ability to actively manipulate the flow and control of devices. Active devices such as micro-valves can perform sophisticated chemical processes \cite{marsden1993interdisciplinary}. This goes as far as reactions at individual cell level \cite{eyer2012microchamber}. While passive devices, such as micro-arrays, provide a rapid parallel observation platform.
 
@@ -191,17 +197,24 @@ The trench could contain up to 8 cells. The macro-container chosen for containin
 \label{fig:microslit_sample}
 \end{figure}
 
-\subsection{Treatments}
+\subsection{Cancer Treatment Regimes}
+\label{subsection:treatment}
 
-Some treatment regimes have been use for leukimia-based experiments.
+As mentioned in previous chapters, the objective of the project partains mostly the dynamics of single cancer cell under treatment. After mentioning the cell lines of interest (Chapter \ref{subsection:cell_culture}) and the microfluidic setup used to contain cancer cells in single-cell setting (Chapter \ref{subsection:microfluid_env}), we arrived at the last aspect of the experimental seting: the chemical treatment used on the cells.
+
+For cell cultures mentioned in chapter Subsection \ref{subsection:cell_culture}, two treatment regimes are developed : Vincristine and Daunorubicin -- both chemotherapeutic compounds well known for treating various kinds of cancer (TODO cite).
+
+Vincristine is mainly known as Tubulin polymerase inhibitor, a subclass of mitotic inhibitor family of drugs (TODO cite). Mechanistically, it prevent Tubulin polymerization in two ways. First, it binds elongating Tubulin polymer and reduces the affinity of the elongating polymer towards the monomers that are supposed to conjoin the polymer thereby extending it (TOOD cite). Meanwhile, further elongation by the polymers are also prevented via allosteric inhibition -- inhibition caused by spatial occupancy of inhibiting agent -- of polymerating Tubulin via Vincristine (TODO cite). Thus, the effect of Vincristine is most emphasized during the time of high Tubulin synthesis: during the separation of chromosomes in Metaphase by means of tearing them with the simultaneous pulling and pushing mechanism of Tubulin poly- and depolymerization (TODO cite). In the context of chemotherapy, Vincristine is often as combination in CHOP (TODO cite) regime against non-Hodgkin's lymphoma; MOPP, COPP and BEACOPP regimes against Hodgkin's lymphoma; and Stanford V regimes against acute lymphoblastic leukimia (ALL). It is also used to certain degree as immunosuppresant due to its mitotic inhibiting characteristics (TODO cite).
+
+Daunorubicin, like many chemotherapeutic agents including Vincristine, attack cancerous tissues and cells by preventing their division. In comparison to Vincristine however, Daunorubicin prevents the division by disrupting another mechanistic part of cell division: the DNA polymerization. TODO continue 
+
+In normal chemotherapeutic regime, both Vincristine and Daunorubicin are prescribed intravenously to the patients. In our cas, TODO continue.
+
+TODO put pictures on mechanistic action of VCR and Dauno
 
 \section{Definitions}
 
 Mathematical definitions used in the thesis
-
-\section{Methods}
-
-\subsection{Laplacian of Gaussian (LoG) Cell Recognition}
 
 \subsection{Image Encoding}
 
@@ -241,6 +254,9 @@ There are numerous encodings that could be used to internally represent this pic
 \label{fig:lennas}
 \end{figure}
 
+\section{Methods}
+
+\subsection{Laplacian of Gaussian (LoG) Cell Recognition}
 
 \subsection{Shift Correction}
 
@@ -301,6 +317,7 @@ The second method is using cell size. During apopotosis, the cells would shrink.
 
 In this experiment, two cell signals are used as indicator of cell death. TODO continue
 
+\chapter{Analysis Pipeline}
 
 \chapter{Results}
 
