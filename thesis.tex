@@ -10,7 +10,7 @@
 \usepackage{url}
 \usepackage{textcomp}
 \usepackage{gensymb}
-% float forces latex to place picture right "HERE"
+% float forces latex to place image right "HERE"
 \usepackage{float}
 % math utility package
 %\usepackage{mathtools}
@@ -18,6 +18,8 @@
 \savesymbol{implies}
 \savesymbol{overset}
 \usepackage{amsmath}
+\savesymbol{lneq}
+\usepackage{amssymb}
 \geometry{a4paper,left=2.5cm,right=2.5cm, top=2.5cm, bottom=3cm}
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
 
@@ -109,9 +111,34 @@
 % thesis content starts here
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+{\parindent 0cm
+%%%%%%%%%%%%%%%%%%%%%%%%%%deutsche Version%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+  \section*{Selbst\"andigkeitserkl\"arung}
+  Ich erkl\"are hiermit, dass ich die vorliegende Arbeit selbst\"andig verfasst 
+  und nur unter Verwendung der angegebenen Quellen und Hilfsmittel angefertigt habe. 
+  Weiterhin erkl\"are ich, eine Diplomarbeit in diesem Studiengebiet erstmalig einzureichen.\\
+  \vspace{3\baselineskip}
+  
+  M\"unchen, den \today \hspace{0.1\linewidth}\parbox{0.3\linewidth}{\dotfill}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%englische Version%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section*{Statement of authorship}
+I declare that I completed this thesis on my own and that information which has been 
+directly or indirectly taken from other sources has been noted as such. Neither this 
+nor a similar work has been presented to an examination committee.
+
+  \vspace{3\baselineskip}
+  
+  Munich, \today \hspace{0.1\linewidth}\parbox{0.3\linewidth}{\dotfill}
+}
+
+\newpage
+
 \chapter*{Acknowledgement}
 
-First and foremost, I would like to thank mom and dad, for the support even from faraways lands. Even though we are continents apart, your pray and hope will be always with me.\\
+First and foremost, I would like to thank mom and dad, for the support even from faraway lands. Even though we are continents apart, your pray and hope will be always with me.\\
 
 To Jennifer Carissa, whose support has made it possible to go through the hard parts of my life in the last years. This thesis is only possible because of you.\\
 
@@ -121,6 +148,46 @@ And finally, to Prof. Fabian Theis, Prof. Joachim R\"adler, Elisavet Chatzopoulo
 
 Finally for my best supervisor, Carste Marr. Your boundless patience, deep insight and attention to detail have made this project impossible without your selfless assistance. I hope we could do more things in the future. 
 
+\newpage
+
+\chapter*{Terminology and abbreviations}
+
+{
+\flushleft
+
+Following terms are used frequently in this thesis and therefore merit special explanation:
+
+\begin{tabular}{ l l }
+\textbf{Name} & \textbf{Explanation} \\
+micro-trench & Single unit of micro-trench inside a well \\
+wafer & The plate where the microtrench is manufactured on\\
+slice & An image \\
+stack & An ordered sequence of images (usually coming from the same channel) \\
+channel & A connection between data source (camera) and storage. Images coming\\
+ & from the same channel have same capture properties formatting.
+\end{tabular}
+
+\vspace{5mm}
+
+Note that in this thesis, following things are used interchangeably:
+
+\begin{itemize}
+\item image and slice, while referring to an image particularly a capture image of the trenches and its processed versions.
+\item image and figure, while referring to an image shown in this paper in general.
+\end{itemize}
+
+
+
+\vspace{5mm}
+
+\begin{tabular}{ l l }
+\textbf{Symbol} & \textbf{Explanation} \\
+$M$ & A stack of images \\
+$M_t$ & An image captured at time t (t-th image) \\
+$M_{t, x, y}$ & Pixel at $(x, y)$ in $M_t$ \\
+$M_{t, x, y, 1}$ & First channel of pixel $M_{t, x, y}$ \\
+\end{tabular}
+}
 \newpage
 
 \begin{abstract}
@@ -313,6 +380,8 @@ Daunorubicin is initially isolated from bacterium \textit{Streptomyces peucetius
 \item Anthracyclines induce oxidative stress on cancer cell organelles by generating free oxygen radicals. These radicals in turn damage DNA, proteins and cell membranes and initiate caspase induced apoptosis \cite{vsimuunek2009anthracycline, halliwell1994free}.
 
 \item Anthracyclines disrupt epigenetic, transcriptomic and DNA upstream regulations by removing histones from DNA strands \cite{pang2013drug}. This also exposes DNA strands to degradation factor such as DNA methylase \cite{vaissiere2008epigenetic} and oxidative damage \cite{ljungman1992efficient}
+
+\item In presence of formaldehyde, anthracyclines cross-links with DNA covalently, creating cytotoxin that will disrupt DNA from functioning properly \cite{wang1991formaldehyde}.
 \end{itemize}
 
 In normal chemotherapeutic regime, both Vincristine and Daunorubicin are prescribed intravenously to the patients \cite{skeel2011handbook}. Needless to say, both drugs will disrupt both cancerous and healthy cells. The effect is however mostly felt in actively dividing cells and organs such as blood cells  and hair follicles due to chemotherapeutic agents' mostly disruptive effect during cell division as mentioned above \cite{skeel2011handbook, mayo2018chemotherapy}.
@@ -339,9 +408,24 @@ In normal chemotherapeutic regime, both Vincristine and Daunorubicin are prescri
   \caption{}
   \label{fig:dauno_mechanism}
 \end{subfigure}
-\caption{(a) Molecular structure of Daunorubicin. (b) Two anthracyclines intercalating with DNA double helix. (c) Schematic diagram of Daunorubicin's mechanism of action. Modified from (Yang et al, 2014 \cite{yang2014doxorubicin}) TODO expand caption}
+\caption{(a) Molecular structure of Daunorubicin. (b) Two anthracyclines intercalating with DNA double helix. (c) Schematic diagram of Daunorubicin's mechanism of action. From left to right: daunorubicin induce reactive oxygen species (ROS) which damage the DNA. Daunorubicin interfers with DNA by (1) covalently crosslinking with DNA mediated by formaldehyde and (2) intercalating DNA double helix. Daunorubicin also inhibits Topoisomerase II which prevents DNA supercoil's relaxation. Not shown in image: daunorubicin removes histone (shown in yellow in image) which disrupt epigenetic regulations. Modified from (Yang et al, 2014 \cite{yang2014doxorubicin}).}
 \label{fig:daunos}
 \end{figure}
+
+\subsection{Cell Death Signal}
+\label{subsection:cell_death_signal}
+
+As mentioned in Subsection \ref{subsection:treatment}, the introduction of cancer treatment disrupts mitotic cell activities which in turn activates cell death pathways. To 
+
+%TODO expand
+
+\subsubsection*{Caspase 3/7}
+
+%TODO expand
+
+\subsubsection*{Propium Iodide (PI)}
+
+%TODO expand
 
 \subsection{Cell Treatments}
 \label{subsection:cell_treatments}
@@ -429,6 +513,7 @@ The detailed image capturing protocol for both unsynchronized and synchronized e
 This section contains formal definitions used in this thesis.
 
 \subsection{Image Encoding}
+\label{subsection:image_encoding}
 
 From the initial recordings on, there are several image standards and encodings being processed and analyzed in our pipeline. We would start from the raw image captured by recording apparatus going down to processed images (See Appendix \ref{appendix:imageacquisition}	 for detailed protocols on image acquisition).
 
@@ -436,8 +521,15 @@ There are two kind of recordings taken in our project: brightfield channel and f
 
 \begin{itemize}
 \item In-focus brightfield image. The focal distance of the camera $d_f$ is exactly the same as the distance from the apparatus to the microfluidic system $d_m$, i.e. $d_f = d_m$.
-\item Out-of-focus brightfield image. To capture out-of-focus brightfield image, $d_f$ should be different than $d_m$. Several distances were tried during the experiments (see Figure TODO insert). Difference in focus-microfludics distance influences the quality of the picture in several ways (TODO explain using the picture). It was determined that the best resulting image came from the lense with $d_f - d_m = -20 mu m$.
+\item Out-of-focus brightfield image. To capture out-of-focus brightfield image, $d_f$ should be different than $d_m$. Several distances were tried during the experiments (see Figure \ref{fig:focustest}). Difference in focus-microfludics distance influences the quality of the image in several ways (see Figure \ref{fig:focustest}). It was determined that the best resulting image came from the lense with $d_f - d_m = -20 mu m$.
 \end{itemize}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{images/focus/pict.png}
+\label{fig:focustest}
+\caption{Comparison between in-focus image and out-of-focus images taken at various focus-microfluidics difference $d_f - d_m$. The images were taken from the section in the well. In the first row are images with focus behind the microfluidics system while in the second row are images with focus before the system. A: in focus image. B: $+10 \mu m$. C: $+20 \mu m$. D: $+30 \mu m$. E: $+40 \mu m$. F: $+50 \mu m$. G: $-10 \mu m$. H: $-20 \mu m$. I: $-30 \mu m$. J: $-40 \mu m$. K: $-50 \mu m$.}
+\end{figure}
 
 To detect cell death signal, fluorescent channels are used: red and green. These channels only capture fluorescence emission in corresponding spectrum area (i.e. 620–750 $nm$ and 495–570 $nm$ respectively):
 
@@ -448,11 +540,12 @@ To detect cell death signal, fluorescent channels are used: red and green. These
 
 From the recording apparatus, the image came as TIFF image (see Appendix \ref{appendix:imageacquisition} for the detailed protocols) \cite{loc2006tiff}. Each recorded stack consists of slices which. One slice represent a single image capture at a time point. Each stack is encoded using RGB color model. This includes fluorescent image in which each slice shows the intensity in corresponding color channel (red, green or blue) as monochromatic RGB image. 
 
-RGB color model represents the pixel as a combination of red, green and blue color. This encoding is able to represent various spectra of human visible color and useful enough for most use cases \cite{sonka2014image, jayant1993signal}. The most commonly used RGB encoding is the 8 bit encoding. Here, each pixel is represented as an RGB pixel having red, green and blue color values ranging from 0 to 255. Mathematically, this means that each pixel $M_{t,x,y}$ of a slice captured at time $t$ in this picture can be represented a triple, i.e.:
+RGB color model represents the pixel as a combination of red, green and blue color. This encoding is able to represent various spectra of human visible color and useful enough for most use cases \cite{sonka2014image, jayant1993signal}. The most commonly used RGB encoding is the 8 bit encoding. Here, each pixel is represented as an RGB pixel having red, green and blue color values ranging from 0 to 255. Mathematically, this means that each pixel $M_{t,x,y}$ of a slice captured at time $t$ in this image can be represented a triple, i.e.:
 
-$$
-M_{t, x, y} := [M_{t, x, y, 1}, M_{t, x, y, 2}, M_{t, x, y, 3}]
-$$
+\begin{equation}
+\label{equation:rgb_pixel_def}
+M_{t, x, y} := (M_{t, x, y, 1}, M_{t, x, y, 2}, M_{t, x, y, 3})
+\end{equation}
 
 with
 
@@ -472,19 +565,21 @@ $$
 M_i \in p_c^{n \times w \times h \times 3}
 $$ 
 
-In some steps in the analysis pipeline, the picture will modified to other encoding and vice versa, e.g. from 8 bit to 16 and from 8 bit to 32 bit RGB encoding. To convert RGB value of a pixel $M^a_{x,y}$ from one encoding to another $M^n_{x,y}$, linear conversion is normally used:
+In some steps in the analysis pipeline, the image will modified to other encoding and vice versa, e.g. from 8 bit to 16 and from 8 bit to 32 bit RGB encoding. To convert RGB value of a pixel $M^a_{x,y}$ from one encoding to another $M^n_{x,y}$, linear conversion is normally used:
 
-$$
-M^b_{x,y} = \lceil M^a_{x,y} \frac{2^b}{2^a} \rceil
-$$
+\begin{equation}
+\label{euqation:linear_conv_rgb}
+M^b_{x,y} = (\lceil M^a_{x,y, 1} \frac{2^b}{2^a} \rceil, \lceil M^a_{x,y, 2} \frac{2^b}{2^a} \rceil, \lceil M^a_{x,y, 3} \frac{2^b}{2^a} \rceil)
+\end{equation}
 
-where $a$ and $b$ refer to the bit length of the encoding (commonly known as \textbf{bid depth}).  Ccommonly used depths are 8, 16 (\textit{high color} format), 24 (\textit{true color} format) and 48 bits (\textit{deep color} format) \cite{lim1990two, sharma1997digital, sullivan2012overview}. 
+where $a$ and $b$ refer to the bit length of the source and target encoding respectively (commonly known as \textbf{bid depth}).  Commonly used depths are 8, 16 (\textit{high color} format), 24 (\textit{true color} format) and 48 bits (\textit{deep color} format) \cite{lim1990two, sharma1997digital, sullivan2012overview}. 
 
-Sometimes, both grayscale and 1-bit monochrome encoding is used/produced during image analysis. A grayscale image essentially shows the intensity of an image. A grayscale slice $G$ can be represented as matrix of integer, i.e. $G \in p_c^{w \times h}$ for 8-bit grayscale for example. Like RGB image, linear scaling can be applied to transform grayscale images across bit depth,
+Sometimes, both grayscale and 1-bit monochrome encoding is used/produced during image analysis. A grayscale image essentially shows the intensity of an image. A grayscale slice $G$ can be represented as matrix of integer, i.e. $G \in p_c^{w \times h}$ for 8-bit grayscale for example. Like RGB image, linear scaling can be applied to transform grayscale images across bit depth:
 
-$$
+\begin{equation}
+\label{equation:linear_conv_gray}
 G^b_{x,y} = \lceil G^a_{x,y} \frac{2^b}{2^a} \rceil
-$$
+\end{equation}
 
 RGB image can be transformed to grayscale image by combining the intensity from every channel:
 
@@ -492,11 +587,21 @@ $$
 G_{x, y} = \frac{M_{x, y, 1} + M_{x, y, 2} + M_{x, y, 3}}{3}
 $$
 
-this does not represent human perception however, as human eyes' spectral sensitivity is not uniform across sensitivity spectrum \cite{wyszecki1982color}. International Telecommunication Union (ITU) recommends following luminosity weight for RGB to grayscale conversion \cite{itu2007studio}:
+this however does not reflect human perception of light, as human eyes' spectral sensitivity is not uniform across sensitivity spectrum \cite{wyszecki1982color}. Indeed, as Osorio and Vorobyev shows in 2005, each species has its own specific spectral sensitivity distribution \cite{osoosorio2005photoreceptor}, as can be seen in following figure:
 
-$$
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.5\textwidth]{images/spectral_sensitivity}
+\label{fig:spectral_sensitivity}
+\caption{Spectral sensitivity of human (a), honeybee (b), pigeon (c) and home fly (d). Note that the sensitivity distribution is maximum normalized (i.e. each value in a curve is relative only to the maximum value of the curve). Each species has its own set of cone cells, as can be seen in the variation of the number of curves for each species. D refers to double cone, while SVF refers to short visual fiber and LVF to long visual fiber. The y's and p's indicate the yellow/pale sensitivity of house fly's long visual fiber. Figure taken from (Osorio and Vorbyev, 2005 \cite{osorio2005photoreceptor}).}
+\end{figure}
+
+There are some conversions published on transforming RGB value to human intensity perception based on the measured spectral sensitivity \cite{anderson1996proposal, itu2007studio, itu2015parameter}. Among the most commonly used is the \textit{BT.601} standard from International Telecommunication Union (ITU). It recommends following luminosity weight for RGB to grayscale conversion \cite{itu2007studio}:
+
+\begin{equation}
+\label{equation:rgb_to_gray_def}
 G_{x, y} = \frac{0.299 M_{x, y, 1} + 0.587  M_{x, y, 2} + 0.114 M_{x, y, 3}}{3}
-$$
+\end{equation}
 
 Reverting back grayscale to RGB image in turn only consists of applying grascale value to each color component:
 
@@ -512,20 +617,23 @@ $$
 
 this encoding is superior to other encoding for uses cases that do not require complete information of the image but rather separation of interesting parts in the image, since since it requires less memory (1 bit per pixel vs 24 bits per pixel of normal RGB image) and enables bitwise operation native to CPU \cite{kernighan1988c}. 
 
-Some use cases for this encoding are for example region of interest (ROI) bounding and contour and boundary visualization.
+Some use cases for this encoding are for example region of interest (ROI) bounding and contour and boundary visualization \cite{hartley2003multiple}.
 
 The conversion from RGB to binary image can be done by defining cutoff value $c$, i.e.
 
 \begin{gather*}
-B_{x, y}
+B_{x, y} =
 \begin{cases}
   1 & \text{if } M_{x, y} > c\\    
   0 & \text{else}  
 \end{cases}
 \end{gather*}
 
+Note that, unless otherwise mentioned, every bit encoding of an image refers to unsigned encoding. Thus, an $m$-bit encoding allows value ranging from $0$ to $2^m - 1$.
+
+
 %TODO take important things and remove
-Consider the picture of Lenna (Figure \ref{fig:lennasample}).
+Consider the image of Lenna (Figure \ref{fig:lennasample}).
 
 \begin{figure}[H]
 \centering
@@ -534,7 +642,7 @@ Consider the picture of Lenna (Figure \ref{fig:lennasample}).
 \caption{Lenna}
 \end{figure}
 
-There are numerous encodings that could be used to internally represent this picture. Many such encodings derived from the so-called Red-Green-Blue (RGB) encodings \cite{sonka2014image}. RGB encoding represents the pixel as a combination of red, green and blue color. This encoding is able to represent various spectra of human visible color and useful enough for most use cases \cite{sonka2014image, jayant1993signal}. To give representation on how the encoding works, the RGB encoding of some part of Figure \ref{fig:lennasample} is shown in Figure \ref{fig:lennas}. For an image of size $m \times n$ pixels, the RGB encoding is thus a 3-dimensional matrix of dimension $m \times n \times 3$. For time-lapsed images accordingly, the RGB encoding of a video of length $T$ is a 5-dimensional matrix of shape $T \times m \times n \times 3$. %TODO put graphical explanation of data here.
+There are numerous encodings that could be used to internally represent this image. Many such encodings derived from the so-called Red-Green-Blue (RGB) encodings \cite{sonka2014image}. RGB encoding represents the pixel as a combination of red, green and blue color. This encoding is able to represent various spectra of human visible color and useful enough for most use cases \cite{sonka2014image, jayant1993signal}. To give representation on how the encoding works, the RGB encoding of some part of Figure \ref{fig:lennasample} is shown in Figure \ref{fig:lennas}. For an image of size $m \times n$ pixels, the RGB encoding is thus a 3-dimensional matrix of dimension $m \times n \times 3$. For time-lapsed images accordingly, the RGB encoding of a video of length $T$ is a 5-dimensional matrix of shape $T \times m \times n \times 3$. %TODO put graphical explanation of data here.
 
 %An expansion of such encoding, the RGBH encoding, expands the representation by adding the brightness of the pixel -- known as 'hue'.
 
@@ -542,19 +650,19 @@ There are numerous encodings that could be used to internally represent this pic
 \begin{subfigure}{.5\textwidth}
   \centering
   \includegraphics[width=.8\linewidth]{images/lenna_marked_small}
-  \caption{1a}
+  \caption{}
   \label{fig:lennas1}
 \end{subfigure}%
 \begin{subfigure}{.5\textwidth}
   \centering
   \includegraphics[width=.8\linewidth]{images/lenna_small}
-  \caption{1b}
+  \caption{}
   \label{fig:lennas2}
 \end{subfigure}
 \centering
 \begin{subfigure}{.5\textwidth}
   \includegraphics[width=.8\linewidth]{images/lenna_rbg}
-  \caption{1b}
+  \caption{}
   \label{fig:lennas3}
 \end{subfigure}
 \caption{Figure \ref{fig:lennas1} shows the content of red marked region in Figure \ref{fig:lena}. Figure\ref{fig:lennas2} shows the zoomed part around Lena's right eye and matrix represented in Figure \ref{fig:lennas3} shows the RGB representation of the eye.}
@@ -563,9 +671,106 @@ There are numerous encodings that could be used to internally represent this pic
 
 \section{Methods}
 
-\subsection{Contrast adjustment}
+\subsection{Brightness and Contrast adjustment}
 
-\subsection{Brightness adjustment}
+We consider following image: 
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{images/pos_41_in_t0}
+\label{fig:pos41}
+\caption{The in-focus image of position 41 from unsynchronized experiment.}
+\end{figure}
+
+using RGB to intensity conversion formula shown in Subsection \ref{subsection:image_encoding}, we can convert the image into grayscale image representing the intensity. The grayscale image has the intensity distribution as shown in following histogram:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{images/pos_41_in_t0_hist}
+\label{fig:pos41_density}
+\caption{Normalized distribution of intensity of Figure \ref{fig:pos41}.}
+\end{figure}
+
+Mathematically, we can represent brightness and contrast adjustment as a mapping between one domain to another one. Let $l(M_{t, i, j})$ a function that maps the RGB value of a pixel $M_{t, i, j}$ to its corresponding intensity. Conventiently, we can use ITU's \textit{BT.601} standard the formula written in Subsection \ref{subsection:image_encoding}.
+
+We then define the $I: [0:w] \times [0:h] \rightarrow \mathbb{N}_0$ function that maps the coordinate of a pixel to its corresponding intensity value i.e.
+
+$$
+I_t(i, j) := l(M_{t, i, j})
+$$
+
+Note that the codomain of the function $I_t$ depends on the encoding used. For a 8-bit encoding this will be then $[0:255]$.
+
+An intensity transformation $J_t$ is then defined as a linear transformation of $I_t$ with \textbf{gain} and \textbf{bias} parameters $\alpha$ and $\beta$ respectively,
+
+\begin{equation}
+\label{equation:br_ct_transform}
+J_t(i, j) := \alpha \cdot I_t(i, j) + \beta
+\end{equation}
+
+with $\alpha > 0$ \cite{szeliski2010computer}. The gain and bias parameters are also known as \textbf{contrast} and \textbf{brightness} parameters accordingly. In this regard, increasing/decreasing brightness is equivalent to increasing/decreasing $\beta$. The same thing also applies for contrast parameter, increasing $\beta$ will increase the brightness of the image.
+
+Predictably, doing transformation over by $J_t$ will inevitably cause the resulting intensity to be outside of the allowed value range $[0:2^m]$ for m-bit encoding. To understand this situation, we first have to consider the boundedness of eyes perception. The argumentation for boundedness can be shown by realizing that the excitation of a neuron follows sigmoid function \cite{gazzaniga2004cognitive}. Thus given no impuls the neuron will stay in ground state, while very large impulse is bounded due to biochemical constraint of a neuron. Mapped in the context of sigmoid function, a steady state corresponds to 0 while asymptotically unlimited excitation correspondes to 1. In our context, a non-excited state corresponds to 0 intensity while full-excitation corresponds to $2^m - 1$ intensity. Thus, the equation \ref{equation:br_ct_transform} could be closely bounded by introducing upper and lower bound of $0$ and $2^m - 1$, i.e.:
+
+\begin{gather*}
+J_t(i, j) :=
+\begin{cases}
+  2^m - 1 & \text{if } \alpha \cdot I_t(i, j) + \beta > 2^m - 1\\
+  0 & \text{if } \alpha \cdot I_t(i, j) + \beta < 0\\
+  \alpha \cdot I_t(i, j) + \beta & \text{else}
+\end{cases}
+\end{gather*}
+
+We can for example, transform Figure \ref{fig:pos41} using $J_t(i, j)$ with $\beta=100$. $\alpha$ is not changed in this case. Following images show the transformed image and its corresponding normalized intensity distribution:
+
+\begin{figure}[H]
+\centering
+
+\begin{subfigure}{\textwidth}
+  \centering
+  \includegraphics[width=0.4\textwidth]{images/pos_41_in_t0_br_up100}
+  \caption{1a}
+  \label{fig:pos41_brup100_bf}
+\end{subfigure}%
+
+\begin{subfigure}{\textwidth}
+  \centering
+  \includegraphics[width=0.4\textwidth]{images/pos_41_in_t0_br_up100_hist}
+  \caption{}
+  \label{fig:pos41_brup100_hist}
+\end{subfigure}%
+
+\label{fig:pos41_brup100}
+
+\caption{(a) The in-focus image of position 41 from unsynchronized experiment tranoformed with $\alpha=1$ and $\beta = 100$. (b) Normalized distribution of intensity of the transformed figure.}
+\end{figure}
+
+We can also try to change $\beta$. This will scale the image's intensity and emphasize image contrast.
+
+%TODO expand
+
+\begin{figure}[H]
+\centering
+
+\begin{subfigure}{\textwidth}
+  \centering
+  \includegraphics[width=0.4\textwidth]{images/pos_41_in_t0_br_times3}
+  \caption{}
+  \label{fig:pos41_times3_bf}
+\end{subfigure}%
+
+\begin{subfigure}{\textwidth}
+  \centering
+  \includegraphics[width=0.4\textwidth]{images/pos_41_in_t0_br_times3_hist}
+  \caption{}
+  \label{fig:pos41_times3_hist}
+\end{subfigure}%
+
+\label{fig:pos41_times3}
+\caption{(a) The in-focus image of position 41 from unsynchronized experiment tranoformed with $\alpha=3$ and $\beta = 0$. Notice the contrast has increased significantly, especially around area with high intensity differential such us the margin of a micro-trench and the dark spot in the lower left part of the slice. (b) Normalized distribution of intensity of the transformed figure}
+\end{figure}
+
+Geometrically, contrast can be understood as the distance of closely resembling pixel. Two pixels which are very similar will look very different given a high contrast. Brightness, on the other hands, describes the level of visibleness of a pixel.
 
 \subsection{Slit Masking}
 
@@ -606,7 +811,7 @@ d(M_i, M_j) = \sum_{c \, \in \, \{R, B, G\}} \sum_{x} \sum_{y} \vert M_{i, c, x,
 $$
 
 
-Since some pixels are lost from the field of view during a shift, only a subset of subsequent pictures is used to determine the shift, preferably those around the center point. This will allow the largest search space possible, since the distance to all four margins of the picture is maximized at the center point. The search for the optimal $(\delta_x, \delta_y)$ pair is implemented as a grid search along the x- and y-axis. An example of the search grid is shown in Figure \ref{fig:searchgrid}.\\
+Since some pixels are lost from the field of view during a shift, only a subset of subsequent images is used to determine the shift, preferably those around the center point. This will allow the largest search space possible, since the distance to all four margins of the image is maximized at the center point. The search for the optimal $(\delta_x, \delta_y)$ pair is implemented as a grid search along the x- and y-axis. An example of the search grid is shown in Figure \ref{fig:searchgrid}.\\
 
 \begin{figure}[H]
 \centering
@@ -623,7 +828,7 @@ $$
 d(M, N) =  \sum_{x} \sum_{y} \vert M_{c, x, y}^{gray} - N_{x, y}^{gray}\vert
 $$
 
-Due to lost pixels around the margin of before and after pictures, only the overlapping part of both slides are included after the correction. Thus, for an inferred shift of $(\delta_x, \delta_y)$, the new dimension of the pictures is then $(m - \delta_x) \times (n - \delta_y)$. This change would then propagation to the other time-lapse images to maintain consistency of the images.\\
+Due to lost pixels around the margin of before and after images, only the overlapping part of both slides are included after the correction. Thus, for an inferred shift of $(\delta_x, \delta_y)$, the new dimension of the images is then $(m - \delta_x) \times (n - \delta_y)$. This change would then propagation to the other time-lapse images to maintain consistency of the images.\\
 
 Ideally, the shift correction should be done for each position to reduce the track dropout rate caused by image shifts. This is however computationally very expensive and, as seen in Figure \ref{fig:pixdiff}, not really necessary since the biggest shift indeed only happens right before and after the treatment, as it was expected during the experiment setting. As seen in Chapter XX (TODO: quote), the tracking allows certain amount of tolerance. In this regard, the other frame shifts are way within the tolerance of our tracking algorithm. As shown in Figure YY (TODO: add droput rate), the dropouts caused by frame shifts in the other time points are basically noisy dropout caused by random noise in time-lapse movie being tracked as cells \cite{jaqaman2008robust}.
 
@@ -760,11 +965,11 @@ def infer_shift(last_slide, first_slide, search_space=(200, 200)):
     True shift is the opposite of coordinate encoded
     in absdiff
     
-    Let X2 the second picture and X1 the first picture.
-    If the sub-picture of first slide of X2 centered
-    at (c1 + s1, c2 + s2) fits the most with the sub-picture
+    Let X2 the second image and X1 the first image.
+    If the sub-image of first slide of X2 centered
+    at (c1 + s1, c2 + s2) fits the most with the sub-image
     of the last slide of X1 centered at (c1, c2)
-    then the pictures shift by (-s1, -s2) upon treatment
+    then the images shift by (-s1, -s2) upon treatment
     """
     diff = -(x - search_space[0] / 2), -(y - search_space[1] / 2)
 
