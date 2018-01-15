@@ -258,9 +258,15 @@ In the last decades, the recent advances in both passive and active microfluidic
 
 \subsection{Image Processing and Computer Vision}
 
+\label{subsection:cv_advances}
+
+Before the runaway advance of deep learning methods in the last years, object and area detection methods generaly rely on disciminating certain patterns and features in the picturek -- with and without utilizing machine learning methods. In 2001, Paul Viola and Michael Jones proposed a method that was able to recognize face \cite{viola2004robust}, and later, objects in almost real-time fasion \cite{viola2001rapid}. %TODO continue with viola jones
+
 %TODO fill
 
 \subsection{Machine Learning}
+
+\label{subsection:ml_advances}
 
 %TODO fill
 
@@ -631,46 +637,6 @@ B_{x, y} =
 
 Note that, unless otherwise mentioned, every bit encoding of an image refers to unsigned encoding. Thus, an $m$-bit encoding allows value ranging from $0$ to $2^m - 1$.
 
-
-%TODO take important things and remove
-Consider the image of Lenna (Figure \ref{fig:lennasample}).
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.5\textwidth]{images/lenna_marked}
-\label{fig:lennasample}
-\caption{Lenna}
-\end{figure}
-
-There are numerous encodings that could be used to internally represent this image. Many such encodings derived from the so-called Red-Green-Blue (RGB) encodings \cite{sonka2014image}. RGB encoding represents the pixel as a combination of red, green and blue color. This encoding is able to represent various spectra of human visible color and useful enough for most use cases \cite{sonka2014image, jayant1993signal}. To give representation on how the encoding works, the RGB encoding of some part of Figure \ref{fig:lennasample} is shown in Figure \ref{fig:lennas}. For an image of size $m \times n$ pixels, the RGB encoding is thus a 3-dimensional matrix of dimension $m \times n \times 3$. For time-lapsed images accordingly, the RGB encoding of a video of length $T$ is a 5-dimensional matrix of shape $T \times m \times n \times 3$. %TODO put graphical explanation of data here.
-
-%An expansion of such encoding, the RGBH encoding, expands the representation by adding the brightness of the pixel -- known as 'hue'.
-
-\begin{figure}[H]
-\begin{subfigure}{.5\textwidth}
-  \centering
-  \includegraphics[width=.8\linewidth]{images/lenna_marked_small}
-  \caption{}
-  \label{fig:lennas1}
-\end{subfigure}%
-\begin{subfigure}{.5\textwidth}
-  \centering
-  \includegraphics[width=.8\linewidth]{images/lenna_small}
-  \caption{}
-  \label{fig:lennas2}
-\end{subfigure}
-\centering
-\begin{subfigure}{.5\textwidth}
-  \includegraphics[width=.8\linewidth]{images/lenna_rbg}
-  \caption{}
-  \label{fig:lennas3}
-\end{subfigure}
-\caption{Figure \ref{fig:lennas1} shows the content of red marked region in Figure \ref{fig:lena}. Figure\ref{fig:lennas2} shows the zoomed part around Lena's right eye and matrix represented in Figure \ref{fig:lennas3} shows the RGB representation of the eye.}
-\label{fig:lennas}
-\end{figure}
-
-\section{Methods}
-
 \subsection{Brightness and Contrast adjustment}
 
 We consider following image: 
@@ -770,11 +736,35 @@ We can also try to change $\beta$. This will scale the image's intensity and emp
 \caption{(a) The in-focus image of position 41 from unsynchronized experiment tranoformed with $\alpha=3$ and $\beta = 0$. Notice the contrast has increased significantly, especially around area with high intensity differential such us the margin of a micro-trench and the dark spot in the lower left part of the slice. (b) Normalized distribution of intensity of the transformed figure}
 \end{figure}
 
-Geometrically, contrast can be understood as the distance of closely resembling pixel. Two pixels which are very similar will look very different given a high contrast. Brightness, on the other hands, describes the level of visibleness of a pixel.
+Geometrically, contrast can be understood as the distance of closely resembling pixel \cite{hartley2003multiple}. Two pixels which are very similar will look very different given a high contrast. Brightness, on the other hands, describes the level of visibleness of a pixel.
 
-\subsection{Slit Masking}
+\subsection{Micro-trench Masking}
 
-Several techniques could be applied to highlight certain area in the image (TODO citation, citation, citation). One  of such methods is detection using brightness composition \cite{cheng2015global}. We can see for example that the area around a micro-trench exposes the so-called strong intensity gradient: the area around the marging of a micro-trench is much darker than the other parts of the well. This can be explained by the fact that several. 
+Several techniques could be applied to highlight certain area in the image. In Subsection \ref{subsection:cv_advances}, several advances in computer vision methods are described. While more general advances in the field of machine learning is chronicled in Subsection \ref{subsection:ml_advances}. While the collection of advanced methods for detection abound, some simple interpretable methods could be used best to detect and mask the micro-trench. In particular,  we can see for example that the area around a micro-trench exposes the so-called strong intensity gradient (see Figure \ref{fig:pos41_brightness}): the area around the marging of a micro-trench is much darker than the other parts of the well. This can be explained by the fact that several %TODO explain. 
+
+\begin{figure}[H]
+\centering
+
+\begin{subfigure}{\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{images/pos_41_cut_highlight_y_500}
+  \caption{}
+  \label{fig:pos41_highlight}
+\end{subfigure}%
+
+\begin{subfigure}{\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{images/pos_41_cut_highlight_y_500_contrast}
+  \caption{}
+  \label{fig:pos41_contrast}
+\end{subfigure}%
+
+\label{fig:pos41_brightness}
+
+\caption{(a) The highlighted area around the 500-th column of the first slice of position 41. The range starts from the 450-th until the 550-th column. (b) The intensity of the marked area in (a)}
+\end{figure}
+
+ (TODO citation, citation, citation). One  of such methods is detection using brightness composition \cite{cheng2015global}.
 
 As mentioned in 
 Consider the case in which 
