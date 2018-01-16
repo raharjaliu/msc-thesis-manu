@@ -521,7 +521,7 @@ This section contains formal definitions and methods used in this thesis.
 \subsection{Image Encoding}
 \label{subsection:image_encoding}
 
-From the initial recordings on, there are several image standards and encodings being processed and analyzed in our pipeline. We would start from the raw image captured by recording apparatus going down to processed images (See Appendix \ref{appendix:imageacquisition}	 for detailed protocols on image acquisition).
+From the initial recordings on, there are several image standards and encodings being processed and analyzed in our pipeline. We would start from the raw image captured by recording apparatus going down to processed images (See Appendix \ref{appendix:imageacquisition} for detailed protocols on image acquisition).
 
 There are two kind of recordings taken in our project: brightfield channel and fluorescence channel recordings. Two brightfield channels are used in this experiment:
 
@@ -715,8 +715,6 @@ Geometrically, brightness adjustment shifts the entire intensity distribution to
 
 We can also try to change $\beta$. This will scale the image's intensity and emphasize image contrast. See for example following image:
 
-%TODO expand
-
 \begin{figure}[H]
 \centering
 
@@ -741,6 +739,7 @@ We can also try to change $\beta$. This will scale the image's intensity and emp
 Geometrically, contrast can be understood as the distance of closely resembling pixel \cite{hartley2003multiple}. Two pixels which are very similar will look very different given a high contrast. Brightness, on the other hands, describes the level of visibleness of a pixel.
 
 \subsection{Micro-trench Masking}
+\label{subsection:micro_trench_masking}
 
 First, note that the following method is only semi- automatically done. The first step (brightness and contrast correction) is done manually in \textit{Fiji} while the Robust Automatic Threshold Selection (RATS) and the holes filling are done automatically, also in \textit{Fiji}.
 
@@ -912,6 +911,21 @@ Connect Results with Background
 II. Outlook
 Improvemnt capability
 \end{verbatim}
+
+\subsection{Automated micro-trench masking}
+
+One positive thing about the design of our data analysis pipeline is the modularity of its component. As mentioned multiple times in this thesis (in particular in Subsection \ref{subsection:micro_trench_masking}, our method can well be improved by automatizing the micro-trench masking process. Although itself not a bottleneck of the process, as the entire dataset of 64 positions could be processed in less than an hour, automating this process will save time and more importantly, clicking and draging efforts, thus lets scientists do the things that matter more for them.
+
+There are several methods that came to mind in improving the micro-trench masking, which generally can be separated in two groups: ML-based methods and non-ML-based methods. ML-based methods generally require either a manual annotation of correctly recognized micro-trench (a class of methods called supervised learning methods) or certain prior knowledge regarding distinctive features of micro-trench that separate it from background image and/or the cells (a class of methods called unsupervised/semi-supervised learning methods).
+
+In the following part of this subsection various potential implementations of both ML-based and non-ML-based methods are listed down.
+
+\subsubsection*{Maximally interesting extremal region (MNER)}
+
+Introduced by Oliver Hilsenbeck in his master's thesis in 2014 \cite{hilsenbeck2014maximally} %TODO continue
+
+
+%TODO
 
 %% BIBLIOGRAPHY %%
 
