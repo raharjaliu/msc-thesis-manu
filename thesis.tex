@@ -516,7 +516,7 @@ The detailed image capturing protocol for both unsynchronized and synchronized e
 
 \section{Definitions}
 
-This section contains formal definitions used in this thesis.
+This section contains formal definitions and methods used in this thesis.
 
 \subsection{Image Encoding}
 \label{subsection:image_encoding}
@@ -533,8 +533,8 @@ There are two kind of recordings taken in our project: brightfield channel and f
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{images/focus/pict.png}
-\label{fig:focustest}
 \caption{Comparison between in-focus image and out-of-focus images taken at various focus-microfluidics difference $d_f - d_m$. The images were taken from the section in the well. In the first row are images with focus behind the microfluidics system while in the second row are images with focus before the system. A: in focus image. B: $+10 \mu m$. C: $+20 \mu m$. D: $+30 \mu m$. E: $+40 \mu m$. F: $+50 \mu m$. G: $-10 \mu m$. H: $-20 \mu m$. I: $-30 \mu m$. J: $-40 \mu m$. K: $-50 \mu m$.}
+\label{fig:focustest}
 \end{figure}
 
 To detect cell death signal, fluorescent channels are used: red and green. These channels only capture fluorescence emission in corresponding spectrum area (i.e. 620–750 $nm$ and 495–570 $nm$ respectively):
@@ -644,8 +644,8 @@ We consider following image:
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.4\textwidth]{images/pos_41_in_t0}
-\label{fig:pos41}
 \caption{The in-focus image of position 41 from unsynchronized experiment.}
+\label{fig:pos41}
 \end{figure}
 
 using RGB to intensity conversion formula shown in Subsection \ref{subsection:image_encoding}, we can convert the image into grayscale image representing the intensity. The grayscale image has the intensity distribution as shown in following histogram:
@@ -653,8 +653,8 @@ using RGB to intensity conversion formula shown in Subsection \ref{subsection:im
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.4\textwidth]{images/pos_41_in_t0_hist}
-\label{fig:pos41_density}
 \caption{Normalized distribution of intensity of Figure \ref{fig:pos41}.}
+\label{fig:pos41_density}
 \end{figure}
 
 Mathematically, we can represent brightness and contrast adjustment as a mapping between one domain to another one. Let $l(M_{t, i, j})$ a function that maps the RGB value of a pixel $M_{t, i, j}$ to its corresponding intensity. Conventiently, we can use ITU's \textit{BT.601} standard the formula written in Subsection \ref{subsection:image_encoding}.
@@ -706,12 +706,14 @@ We can for example, transform Figure \ref{fig:pos41} using $J_t(i, j)$ with $\be
   \label{fig:pos41_brup100_hist}
 \end{subfigure}%
 
-\label{fig:pos41_brup100}
+\caption{(a) The in-focus image of position 41 from unsynchronized experiment tranoformed with $\alpha=1$ and $\beta = 100$. (b) Normalized distribution of intensity of the transformed figure. Compared to Figure \ref{fig:pos41_density}. Note that the difference in height across bins \textit{vis a vis} Figure \ref{fig:pos41_density} is mainly caused by the definition of bins in the histogram function.}
 
-\caption{(a) The in-focus image of position 41 from unsynchronized experiment tranoformed with $\alpha=1$ and $\beta = 100$. (b) Normalized distribution of intensity of the transformed figure.}
+\label{fig:pos41_brup100}
 \end{figure}
 
-We can also try to change $\beta$. This will scale the image's intensity and emphasize image contrast.
+Geometrically, brightness adjustment shifts the entire intensity distribution to the right by $\beta$ \footnote{Note the wording. For negative $\beta$, the shift is negative to the right, i.e. to the left}.
+
+We can also try to change $\beta$. This will scale the image's intensity and emphasize image contrast. See for example following image:
 
 %TODO expand
 
@@ -740,7 +742,9 @@ Geometrically, contrast can be understood as the distance of closely resembling 
 
 \subsection{Micro-trench Masking}
 
-Several techniques could be applied to highlight certain area in the image. In Subsection \ref{subsection:cv_advances}, several advances in computer vision methods are described. While more general advances in the field of machine learning is chronicled in Subsection \ref{subsection:ml_advances}. While the collection of advanced methods for detection abound, some simple interpretable methods could be used best to detect and mask the micro-trench. In particular,  we can see for example that the area around a micro-trench exposes the so-called strong intensity gradient (see Figure \ref{fig:pos41_brightness}): the area around the marging of a micro-trench is much darker than the other parts of the well. This can be explained by the fact that several %TODO explain. 
+First, note that the following method is only semi- automatically done. The first step (brightness and contrast correction) is done manually in \textit{Fiji} while the Robust Automatic Threshold Selection (RATS) and the holes filling are done automatically, also in \textit{Fiji}.
+
+Several techniques could be applied to highlight certain area in the image. In Subsection \ref{subsection:cv_advances}, several advances in computer vision methods are described. While more general advances in the field of machine learning is chronicled in Subsection \ref{subsection:ml_advances}. While the collection of advanced methods for detection abound, some simple interpretable methods could be used best to detect and mask the micro-trench. In particular,  we can see for example that the area around a micro-trench exposes the so-called strong intensity gradient (see Figure \ref{fig:pos41_brightness}): the area around the marging of a micro-trench is much darker than the other parts of the well. This can be explained by the fact that the light is reflected less around the wall area and thus the intensity decreases. Moreover, the light beam coming out of the camera is not perfectly perpendicular to the well and thus the non-perpendicular reflection is not reflected back to the camera sensor. 
 
 \begin{figure}[H]
 \centering
@@ -758,18 +762,43 @@ Several techniques could be applied to highlight certain area in the image. In S
   \caption{}
   \label{fig:pos41_contrast}
 \end{subfigure}%
-
+\caption{(a) The highlighted area around the 500-th column of the first slice of position 41. The range starts from the 450-th until the 550-th column. (b) The intensity of the red-marked area in (a), the region around micro-trench margin is indicated by the sudden drop of intensity. Note also the slow drift of the intensity as the pixel goes south (right side of the plot). This phenomenon is called \textit{intensity gradient} (see Subsection \ref{subsection:gradient_background_correction} for more.}
 \label{fig:pos41_brightness}
-
-\caption{(a) The highlighted area around the 500-th column of the first slice of position 41. The range starts from the 450-th until the 550-th column. (b) The intensity of the marked area in (a)}
 \end{figure}
 
- (TODO citation, citation, citation). One  of such methods is detection using brightness composition \cite{cheng2015global}.
+We could thus exploit this knowledge by designing micro-trench masking algorithm as follows:
 
-As mentioned in 
-Consider the case in which 
+\subsubsection*{Brightness and contrast adjustment of in-focus image}
+
+First, we adjust the brightness and contrast so that the area far away from the margin is encoded as maximum intensity, while the area around the margin is encoded as minimum intensity. One simple and robust way to do this is to reduce the intensity of each position with the maximum intensity value of the region around the margin.
+
+Mathematically, we can define two sets of points, $\mathfrak{M}$ and $\mathfrak{S}$. $\mathfrak{M}$ refers to the set of points around the trench margin while $\mathfrak{S}$ denotes the set of points far away from it. This brings us to the following transformation,
+
+$$
+J_i(i, j) := I_t(i, j) + argmax_{(x, y) \, \in \, \mathfrak{M}}{I_t(x, y)}
+$$
+
+creating transformed intensity $I^t$.
+
+As can be seen in Figures \ref{fig:pos41_density} and \ref {fig:pos41_brightness}, while sets $\mathfrak{M}$ and $\mathfrak{S}$ are locally separable, across the board this does not seem so clear. We can thus improve the transformation by also adjusting the contrast parameter $\alpha$ by increasing it so that $\alpha > 1$. This brings the pixels with similar intensity values around the decision boundary (somewhere between the two distributions in Figure \ref{fig:pos41_density}) apart and thus ameliorates the determination of decision boundary by the user. Applying this, we have now the new transformation:
+
+$$
+J_i(i, j) := \alpha I_t(i, j) + argmax_{(x, y) \, \in \, \mathfrak{M}}{I_t(x, y)} \text{ with } \alpha > 1
+$$
+
+creating transformed intensity $I^t$.
+
+Note that this is still not a perfect transformation, as there are some pixels in $\mathfrak{S}$ with intensity lower than the minimum intensity of pixels in $\mathfrak{M}$. Besides doing this manually, we also improve this by refining the transformed intensity $I^t$ further with the next step: Robust Automatic Threshold Selection.
+
+\subsubsection*{Robust Automatic Threshold Selection (RATS)}
+
+\subsubsection*{Holes filling}
+
+There are several methods that also utilized this knowledge. Cheng et al for example shows it is possible to recognized salient objects in image by using contrast and brightness adjustment \cite{cheng2015global}.
 
 \subsection{Gradient background correction}
+
+\label{subsection:gradient_background_correction}
 
 Gaussian blurring
 
@@ -868,6 +897,13 @@ II. Quantitative Analysis
 \section{Fully automated microfluidics pipeline}
 
 \section{Fully automated image analysis pipeline}
+
+Improvements in analysis pipeline:
+
+\begin{itemize}
+\item better method for masking recognition
+\item possibly even machine learning based methods
+\end{itemize}
 
 \begin{verbatim}
 I. Summary (and discussion?)
