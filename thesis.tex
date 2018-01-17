@@ -745,7 +745,9 @@ Geometrically, contrast can be understood as the distance of closely resembling 
 
 First, note that the following method is only semi- automatically done. The first step (brightness and contrast correction) is done manually in \textit{Fiji} while the Robust Automatic Threshold Selection (RATS) and the holes filling are done automatically, also in \textit{Fiji}.
 
-Several techniques could be applied to highlight certain area in the image. In Subsection \ref{subsection:cv_advances}, several advances in computer vision methods are described. While more general advances in the field of machine learning is chronicled in Subsection \ref{subsection:ml_advances}. While the collection of advanced methods for detection abound, some simple interpretable methods could be used best to detect and mask the micro-trench. In particular,  we can see for example that the area around a micro-trench exposes the so-called strong intensity gradient (see Figure \ref{fig:pos41_brightness}): the area around the marging of a micro-trench is much darker than the other parts of the well. This can be explained by the fact that the light is reflected less around the wall area and thus the intensity decreases. Moreover, the light beam coming out of the camera is not perfectly perpendicular to the well and thus the non-perpendicular reflection is not reflected back to the camera sensor. 
+Several techniques could be applied to highlight certain area in the image. In Subsection \ref{subsection:cv_advances}, several advances in computer vision methods are described. While more general advances in the field of machine learning is chronicled in Subsection \ref{subsection:ml_advances}. While the collection of advanced methods for detection abound, some simple interpretable methods could be used best to detect and mask the micro-trench. In particular,  we can see for example that the area around a micro-trench exposes the so-called strong intensity gradient (see Figure \ref{fig:pos41_brightness}): the area around the marging of a micro-trench is much darker than the other parts of the well. This can be explained by the fact that the light is reflected less around the wall area and thus the intensity decreases. Moreover, the light beam coming out of the camera is not perfectly perpendicular to the well and thus the non-perpendicular reflection is not reflected back to the camera sensor.
+
+Before us, there are several methods that exploit this kind of phenomenon. Cheng et al for example shows it is possible to recognized salient objects in image by using contrast and brightness adjustment \cite{cheng2015global}. Our method on the other hand, goes further by doing robustness improvement by doing noise cancellation step (See \ref{subsubsection:rats}).
 
 \begin{figure}[H]
 \centering
@@ -791,13 +793,16 @@ creating transformed intensity $I^t$.
 
 Note that this is still not a perfect transformation, as there are some pixels in $\mathfrak{S}$ with intensity lower than the minimum intensity of pixels in $\mathfrak{M}$. Besides doing this manually, we also improve this by refining the transformed intensity $I^t$ further with the next step: Robust Automatic Threshold Selection.
 
+Subfigures \ref{fig:orig_pic} and \ref{fig:brcon_adj} show images of micro-trenches before and after brightness and contrast adjustment. As mentioned, some parts inside the micro-trench still have pixels  that were not transformed to complete white color (maximum intensity). This can however be removed by global and local noise correction through Robust Automatic Threshold Selection (RATS, see next).
+
 \subsubsection*{Robust Automatic Threshold Selection (RATS)}
+\label{subsubsection:rats}
 
 Robust Automated Threshold Selection (RATS), based on description by (Wilkinson and Schut, 1998 \cite{wilkinson1998digital}), computes a threshold map for an image based on two criteria:
 
 \begin{itemize}
 \item pixel values, and
-\item pixel gradients.
+\item pixel gradients. \cite{fiji2017rats}
 \end{itemize}
 
 The gradient is computed using the so-called Sobel kernels\cite{sobel1990isotropic}, a commonly used in computer vision for edge detection as it particularly emphasizes edges in image upon transformation. It is a discrete differential operator which computes an approximation of gradient of the intensity function $J$.
@@ -870,13 +875,90 @@ $$
 \mathbb{g_{x, y}} = \mathbb{G_{x, y}^2} = \Delta_x^2 + \Delta_y^2
 $$
 
-Pixels having gradients smaller than threshold $\lambda \sigma$ are then removed, where $\sigma$ is noise (generally, standard deviation of the expected background is used, e.g. standrd deviation of the whole image) and $\lambda$ is scaling factor (Wilkinson determined $\lambda = 3$ to be a good approximation.
+Pixels having gradients smaller than threshold $\lambda \sigma$ are then removed, where $\sigma$ is noise (generally, standard deviation of the expected background is used, e.g. standrd deviation of the whole image) and $\lambda$ is scaling factor (Wilkinson determined $\lambda = 3$ to be a good approximation. Visually, this step can be understood as removal of background noise from the image.
 
-To refine the filtering further, iterative correction is applied. 
+To refine the filtering further, iterative correction is applied. First, a quadtree construction is applied in an image. Figure \ref{fig:quadtree} gives an example on how a quadree of an image looks like:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{images/quadtree}
+\caption{Example of quadtree. The left side is the quadtree representation of original image on the right. \textit{Creative Commons courtesy of anonymous.}}
+\label{fig:quadtree}
+\end{figure}
+
+Within smallest square,a local threshold $T_R$ is computed in following way:
+
+$$
+T_R = \frac{\sum g_{x,y} \cdot M_{t, x, y}}{\sum g_{x, y}}
+$$
+
+If a square only contains noises for example, in which case the $T_r$ filters no point at all as it is too low that no points are removed, the local threshold of the parent square is taken instead (note that the quadree is defined as a tree, see for example the original descrption of quadtree by Finkel and Bentley, 1974 \cite{finkel1974quad}). This step is iterated until a parent square with at least one filtered pixel is reached. Visually, the refining step is equal to filtering out area of an image in which the pixels are mostly noise. In the initial global filtering process, many noisy pixels might not be filtered since happen to have gradients larger than $\lambda \sigma$. Using bottom-up these pixels will be eventually filtered out.
+
+Subfigures \ref{fig:brcon_adj} and \ref{fig:rats} show the input and output of  RATS respectively. The noise partaining in a micro-trench is removed upon application of gradient-based filtering. We can that,
+
+\begin{itemize}
+\item the first part of RATS ($\mathbf{B}$-filtering by $\lambda \sigma$) is designed to move global level noise  which in this case means white noises coming from non-perfect reflection of light from the well.
+\item the second part of RATS (recursive $\mathbf{B}-filtering by T_r$)is designed to remove local noise cause by local distortion due to location-specific artifacts (direction of incoming light not perfectly perpendicular with regard to micro-trench's base etc).
+\end{itemize}
 
 \subsubsection*{Holes filling}
 
-There are several methods that also utilized this knowledge. Cheng et al for example shows it is possible to recognized salient objects in image by using contrast and brightness adjustment \cite{cheng2015global}.
+After brightness and contrast adjustment and RATS, the image now mostly contains the margin of the micro-trenches. We can then fill these holes to create micro-trench masks. The step consists of doing two processes:
+
+\begin{enumerate}
+\item Recognition of the outer part of micro-trench contours, followed by
+\item Filling of such contour with a new neutral value (black).
+\end{enumerate}
+
+Following image explains the definition of contours and their hierarchy:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{images/contours}
+\caption{Example of contours and their hierarchy. \textbf{Contours 0}, \textbf{1} and \textbf{2} are \textbf{outernmost contours} and of \textbf{hierarchy-0}. \textbf{Contour 2a} is \textbf{child contour} and of \textbf{hierarchy-1}. \textbf{Contour 3} is child contour of \textbf{contour 2a} and of \textbf{hierarcy-2}. \textbf{Contour 3a} is child contour of  \textbf{contour 3} and of \textbf{hierarchy-3}. Both \textbf{contours 4} and \textbf{5} are children of \textbf{contour 3a} and of \textbf{hierarchy-4}. All contours with same hierarchy are topologically equal. Contour Adopted from OpenCV tutorials by Bradski and Kaehler \cite{bradski2008learning}.}
+\label{fig:contours}
+\end{figure}
+
+There are several well known algorithms for hierarchical contours recognition. In our case, the algorithm of Suzuki and Abe is used \cite{suzuki1985topological}. The algorithm works by following border between two regions of different color pixel by pixel. The border following process is done hierarchically creating tree-like dependency structure of contours. We then take the outermost contour (in the tree context, the uppermost contours) which are then filled. The filling in turn is simply done by assigning neutral value in every pixel located inside each contour, including all pixels inside all of each contour's children contours.
+
+Subfigures \ref{fig:fill_holes} shows the input of the algorithm and 
+
+
+\begin{figure}[H]
+\centering
+
+\begin{subfigure}{\textwidth}
+  \centering
+  \includegraphics[width=0.3\textwidth]{images/trench_detect_1}
+  \caption{}
+  \label{fig:orig_pic}
+\end{subfigure}%
+
+\begin{subfigure}{\textwidth}
+  \centering
+  \includegraphics[width=0.3\textwidth]{images/trench_detect_2}
+  \caption{}
+  \label{fig:brcon_adj}
+\end{subfigure}%
+
+\begin{subfigure}{\textwidth}
+  \centering
+  \includegraphics[width=0.3\textwidth]{images/trench_detect_3}
+  \caption{}
+  \label{fig:rats}
+\end{subfigure}%
+
+\begin{subfigure}{\textwidth}
+  \centering
+  \includegraphics[width=0.3\textwidth]{images/trench_detect_4}
+  \caption{}
+  \label{fig:fill_holes}
+\end{subfigure}%
+
+\caption{(a) The in-focus image of position 41 from unsynchronized experiment tranoformed with $\alpha=1$ and $\beta = 100$. (b) Normalized distribution of intensity of the transformed figure. Compared to Figure \ref{fig:pos41_density}. Note that the difference in height across bins \textit{vis a vis} Figure \ref{fig:pos41_density} is mainly caused by the definition of bins in the histogram function.}
+
+\label{fig:trench_masking}
+\end{figure}
 
 \subsection{Gradient background correction}
 
