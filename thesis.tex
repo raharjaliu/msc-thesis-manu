@@ -186,6 +186,8 @@ $M$ & A stack of images \\
 $M_t$ & An image captured at time t (t-th image) \\
 $M_{t, x, y}$ & Pixel at $(x, y)$ in $M_t$ \\
 $M_{t, x, y, 1}$ & First channel of pixel $M_{t, x, y}$ \\
+$J(x, y)$ & brightness and contrast transformation of an image at coordinate $(x, y)$\\
+$\mathbb{G}_{x, y}$ & Sobel gradient of pixel $M_{t, x, y}$\\
 \end{tabular}
 }
 \newpage
@@ -790,6 +792,87 @@ creating transformed intensity $I^t$.
 Note that this is still not a perfect transformation, as there are some pixels in $\mathfrak{S}$ with intensity lower than the minimum intensity of pixels in $\mathfrak{M}$. Besides doing this manually, we also improve this by refining the transformed intensity $I^t$ further with the next step: Robust Automatic Threshold Selection.
 
 \subsubsection*{Robust Automatic Threshold Selection (RATS)}
+
+Robust Automated Threshold Selection (RATS), based on description by (Wilkinson and Schut, 1998 \cite{wilkinson1998digital}), computes a threshold map for an image based on two criteria:
+
+\begin{itemize}
+\item pixel values, and
+\item pixel gradients.
+\end{itemize}
+
+The gradient is computed using the so-called Sobel kernels\cite{sobel1990isotropic}, a commonly used in computer vision for edge detection as it particularly emphasizes edges in image upon transformation. It is a discrete differential operator which computes an approximation of gradient of the intensity function $J$.
+
+Originally, the Sobel gradient $\mathbb{G}_{x, y}$ of coordinate $(x, y)$ is defined as,
+
+$$
+\mathbb{G}_{x, y} := \sqrt{\Delta_x^2 + \Delta_y^2}
+$$
+
+Whereas $\Delta_x$ and $\Delta_y$ are defined as,
+
+\[
+\Delta_x = 
+\begin{bmatrix}
++1 & 0 & -1 \\
++2 & 0 & -2 \\
++1 & 0 & -1 \\
+\end{bmatrix}
+*
+\mathbf{M_t}
+\]
+
+and,
+
+\[
+\Delta_y = 
+\begin{bmatrix}
++1 & +2 & +1 \\
++0 & 0 & 0 \\
+-1 & -2 & -1 \\
+\end{bmatrix}
+*
+\mathbf{M_t}
+\]
+
+with asterisk symbol $\mathbf{M_t}$ denoting the image at time $t$ and $*$ two dimensional signal processing convoltion \cite{smith1997scientist}. For example, for a $3 \times 3$ matrix,
+
+\[
+M_{3 \times 3} = 
+\begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+7 & 8 & 9 \\
+\end{bmatrix}
+\]
+
+and $\Delta_x$, the value of the middle pixel $(2, 2)$ after evaluating the convolution $\Delta_x * M_{3 \times 3}$ is,
+
+\[
+\left( 
+\begin{bmatrix}
++1 & 0 & -1 \\
++2 & 0 & -2 \\
++1 & 0 & -1 \\
+\end{bmatrix}
+*
+\begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+7 & 8 & 9
+\end{bmatrix}
+\right) [2,2]
+= 1 \cdot 1 + 0 \cdot 2 + 1 \cdot 3 + -2 \cdot 4 + 0 \cdot 5 + 2 \cdot 6 + -1 \cdot 7 + 0 \cdot 8 + 1 \cdot 9
+\]
+
+It has been shown, however, that only taking the quadratic gradient yields comparable result \cite{wilkinson1998digital}. The Sobel operator is thus only defined as quadratic gradient in Fiji RATS plugin,
+
+$$
+\mathbb{g_{x, y}} = \mathbb{G_{x, y}^2} = \Delta_x^2 + \Delta_y^2
+$$
+
+Pixels having gradients smaller than threshold $\lambda \sigma$ are then removed, where $\sigma$ is noise (generally, standard deviation of the expected background is used, e.g. standrd deviation of the whole image) and $\lambda$ is scaling factor (Wilkinson determined $\lambda = 3$ to be a good approximation.
+
+To refine the filtering further, iterative correction is applied. 
 
 \subsubsection*{Holes filling}
 
