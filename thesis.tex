@@ -157,6 +157,8 @@ Finally for my best supervisor, Carste Marr. Your boundless patience, deep insig
 
 Following terms are used frequently in this thesis and therefore merit special explanation:
 
+\vspace{10mm}
+
 \begin{tabular}{ l l }
 \textbf{Name} & \textbf{Explanation} \\
 micro-trench & Single unit of micro-trench inside a well \\
@@ -167,18 +169,18 @@ channel & A connection between data source (camera) and storage. Images coming\\
  & from the same channel have same capture properties formatting.
 \end{tabular}
 
-\vspace{5mm}
+\vspace{10mm}
 
 Note that in this thesis, following things are used interchangeably:
+
+\vspace{10mm}
 
 \begin{itemize}
 \item image and slice, while referring to an image particularly a capture image of the trenches and its processed versions.
 \item image and figure, while referring to an image shown in this paper in general.
 \end{itemize}
 
-
-
-\vspace{5mm}
+\vspace{10mm}
 
 \begin{tabular}{ l l }
 \textbf{Symbol} & \textbf{Explanation} \\
@@ -187,7 +189,10 @@ $M_t$ & An image captured at time t (t-th image) \\
 $M_{t, x, y}$ & Pixel at $(x, y)$ in $M_t$ \\
 $M_{t, x, y, 1}$ & First channel of pixel $M_{t, x, y}$ \\
 $J(x, y)$ & brightness and contrast transformation of an image at coordinate $(x, y)$\\
+$G_t$ & Grayscale image at time $t$\\
 $\mathbb{G}_{x, y}$ & Sobel gradient of pixel $M_{t, x, y}$\\
+$G(x)$ & One dimensional Gaussian function\\
+$G(x, y)$ & Two dimensional Gaussian function\\
 \end{tabular}
 }
 \newpage
@@ -294,9 +299,9 @@ This chapter considers two aspects of the project: the experimental setting and 
 
 The second part deals mostly with the quantitative methods and algorithms used to process data into meaningful observations. This part is opened with definitions used in the methods section. Afterwards, every method developed/used in the pipeline is brought forward with accompanying rationale and literature research.
 
-\section{Experimental Setting and Data}
+\section{Experimental setting and data}
 
-\subsection{Cell Culture}
+\subsection{Cell culture}
 \label{subsection:cell_culture}
 
 To enable cross reference and comparability of experiment results, a model cell line is used: the acute monocytic leukimia (AML) cell line \textbf{AML-M5a MOLM-13}. The line used in our experiment was derived from the cell line initially described by Matsuo et al in 1997 \cite{matsuo1997two}. In the paper, the authors developed the line from the peripheral blood of a relapse patient with AML of subtype FAB M5a, which is characterized by predominantly monoblastic leukemia cells visible in pap smear \cite{arber20162016}. Due to extensive research done on the cell line and the well-explained mechanism of the cell line dynamics and response towards cancer medication, the cell line is an ideal candidate for \textit{in vitro} study of monocytic differentiation, leukemogenesis and treatment dynamics \cite{matsuo1997two, kelly2002ct53518, yokota1997internal}.
@@ -346,7 +351,7 @@ The trench could contain up to 8 cells. The macro-container chosen for containin
 \label{fig:microtrench_sample}
 \end{figure}
 
-\subsection{Cancer Treatment Regimes}
+\subsection{Cancer treatment regimes}
 \label{subsection:treatment}
 
 As mentioned in previous chapters, the objective of the project partains mostly the dynamics of single cancer cell under treatment. After mentioning the cell lines of interest (Chapter \ref{subsection:cell_culture}) and the microfluidic setup used to contain cancer cells in single-cell setting (Chapter \ref{subsection:microfluid_env}), we arrived at the last aspect of the experimental seting: the chemical treatment used on the cells.
@@ -420,7 +425,7 @@ In normal chemotherapeutic regime, both Vincristine and Daunorubicin are prescri
 \label{fig:daunos}
 \end{figure}
 
-\subsection{Cell Death Signal}
+\subsection{Cell death signal}
 \label{subsection:cell_death_signal}
 
 As mentioned in Subsection \ref{subsection:treatment}, the introduction of cancer treatment disrupts mitotic cell activities which in turn activates cell death pathways. To 
@@ -435,7 +440,7 @@ As mentioned in Subsection \ref{subsection:treatment}, the introduction of cance
 
 %TODO expand
 
-\subsection{Cell Treatments}
+2.1.5\subsection{Cell treatments}
 \label{subsection:cell_treatments}
 
 Generally, following questions are to be investigated in the experiment:
@@ -520,7 +525,7 @@ The detailed image capturing protocol for both unsynchronized and synchronized e
 
 This section contains formal definitions and methods used in this thesis.
 
-\subsection{Image Encoding}
+\subsection{Image encoding}
 \label{subsection:image_encoding}
 
 From the initial recordings on, there are several image standards and encodings being processed and analyzed in our pipeline. We would start from the raw image captured by recording apparatus going down to processed images (See Appendix \ref{appendix:imageacquisition} for detailed protocols on image acquisition).
@@ -639,7 +644,7 @@ B_{x, y} =
 
 Note that, unless otherwise mentioned, every bit encoding of an image refers to unsigned encoding. Thus, an $m$-bit encoding allows value ranging from $0$ to $2^m - 1$.
 
-\subsection{Brightness and Contrast adjustment}
+\subsection{Brightness and contrast adjustment}
 
 We consider following image: 
 
@@ -740,7 +745,7 @@ We can also try to change $\beta$. This will scale the image's intensity and emp
 
 Geometrically, contrast can be understood as the distance of closely resembling pixel \cite{hartley2003multiple}. Two pixels which are very similar will look very different given a high contrast. Brightness, on the other hands, describes the level of visibleness of a pixel.
 
-\subsection{Micro-trench Masking}
+\subsection{Micro-trench masking}
 \label{subsection:micro_trench_masking}
 
 First, note that the following method is only semi- automatically done. The first step (brightness and contrast correction) is done manually in \textit{Fiji} while the Robust Automatic Threshold Selection (RATS) and the holes filling are done automatically, also in \textit{Fiji}.
@@ -795,7 +800,7 @@ Note that this is still not a perfect transformation, as there are some pixels i
 
 Subfigures \ref{fig:orig_pic} and \ref{fig:brcon_adj} show images of micro-trenches before and after brightness and contrast adjustment. As mentioned, some parts inside the micro-trench still have pixels  that were not transformed to complete white color (maximum intensity). This can however be removed by global and local noise correction through Robust Automatic Threshold Selection (RATS, see next).
 
-\subsubsection*{Robust Automatic Threshold Selection (RATS)}
+\subsubsection*{Robust automatic threshold selection (RATS)}
 \label{subsubsection:rats}
 
 Robust Automated Threshold Selection (RATS), based on description by (Wilkinson and Schut, 1998 \cite{wilkinson1998digital}), computes a threshold map for an image based on two criteria:
@@ -897,8 +902,8 @@ If a square only contains noises for example, in which case the $T_r$ filters no
 Subfigures \ref{fig:brcon_adj} and \ref{fig:rats} show the input and output of  RATS respectively. The noise partaining in a micro-trench is removed upon application of gradient-based filtering. We can that,
 
 \begin{itemize}
-\item the first part of RATS ($\mathbf{B}$-filtering by $\lambda \sigma$) is designed to move global level noise  which in this case means white noises coming from non-perfect reflection of light from the well.
-\item the second part of RATS (recursive $\mathbf{B}-filtering by T_r$)is designed to remove local noise cause by local distortion due to location-specific artifacts (direction of incoming light not perfectly perpendicular with regard to micro-trench's base etc).
+\item the first part of RATS ($\mathbb{B}$-filtering by $\lambda \sigma$) is designed to move global level noise  which in this case means white noises coming from non-perfect reflection of light from the well.
+\item the second part of RATS (recursive $\mathbb{B}$-filtering by $T_r$)is designed to remove local noise cause by local distortion due to location-specific artifacts (direction of incoming light not perfectly perpendicular with regard to micro-trench's base etc).
 \end{itemize}
 
 \subsubsection*{Holes filling}
@@ -921,7 +926,7 @@ Following image explains the definition of contours and their hierarchy:
 
 There are several well known algorithms for hierarchical contours recognition. In our case, the algorithm of Suzuki and Abe is used \cite{suzuki1985topological}. The algorithm works by following border between two regions of different color pixel by pixel. The border following process is done hierarchically creating tree-like dependency structure of contours. We then take the outermost contour (in the tree context, the uppermost contours) which are then filled. The filling in turn is simply done by assigning neutral value in every pixel located inside each contour, including all pixels inside all of each contour's children contours.
 
-Subfigures \ref{fig:fill_holes} shows the input of the algorithm and 
+Subfigures \ref{fig:rats} and \ref{fig:fill_holes} show the input and output of the algorithm respectively.
 
 
 \begin{figure}[H]
@@ -929,33 +934,33 @@ Subfigures \ref{fig:fill_holes} shows the input of the algorithm and
 
 \begin{subfigure}{\textwidth}
   \centering
-  \includegraphics[width=0.3\textwidth]{images/trench_detect_1}
+  \includegraphics[width=0.28\textwidth]{images/trench_detect_1}
   \caption{}
   \label{fig:orig_pic}
 \end{subfigure}%
 
 \begin{subfigure}{\textwidth}
   \centering
-  \includegraphics[width=0.3\textwidth]{images/trench_detect_2}
+  \includegraphics[width=0.28\textwidth]{images/trench_detect_2}
   \caption{}
   \label{fig:brcon_adj}
 \end{subfigure}%
 
 \begin{subfigure}{\textwidth}
   \centering
-  \includegraphics[width=0.3\textwidth]{images/trench_detect_3}
+  \includegraphics[width=0.28\textwidth]{images/trench_detect_3}
   \caption{}
   \label{fig:rats}
 \end{subfigure}%
 
 \begin{subfigure}{\textwidth}
   \centering
-  \includegraphics[width=0.3\textwidth]{images/trench_detect_4}
+  \includegraphics[width=0.28\textwidth]{images/trench_detect_4}
   \caption{}
   \label{fig:fill_holes}
 \end{subfigure}%
 
-\caption{(a) The in-focus image of position 41 from unsynchronized experiment tranoformed with $\alpha=1$ and $\beta = 100$. (b) Normalized distribution of intensity of the transformed figure. Compared to Figure \ref{fig:pos41_density}. Note that the difference in height across bins \textit{vis a vis} Figure \ref{fig:pos41_density} is mainly caused by the definition of bins in the histogram function.}
+\caption{(a) The original in-focus image of the upper left corner of position 41. (b) The view of the same area as (a) after applying brightness and contrast adustment. (c) The view of the same area after applying RATS on image in (b) showing the contour of micro-trenches in the area. (d) The contours filled with neutral color (black). Note that some micro-trenches are not filled as they are open and thus topologically not the outernmost contours.}
 
 \label{fig:trench_masking}
 \end{figure}
@@ -963,21 +968,66 @@ Subfigures \ref{fig:fill_holes} shows the input of the algorithm and
 \subsection{Gaussian blur}
 \label{subsection:gaussian_blur}
 
-Gaussian blurring
+%TODO adjust notation G in image encoding since G is reserved for Gaussian function
+
+Gaussian blurring in the context of image processing is  the process of applying Gaussian noise on an image. The Gaussian function $G: \mathbb{R} \rightarrow \mathbb{R}$ is a function defined as,
+
+$$
+G(x) = \frac{1}{\sqrt{2\pi \sigma^2}} e^{-\frac{x^2}{2 \sigma^2}}
+$$
+
+In 2 dimensional setting, we extend the function to $G: \mathbb{R} \times \mathbb{R} \rightarrow \mathbb{R}$ defined as,
+
+\begin{equation}
+G(x,y) = \frac{1}{{2\pi \sigma^2}} e^{-\frac{x^2 + y^2}{2 \sigma^2}}
+\label{equation:gauss_2d}
+\end{equation}
+
+Applying this function on a 2D image will create circles centered around the center of the distribution with values around the center distributed normally. This means that, for an arbitrary $\sigma$  and a uniform image with intensity of $n$ in every pixel,  convolving the image with Equation \ref{equation:gauss_2d} centered at point $i, j$ yields a transformed image with the transformed intensity $I^G$ of each point distributed normally around $(i, j)$ with scaling of $n$ and standard deviation $\sigma$,
+
+\begin{equation}
+I^G(x, y) = n \cdot \frac{1}{{2\pi \sigma^2}} e^{-\frac{(x - i)^2 + (y - j)^2}{2 \sigma^2}}
+\label{equation:gauss_intens_trans}
+\end{equation}
+
+The idea of transforming an image with selected center point is however not very practical as the pixels far away from image will have intensity of almost zero. We can however, use this fact (namely, that the intensity of pixels around the center point fall exponentially the further the pixels are away) to introduce dependency of each pixel on its surrounding environment. This will introduce a blur due to pull-down effect of the neighboring pixels. Hence the name \textbf{Gaussian blurring}.
+
+Mathematically, we can express Gaussian blurring process as convolving the pixels around a position $(x, y)$ and take the average of the convolving image as the new intensity value in $(x, y)$. Using the continuous Gaussian intensity transformation defined in Equation \ref{equation:gauss_intens_trans}, the Gaussian convolution  function is defined as follows,
+
+{\flushleft
+
+$$
+I^{conv_G}(x, y) = \frac{\sum_{x - \lfloor d/2 \rfloor < i < x + \lfloor d/2 \rfloor} \sum_{x - \lfloor d/2 \rfloor < j < x + \lfloor d/2 \rfloor} I^G(i, j)}{(\lfloor d/2 \rfloor)^2}
+$$
+
+with $d$ denoting the $L_1$ distance of the blur.  We can furthermore refine the convolution further by using $L_2$ distance (i.e. radius) instead,
+
+\begin{equation}
+I^{conv_G}(x, y) = \frac{\sum_{(i, j) \in C}  I^G(i, j)}{w \cdot d}
+\label{equation:conv_gaussian_cont}
+\end{equation}
+
+for $C := \{(i, j)  \text{  where } d_{L_2}((x, y), (i, j)) \leq d\}$. It can be seen from the equation that increasing the radius $d$ will increase the pull-down effect on the pixel and hence increase the smoothness. We exploit this property to create regional gradient which will be used to normalize background image. By dividing the value of each pixel by the convoluted value of it we can correct the image by its global background noise. The Gaussian blur-corrected intensity $I^{c_G}$ is thus defined as ,
+
+\begin{equation}
+I^{c_G}(x, y) = \frac{I(x, y)}{I^{c_G}(x, y)} 
+\label{equation:gauss_blur_correction}
+\end{equation}
+
 
 \subsection{Normalization of local contrast}
 
-\subsection{Static correction}
+\subsection{Division by mean intensity}
 
-\subsection{Cell Recognition}
+\subsection{Cell recognition}
 
 Laplacian of Gaussian
 
-\subsection{Cell Tracking}
+\subsection{Cell tracking}
 
 Linear Assignment Problem
 
-\subsection{Shift Correction}
+\subsection{Shift correction}
 
 Now, consider a case in which images are shifted in a time-lapsed movie. TODO: explain mechanism. No rotation of camera is assumed, hence there are only two degree of freedoms (vertical and horizontal). Thus, a shift can be defined as a vector movement $\vec{v}$ of all points $x_{i,j} \in M_{t_i}$ in the time-lapse from time $t_i$ to $t_{i+1}$. Given two degrees of freedom and discreteness of the problem due to pixel representation, the task is reduced to finding difference in x- and y-axis ($\delta_x$ and $\delta_y$), so that the difference of transformed pixels at $t_i$ and $t_{i+1}$ are minimized, i.e.:
 
@@ -1038,9 +1088,9 @@ In this experiment, two cell signals are used as indicator of cell death. %TODO 
 
 \chapter{Analytic Pipeline}
 
-\section{Pipeline Description}
+\section{Pipeline description}
 
-\section{Pipeline Specification}
+\section{Pipeline specification}
 
 \chapter{Results}
 
@@ -1051,9 +1101,9 @@ I. Pipeline
 II. Quantitative Analysis
 \end{verbatim}
 
-\section{Quantitative Analysis}
+\section{Quantitative analysis}
 
-\section{Machine Learning Models}
+\section{Machine learning models}
 
 \chapter{Summary and Outlook}
 
@@ -1102,26 +1152,28 @@ Introduced by Oliver Hilsenbeck in his master's thesis in 2014 \cite{hilsenbeck2
 
 \chapter{Experiment Protocols}
 
-\section{Micro-trenches array fabrication} \label{appendix:microtrench}
+\section{Micro-trenches array fabrication}
+\label{appendix:microtrench}
 
 \subsection*{Photolithography of the SU-8 wafer}
 
 The fabrication of the SU-8 (MicroChem Corp, USA) wafer was executed in a in-house cleanroom facility using a ProtoLaser LDI system (LPKF Laser \& Electronika, Naklo, Slovenia), with a 375 nm wavelength laser and 1 μm spot diameter.
 
-\subsection*{Softlithography and Micromolding}
+\subsection*{Softlithography and micromolding}
 
 Polydimethylsiloxane (PDMS) prepolymer solution is mixed with the crosslinker in a 10:1 ratio (w/w) (Sylgard 184, Dow Corning, USA) and then degassed under vacuum. PDMS is then purred on the SU-8 wafer, degassed and cured in 50 oC. The resulting PDMS stamp is peeled off the wafer and cut into appropriate shapes. The PDMS pieces, with 25 1/4 pillars in height, are activated with argon plasma and then immediately placed upside down on a silanized with TMSPMA (3-(Trimethoxysilyl)propyl methacrylate, Sigma-Aldrich) glass coverslip. A solution of PEG-DA (Mn=258) containing 2\% v/v of the 2-hydroxy-2methylpropiophenone (both from Sigma-Aldrich, Germany) is freshly prepared and then a drop is deposited at the edge of the PDMS stamp. The PDMS stamp is filled by capillary force induced flow. PEG-DA is then polymerized in an UV-ozone cleaning system (UVOH 150 LAB, FHR, Ottendorf, Germany). Next, the PDMS stamps are peeled off and the resulting micro-trenches of cross-linked PEG-DA are dried in an oven (Binder GmbH, Tuttlingen, Germany) overnight at 50oC. Finally, the slides are sonicated with 70\% ethanol and distilled water before a sticky slide is attached on top (8-well sticky slide, ibidi GmbH, Munich, Germany).
 
-\section{Images Acquisition}
+\section{Images acquisition}
 \label{appendix:imageacquisition}
 
 Imaging was performed under an inverted Nikon Ti Eclipse microscope with a motorized stage (Tango XY Stage Controller, M\"arzh\"auser Wetzlar GmbH \& Co. KG, Germany), a CFI Plan Fluor DL 10X objective, a pco.edge 4.2 Camera (PCO AG, Kelheim, Germany) and a Lumencor Sprectra LED fluorescence lamp. For detection of the Caspase-3/7 and the PI marker, the following filters were used respectively, 474/27 nm, 554/23 (excitation) and 515/35 nm, 595/35 nm (emission). Brightfield out of focus (-20 $\mu$m) images were taken every 10 minutes and in-focus  brightfield and fluorescence images every 30 minutes for 48 hours. Vincristine or Daunorubicin were added after 20 hours from the beginning of the imaging. During the recording samples were kept at a constant temperature of 37\degree C and CO2 using an Okolab heating and CO\textsubscript{2} 2 box (OKOLAB S.R.L., NA, Italy). For the synchronized population, the double thymidine block protocol was followed. Briefly, MOLM-13s cells at the exponentially growing phase were incubated in blocking medium (culture medium supplemented with 2 mM Thymidine (CAS 50-89-5, Calbiochem\textsuperscript{\textregistered}, Germany)) for 24 hours. Cells were then released and incubated in culture medium for 8 hours and finally were incubated in blocking medium for 12 hours. After 2 hours, the synchronized population was seeded in the slide bearing the micro-trenches together with the markers and drugs at the same conditions as the unsynchronized population, and imaged for 24 hours.
 
-\chapter{Algorithms}\label{appendix:algo}
+\chapter{Algorithms}
+\label{appendix:algo}
 
 The algorithms are, unless specified written in pseudo-code.
 
-\section*{Shift Inference} 
+\section*{Shift inference} 
 
 Following is the algorithm to infer shift between slice written in Python:
 
