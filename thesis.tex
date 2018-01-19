@@ -960,15 +960,13 @@ Subfigures \ref{fig:rats} and \ref{fig:fill_holes} show the input and output of 
   \label{fig:fill_holes}
 \end{subfigure}%
 
-\caption{(a) The original in-focus image of the upper left corner of position 41. (b) The view of the same area as (a) after applying brightness and contrast adustment. (c) The view of the same area after applying RATS on image in (b) showing the contour of micro-trenches in the area. (d) The contours filled with neutral color (black). Note that some micro-trenches are not filled as they are open and thus topologically not the outernmost contours.}
+\caption{The upper left corner of position 41's in-focus-image recording at time $t=0$: (a) The original in-focus image of the upper left corner of position 41. (b) The view of the same area as (a) after applying brightness and contrast adustment. (c) The view of the same area after applying RATS on image in (b) showing the contour of micro-trenches in the area. (d) The contours filled with neutral color (black). Note that some micro-trenches are not filled as they are open and thus topologically not the outernmost contours.}
 
 \label{fig:trench_masking}
 \end{figure}
 
 \subsection{Gaussian blur}
 \label{subsection:gaussian_blur}
-
-%TODO adjust notation G in image encoding since G is reserved for Gaussian function
 
 Gaussian blurring in the context of image processing is  the process of applying Gaussian noise on an image. The Gaussian function $G: \mathbb{R} \rightarrow \mathbb{R}$ is a function defined as,
 
@@ -1015,9 +1013,39 @@ I^{c_G}(x, y) = \frac{I(x, y)}{I^{c_G}(x, y)}
 \end{equation}
 
 
-\subsection{Normalization of local contrast}
+\subsection{Contrast limited adaptive histogram equalization (CLAHE)}
 
-\subsection{Division by mean intensity}
+CLAHE, initially developed by Karel Zuiderveld in 1994 \cite{zuiderveld1994contras}, is an instance of the class of algorithms called adaptive histogram equalization (AHE) used to improve contrast in an image. An AHE algorithm generally works by transforming each pixel with a transformation function derived from the neighboring region instead of the whole image.  By doing this, an AHE algorithm can count for variation of  brightness and contrasts in areas of the image \cite{pizer1987adaptive}.
+
+The distinction of CLAHE among other AHE algorithms is its contrast limiting property of algorithm. Given a contrast distribution of an area around a given point,  CLAHE conduct following steps:
+
+\begin{enumerate}
+\item First, the algorithm takes a predefined clipping value of intensity histogram of the area around a center point.
+\item The algorithm then calculates the intensity histogram of the area.
+\item For some intensity values there will be more pixels than allowed having the corresponding intensity values.
+\item Adapt this intensity distribution by reassigning the intensity of some pixels in the clipping intensity area uniformly across the range of intensity in the image (see upper part of Figure \ref{fig:clahe}).
+\item Repeat until for randomly selected areas in the image the clipping constraint is satisfied.
+\end{enumerate}
+
+Figure \ref{fig:clahe} visualizes the step 2, 3 and 4 of the algorithm description above. As can be seen in the area intensity CDF in the lower part of the figure, the algorithm results in more equalized intensity values. Visually, this reduces contrast and in turn sharpens the image. Figure \ref{fig:clahe_before_after} shows an area of the well before and after the application of CLAHE on the taken image. Note the increased brightness and emphasized  convolution effect around the micro-trench margin area.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth]{images/clahe}
+\caption{Desription of CLAHE. Taken from Pizer, Zuiderfeld et al, 1987 \cite{pizer1987adaptive}  Note the  smoothen CDF function (lower part of the figure) after reassigning some pixels with pixel values above the clipping value.
+ \textit{Creative Commons courtesy of anonymous.}}
+\label{fig:clahe}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{images/clahe_before_after}
+\caption{The upper left corner of position 43's in-focus-image recording at time $t=0$: before (left) and after (right) the application of CLAHE on the image.
+ \textit{Creative Commons courtesy of anonymous.}}
+\label{fig:clahe_before_after}
+\end{figure}
+
+\subsection{Subtraction by pixel mean intensity}
 
 \subsection{Cell recognition}
 
@@ -1076,7 +1104,7 @@ The algorithm for shift inference is available in Appendix \ref{appendix:algo}.
 \label{fig:pixdiff}
 \end{figure}
 
-\subsection{Cell death signals}
+\subsection{Cell death signal determination}
 
 Measuring cell death is a crucial part of the experiment, as the reliable determination of it is the basis of most analysis in this thesis. There are several way to measure cell deaths with varying complexity and accuracy. Each method contains certain assumptions of cell death.\\
 
@@ -1085,6 +1113,10 @@ For example, determining cell death by cell movement assumes death of a cell if 
 The second method is using cell size. During apopotosis, the cells would shrink. Given It is known that cell size %TODO continue.
 
 In this experiment, two cell signals are used as indicator of cell death. %TODO continue
+
+\subsection{Support vector machine (SVM)}
+
+\subsection{Decision trees  (DTs)}
 
 \chapter{Analytic Pipeline}
 
