@@ -20,8 +20,12 @@
 \usepackage{amsmath}
 \savesymbol{lneq}
 \usepackage{amssymb}
+\usepackage[]{algorithm2e}
 \geometry{a4paper,left=2.5cm,right=2.5cm, top=2.5cm, bottom=3cm}
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+
+% definitions for pseudocode
+\newcommand{\forcond}{$i=0$ \KwTo $k - 1$}
 
 % declare macros
 %\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
@@ -184,10 +188,12 @@ Note that in this thesis, following things are used interchangeably:
 
 \begin{tabular}{ l l }
 \textbf{Symbol} & \textbf{Explanation} \\
+$B_t$ & A 1-bit monochrome image taken at time t (t-th image)\\
 $M$ & A stack of images \\
-$M_t$ & An image captured at time t (t-th image) \\
+$M_t$ & An RGB image captured at time t (t-th image) \\
 $M_{t, x, y}$ & Pixel at $(x, y)$ in $M_t$ \\
 $M_{t, x, y, 1}$ & First channel of pixel $M_{t, x, y}$ \\
+$M^b_t$ & A $b$-bit encoded RGB image captured at time t\\
 $J(x, y)$ & brightness and contrast transformation of an image at coordinate $(x, y)$\\
 $G_t$ & Grayscale image at time $t$\\
 $\mathbb{G}_{x, y}$ & Sobel gradient of pixel $M_{t, x, y}$\\
@@ -992,8 +998,6 @@ The idea of transforming an image with selected center point is however not very
 
 Mathematically, we can express Gaussian blurring process as convolving the pixels around a position $(x, y)$ and take the average of the convolving image as the new intensity value in $(x, y)$. Using the continuous Gaussian intensity transformation defined in Equation \ref{equation:gauss_intens_trans}, the Gaussian convolution  function is defined as follows,
 
-{\flushleft
-
 $$
 I^{conv_G}(x, y) = \frac{\sum_{x - \lfloor d/2 \rfloor < i < x + \lfloor d/2 \rfloor} \sum_{x - \lfloor d/2 \rfloor < j < x + \lfloor d/2 \rfloor} I^G(i, j)}{(\lfloor d/2 \rfloor)^2}
 $$
@@ -1005,13 +1009,14 @@ I^{conv_G}(x, y) = \frac{\sum_{(i, j) \in C}  I^G(i, j)}{w \cdot d}
 \label{equation:conv_gaussian_cont}
 \end{equation}
 
-for $C := \{(i, j)  \text{  where } d_{L_2}((x, y), (i, j)) \leq d\}$. It can be seen from the equation that increasing the radius $d$ will increase the pull-down effect on the pixel and hence increase the smoothness. We exploit this property to create regional gradient which will be used to normalize background image. By dividing the value of each pixel by the convoluted value of it we can correct the image by its global background noise. The Gaussian blur-corrected intensity $I^{c_G}$ is thus defined as ,
+for $C := \{(i, j)  \text{  where } d_{L_2}((x, y), (i, j)) \leq d\}$. It can be seen from the equation that increasing the radius $d$ will increase the pull-down effect on the pixel and hence increase the smoothness. We exploit this property to create regional gradient which will be used to normalize background image. By dividing the value of each pixel by the convoluted value of it we can correct the image by its global background noise. The Gaussian blur-corrected intensity $I^{c_G}$ is thus defined as,
 
 \begin{equation}
 I^{c_G}(x, y) = \frac{I(x, y)}{I^{c_G}(x, y)} 
 \label{equation:gauss_blur_correction}
 \end{equation}
 
+Visually, the method can be understood as low pass filter. It removes the higher frequency 2D signals, i.e. the value with high local variance, resulting with an image with lower fidelity and local variance.
 
 \subsection{Contrast limited adaptive histogram equalization (CLAHE)}
 
@@ -1045,13 +1050,70 @@ Figure \ref{fig:clahe} visualizes the step 2, 3 and 4 of the algorithm descripti
 \label{fig:clahe_before_after}
 \end{figure}
 
-\subsection{Subtraction by pixel mean intensity}
+\subsection{Subtraction by pixel-wise mean intensity}
+
+To substract an RGB image at time $M_t$ by pixel-wise mean intensity $\langle{M}\rangle$, the average intensity for each pixel across all time points is made for a position. For a stack with $n$ images, we can simply define the pixel-wise mean of the $i$-th channel for position $(x, y)$ as follows,
+
+$$
+\langle M \rangle_{x, y, i} := \frac{\sum_{1 \leq t \leq n} M_{t, x, y, i}}{n}
+$$
+
+For grayscale stack we define analogously,
+
+$$
+\langle G \rangle_{x, y} := \frac{\sum_{1 \leq t \leq n} G_{t, x, y, i}}{n}
+$$
+
+The pixel-wise substracted value of $i$-th channel is thus defined as point-wise operation for each position,
+
+\begin{equation}
+M^m_{t, x, y, i} := M_{t, x, y, i} - \langle M \rangle_{x, y, i}
+\end{equation}
+
+with the corresponding RGB value defined as,
+
+$$
+M^m_{t, x, y} := [M^m_{t, x, y, 1}; M^m_{t, x, y, 2}; M^m_{t, x, y, 3}]
+$$
+
+As for grayscale image we define following,
+
+\begin{equation}
+G^m_{t, x, y} := G_{t, x, y} - \langle G \rangle_{x, y}
+\end{equation}
+
+In the context of single-cell enclosure of micro-trench, this means that in the parts of images in which only dynamic movement of cells are observed, the pixel-wise mean intensity value of aforementioned parts will be very low. Subtracting every pixel the area from every time point with the average will barely affect the original intensity value.
+
+On the other hand, applying the method on area with static objects such as micro-trench margin will reduce each pixel of the area with exactly the same intensity value as it barely changes during the experiment. This will nullify the static parts to large extent.
+
+This method can be improved by iteratively repeating the calculation of $\langle M \rangle$. This will periodically static parts or static parts that abruptly moved (due to sudden shift in the well with regard to the camera for example). We call this algorithm \textbf{k-substraction by pixel-mean intensity}:
+
+\begin{algorithm}[H]
+ \KwData{$M_t$}
+ \KwResult{$M^m_t$}
+ $k$ \;
+ \For{\forcond}{
+ 	calculates $\langle M \rangle$ from $M_t$ \;
+ 	$M^m_t = M_t - \langle M \rangle$ \;
+ 	$M_t = M^m_t$ \; 
+ }
+
+\caption{k-substraction by pixel-mean intensity algorithm}
+\label{algorithm:k_mean_substraction}
+\end{algorithm}
 
 \subsection{Cell recognition}
 
-Laplacian of Gaussian
+\subsubsection*{Laplacian of Gaussian (LoG)}
+
+\subsection*{Parameters}
+
 
 \subsection{Cell tracking}
+
+\subsubsection*{Linear Assignment Problem}
+
+\subsection*{Parameters}
 
 Linear Assignment Problem
 
@@ -1115,6 +1177,45 @@ The second method is using cell size. During apopotosis, the cells would shrink.
 In this experiment, two cell signals are used as indicator of cell death. %TODO continue
 
 \subsection{Support vector machine (SVM)}
+
+In statistical learning theory, an SVM is a construct which, given training set $\mathbf{S} \subset \mathbf{D}$ with,
+
+$$
+\mathbf{S} = \{\mathbf{x_1}, \cdots, \mathbf{x}_{\|S\|}\}
+$$
+
+and corresponding target class,
+
+$$
+\mathbf{T} = \{y_1, \cdots, y_{\|S\|}\}
+$$
+
+finds a hyperplane that separates the input by its class. Initially proposed by Cortes and Vapnik in 1995\cite{cortes1995support}, the original authors proposed to transform the data $\mathbf{S}$ in a higher dimensional representation so that it is separable by the kernel function $\Phi$, a method known nowadays as \textbf{kernel trick}. Given separability in higher dimensional representation, the support vector $\mathbf{w}$ can then be solved by solving following optimizing problem, 
+
+$$
+min_{\mathbf{w}}\{\|\mathbf{w}\|\}
+$$
+
+This hard-margin only converges only when the data are linearly separable in mapped space (also known as \textbf{feature space}). This is especially bad since:
+
+\begin{itemize}
+\item Given a non-powerful kernel function $\Phi$ that only maps the input into bounded number of dimension, the optimization problem won't converge.
+\item Given a power kernel function $\Phi$ capable of blowing up the dimension to very high dimensions (see the part about kernel function later on) the kernel might settle for unnecessarily sparse dimensional reducing the generalizability of the problem.
+\end{itemize}
+
+A relaxation of this problem is known as $\xi$-SVM, defined as following optimization problem:
+
+subject to $y_i(\mathbf{w} \cdot \mathbf{x}_i) \leq 1 \text{ for } i = 1, \cdots \|\mathbf{S}\|$
+
+$$
+min_{\mathbf{w}, \epsilon} \{\frac{1}{2} \mathbf{w}^T \mathbf{w} + \lambda \sum_{i=1}^{\|S\|} \xi_i \}
+$$
+
+subject to $y_i(\mathbf{w}^T \Phi(S_i) + \epsilon) \leq 1 - \xi_i$ and $\xi_i \leq 0$,
+
+%TODO continue
+
+\subsubsection*{Kernel method}
 
 \subsection{Decision trees  (DTs)}
 
