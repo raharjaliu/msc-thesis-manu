@@ -21,6 +21,8 @@
 \savesymbol{lneq}
 \usepackage{amssymb}
 \usepackage[]{algorithm2e}
+\usepackage{lscape}
+\usepackage{graphicx}
 \geometry{a4paper,left=2.5cm,right=2.5cm, top=2.5cm, bottom=3cm}
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
 
@@ -163,6 +165,9 @@ Following terms are used frequently in this thesis and therefore merit special e
 
 \vspace{10mm}
 
+\begingroup
+%\setlength{\tabcolsep}{10pt} % Default value: 6pt
+\renewcommand{\arraystretch}{1.5} % Default value: 1
 \begin{tabular}{ l l }
 \textbf{Name} & \textbf{Explanation} \\
 micro-trench & Single unit of micro-trench inside a well \\
@@ -174,6 +179,7 @@ stack & An ordered sequence of images (usually coming from the same channel) \\
 channel & A connection between data source (camera) and storage. Images coming\\
  & from the same channel have same capture properties formatting.
 \end{tabular}
+\endgroup
 
 \vspace{10mm}
 
@@ -188,20 +194,26 @@ Note that in this thesis, following things are used interchangeably:
 
 \vspace{10mm}
 
+\begingroup
+%\setlength{\tabcolsep}{10pt} % Default value: 6pt
+\renewcommand{\arraystretch}{1.5} % Default value: 1
 \begin{tabular}{ l l }
 \textbf{Symbol} & \textbf{Explanation} \\
 $B_t$ & A 1-bit monochrome image taken at time t (t-th image)\\
-$M$ & A stack of images \\
-$M_t$ & An RGB image captured at time t (t-th image) \\
-$M_{t, x, y}$ & Pixel at $(x, y)$ in $M_t$ \\
-$M_{t, x, y, 1}$ & First channel of pixel $M_{t, x, y}$ \\
-$M^b_t$ & A $b$-bit encoded RGB image captured at time t\\
-$J(x, y)$ & brightness and contrast transformation of an image at coordinate $(x, y)$\\
 $G_t$ & Grayscale image at time $t$\\
 $\mathbb{G}_{x, y}$ & Sobel gradient of pixel $M_{t, x, y}$\\
 $G(x)$ & One dimensional Gaussian function\\
 $G(x, y)$ & Two dimensional Gaussian function\\
+$I_t(x, y)$ & Intensity function for pixel $(x, y)$ of RGB image taken at time t\\
+$J_t(x, y)$ & Brightness and contrast transforming function for pixel $(x, y)$ of grayscale image taken at time t\\
+$M$ & A stack of images \\
+$M_t$ & An RGB image captured at time t \\
+$M_{t, x, y}$ & Pixel at $(x, y)$ in $M_t$ \\
+$M_{t, x, y, 1}$ & First channel of pixel $M_{t, x, y}$ \\
+$M^b_t$ & A $b$-bit encoded RGB image captured at time t\\
 \end{tabular}
+\endgroup
+
 }
 \newpage
 
@@ -439,13 +451,65 @@ As mentioned in Subsection \ref{subsection:treatment}, the introduction of cance
 
 \subsubsection*{Caspase 3/7}
 
-Caspase 3 and 7 are both known as executioner Caspases in programmed cell death pathways \cite{alberts2017molecular}.
+Caspase 3 and 7 are both known as executioner Caspases in programmed cell death pathways \cite{alberts2017molecular}.  The reagent consists of a four amino acid peptide (DEVD) conjugated to a nucleic acid binding dye. This cell-permeable substrate is intrinsically non-fluorescent, because the DEVD peptide inhibits the ability of the dye to bind to DNA. After activation of caspase-3 or caspase-7 in apoptotic cells, the DEVD peptide is cleaved, enabling the dye to bind to DNA and produce a bright, fluorogenic response.  It has excitation/emission maxima of ~502/530 nm (see Figure \cite{fig:caspase_spectra}). For the project CellEvent Caspase3/7 vial from ThermoFisher Scientific is used  \cite{thermofisher2018casp}.
 
-%TODO expand
+\begin{figure}[H]
+
+\centering
+
+\begin{subfigure}{0.4\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{images/caspase3_dimer}
+  \caption{}
+  \label{fig:caspase3_dimer}
+\end{subfigure}%
+~
+\begin{subfigure}{0.4\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{images/caspase7_dimer}
+  \caption{}
+  \label{fig:caspase37_dimer}
+\end{subfigure}%
+
+\centering
+
+\begin{subfigure}{\textwidth}
+  \centering
+  \includegraphics[width=0.8\textwidth]{images/caspase37_spectra}
+  \caption{}
+  \label{fig:caspase_spectra}
+\end{subfigure}%
+
+\caption{a) Molecular structure of Caspase 3 heterodimer b) Molecular structure of Caspase 7 homodimer. The p17 (light blue) and p12 (pink) subunites are show. c) The excitation (blue) and emission (red) spectra of Caspase3/7 vial by ThermoFisher Scientific. Notice the peaking around the 525\~535 nm range in green channel. Image taken from ThermoFisher Scientific product specification page \cite{thermofisher2018casp}.}
+
+\label{fig:caspase_stain}
+\end{figure}
 
 \subsubsection*{Propium Iodide (PI)}
 
-%TODO expand
+PI is membrane impermeable and generally excluded from viable cells. Therefore it is commonly used for identifying dead cells in a population and as a counterstain in multicolor fluorescent techniques. PI binds to DNA by intercalating between the bases with little or no sequence preference and with a stoichiometry of one dye per 4-5 base pairs of DNA \cite{suzuki1997dna}.  In aqueous solution, the dye has excitation/emission maxima of 493/636 nm (see Figure \ref{fig:pi_spectra}). PI also binds to RNA, necessitating treatment with nucleases to distinguish between RNA and DNA staining. Once the dye is bound to nucleic acids, its fluorescence is enhanced 20- to 30-fold. For the project PI vial from ThermoFisher Scientific is used \cite{thermofisher2018pi}.
+
+\begin{figure}[H]
+\centering
+
+\begin{subfigure}{\textwidth}
+  \centering
+  \includegraphics[width=0.4\textwidth]{images/pi}
+  \caption{}
+  \label{fig:pi_molecule}
+\end{subfigure}%
+
+\begin{subfigure}{\textwidth}
+  \centering
+  \includegraphics[width=0.8\textwidth]{images/pi_spectra}
+  \caption{}
+  \label{fig:pi_spectra}
+\end{subfigure}%
+
+\caption{a) Molecular structure of Propium Iodide (PI) b) The excitation (blue) and emission (red) spectra of PI. Notice the peaking around the 600\~600 nm range in red channel. Image taken from ThermoFisher Scientific product specification page \cite{thermofisher2018pi}.}
+
+\label{fig:pi_stain}
+\end{figure}
 
 \subsection{Cell treatments}
 \label{subsection:cell_treatments}
@@ -527,6 +591,7 @@ B1: 100 nM - Dauno & 56-63 \\
 \end{table}
 
 The detailed image capturing protocol for both unsynchronized and synchronized experiments can be seen in Appendix \ref{appendix:imageacquisition}.
+
 
 \section{Definitions}
 
@@ -1106,18 +1171,29 @@ This method can be improved by iteratively repeating the calculation of $\langle
 
 \subsection{Cell recognition}
 
+The so-called Laplacian of Gaussian (LoG) method is used to recognize cell in a field of view, 
+
+%TODO expand
+
 \subsubsection*{Laplacian of Gaussian (LoG)}
+
+%TODO expand
 
 \subsubsection*{Parameters}
 
+%TODO expand
 
 \subsection{Cell tracking}
 
+%TODO expand
+
 \subsubsection*{Linear Assignment Problem}
+
+%TODO expand
 
 \subsubsection*{Parameters}
 
-Linear Assignment Problem
+%TODO expan
 
 \subsection{Shift correction}
 
@@ -1329,13 +1405,73 @@ One solution is too introduce regularization. As already shown in Term \ref{eq:s
 
 Adding regularization will control against overfitted model by penalizing higher dimensional hyperplane $\mathbf{w}$ as it the error will get blown up the higher dimensional, and its error minimizing hyperplane, are chosen.
 
-\subsection{Decision trees  (DTs)}
+\subsection{Random Forests (RF)}
 
 \chapter{Analytic Pipeline}
 
+%TODO improve figure readability
+%TODO adjust figure references
+%TODO expand chapter
+
+In this chapter the image and data analytic pipeline is presented. Each pipeline of image processing analysis is elaborated with reference to publications and the definitions from Chapter \ref{chapter:data_and_method}.
+
+\section{Image computing}
+
+To assess single cell characteristics (like its lifetime, time-to-death, division time, daughter cells and other information relating to its time- and generation-dependent cell cycle information), we track all cells in the brightfield channel from the start of the movie, assign cells to individual micro-trenches to e.g. filter out micro-trenches with multiple starting cells, and determine cell death via marker onset in the fluorescent channels.
+
+Figure \ref{fig:pipeline}a shows how the image is sequentially processed from out-of-focus image to cell trees information.
+
+\section{Single cell tracking in the brightfield channel}
+
+To identify and track single cells from movie start, each out-of-focus brightfield image is processed in the following way (see Figure \ref{fig:pipeline}a for pipeline visualization): 
+
+\begin{itemize}
+\item First, a Gaussian blur \ref{zuiderveld1994contrast} with a large radius of 50 pixel is applied to each brightfield image (Fig. S1b) to estimate its individual background and identify e.g. gradients at the edges of the imaged area (Fig. S1c) 
+\end{itemize}
+
+. We correct the original image by dividing through this background image (Fig. S1d). Next, we normalize the local contrast of each image in one position \ref{kittler1986minimum} to separate foreground from background. To reduce noise from micro-trench margins in the foreground (Fig. S1e), we calculate the pixel-wise intensity average from all timepoints of one position (Fig. S1f) and subtract this from each image to generate a binary image with mainly cells in the foreground (Fig. S1g).  This creates a mask of the cells. Therein, single cells are recognized using the Laplacian of Gaussian detector in the Fiji TrackMate plugin \ref{tinevez2017trackmate} (Fig. S1h) with a blob diameter of 15 inches and a downsampling factor of 2. The detected cells are concatenated to tracks (Fig S1i) and cellular trees using the Linear Assignment Problem (LAP) tracker\ref{jaqaman2008robust} in TrackMate with a maximal frame-to-frame linking distance of 25 inches, a maximal track segment gap closing distance of 35 inches, a maximal track segment gap closing of 4 frames, and a maximal track segment splitting distance of 25 inches.
+
+\section{Assignment of cells to individual micro-trenches}
+
+To assign individual micro-trenches to tracked single cells and emerging clones, we generate masks for each micro-trench. First, we adjust brightness and contrast manually for one position so that only the margin of the micro-trenches are visible (Fig. S1k). Then, Robust Automatic Threshold Selection (RATS) is applied on each adjusted brightfield image, which creates a binary image of the micro-trench margins (Fig. S1l). These margins are then filled to create micro-trench masks using fill holes command in Fiji (Fig. S1m). Each mask (appearing as a black rod-like form) is assigned an unique identity, which is then used as an identifier for tracks in both the brightfield and the fluorescent channel for filtering of cells and clones.
+
+\section{Single cell tracking in the fluorescent channel}
+
+Caspase and PI are imaged in the red (PI) and green (Caspase) fluorescent channel and used as indicator of cell death. Dying cells stop moving, become small and unstructured, and loose a distinctive bright signal in the brightfield channel, which makes them hard to track. We thus track dying cells in the fluorescent channels and concatenate the tracks with earlier tracks in the brightfield to determine time-to-death. To track cells in the fluorescent channel, we apply the following pipeline (see Fig. S2a): We first adjust brightness and contrast manually (Fig S2b) followed by mean correction of static noises by subtracting each imagewith average intensity over all imagess (Fig S2c and Fig S2d). The detection and tracking part of image computing pipeline is identical (Fig S2 subplot A). Eventually, death time of a cell is indicated by the onset of fluorescence track being recognized in red or green channel, depending on treatment:or Vincristine treatment and control, the cell death is based on tracks in red (PI) channel while the cell death in Daunorubicin treatment is based on green (Caspase) channel.
+
+\section{Pipeline visualization}
+
+The image processing pipelines for both brightfield and florescence channels can be seen in following figures:
+
+%TODO complete
+
+\begin{landscape}
+\begin{figure}[H]
+   \centering
+    %\includegraphics[width=1.0\textwidth]{Image.eps}
+    \includegraphics[height=0.95\textheight]{images/pipeline/01.pdf}
+    \caption{Brightfield channel pipeline}
+    \label{fig:pipeline1}
+\end{figure}
+\end{landscape}
+
+\begin{landscape}
+\begin{figure}[H]
+   \centering
+    %\includegraphics[width=0.5\textwidth]{Image.eps}
+    \includegraphics[height=\textheight]{images/pipeline/02.pdf}
+    \caption{Fluoroscence channel pipeline}
+    \label{fig:pipeline2}
+\end{figure}
+\end{landscape}
+
 \section{Pipeline description}
 
-\section{Pipeline specification}
+\subsection{Pipeline specification}
+
+\section{Implementation and availability}
+
+The image and tracking data is combined and post-processed using Python scripts utilizing OpenCV\ref{bradski2008learning}, NumPy\ref{walt2011numpy}, pandas\ref{mckinney2010data} and Matplotlib \ref{hunter2007matplotlib}, and the Jython and Trackmate \ref{tinevez2017trackmate, pedroni2002jython} plugin in Fiji \ref{schindelin2012fiji}. Our code is available at https://github.com/raharjaliu/MA/tree/master/source.
 
 \chapter{Results}
 
@@ -1410,6 +1546,9 @@ Polydimethylsiloxane (PDMS) prepolymer solution is mixed with the crosslinker in
 
 \section{Images acquisition}
 \label{appendix:imageacquisition}
+
+%TODO move to main part
+%TODO add example picure setting
 
 Imaging was performed under an inverted Nikon Ti Eclipse microscope with a motorized stage (Tango XY Stage Controller, M\"arzh\"auser Wetzlar GmbH \& Co. KG, Germany), a CFI Plan Fluor DL 10X objective, a pco.edge 4.2 Camera (PCO AG, Kelheim, Germany) and a Lumencor Sprectra LED fluorescence lamp. For detection of the Caspase-3/7 and the PI marker, the following filters were used respectively, 474/27 nm, 554/23 (excitation) and 515/35 nm, 595/35 nm (emission). Brightfield out of focus (-20 $\mu$m) images were taken every 10 minutes and in-focus  brightfield and fluorescence images every 30 minutes for 48 hours. Vincristine or Daunorubicin were added after 20 hours from the beginning of the imaging. During the recording samples were kept at a constant temperature of 37\degree C and CO2 using an Okolab heating and CO\textsubscript{2} 2 box (OKOLAB S.R.L., NA, Italy). For the synchronized population, the double thymidine block protocol was followed. Briefly, MOLM-13s cells at the exponentially growing phase were incubated in blocking medium (culture medium supplemented with 2 mM Thymidine (CAS 50-89-5, Calbiochem\textsuperscript{\textregistered}, Germany)) for 24 hours. Cells were then released and incubated in culture medium for 8 hours and finally were incubated in blocking medium for 12 hours. After 2 hours, the synchronized population was seeded in the slide bearing the micro-trenches together with the markers and drugs at the same conditions as the unsynchronized population, and imaged for 24 hours.
 
