@@ -13,11 +13,11 @@
 % float forces latex to place image right "HERE"
 \usepackage{float}
 % math utility package
-%\usepackage{mathtools}
 \usepackage{savesym}
 \savesymbol{implies}
 \savesymbol{overset}
 \usepackage{amsmath}
+\usepackage{mathtools}
 \savesymbol{lneq}
 \usepackage{amssymb}
 \usepackage[]{algorithm2e}
@@ -167,6 +167,8 @@ Following terms are used frequently in this thesis and therefore merit special e
 \textbf{Name} & \textbf{Explanation} \\
 micro-trench & Single unit of micro-trench inside a well \\
 wafer & The plate where the microtrench is manufactured on\\
+well & Macro-containment where wafer is located, usually part of larger wells\\
+& installation (2 by 4 wells in our case).\\
 slice & An image \\
 stack & An ordered sequence of images (usually coming from the same channel) \\
 channel & A connection between data source (camera) and storage. Images coming\\
@@ -427,18 +429,17 @@ In normal chemotherapeutic regime, both Vincristine and Daunorubicin are prescri
   \caption{}
   \label{fig:dauno_mechanism}
 \end{subfigure}
-\caption{(a) Molecular structure of Daunorubicin. (b) Two anthracyclines intercalating with DNA double helix. (c) Schematic diagram of Daunorubicin's mechanism of action. From left to right: daunorubicin induce reactive oxygen species (ROS) which damage the DNA. Daunorubicin interfers with DNA by (1) covalently crosslinking with DNA mediated by formaldehyde and (2) intercalating DNA double helix. Daunorubicin also inhibits Topoisomerase II which prevents DNA supercoil's relaxation. Not shown in image: daunorubicin removes histone (shown in yellow in image) which disrupt epigenetic regulations. Modified from (Yang et al, 2014 \cite{yang2014doxorubicin}).}
-\label{fig:daunos}
+\caption{(aonoaunos}
 \end{figure}
 
 \subsection{Cell death signal}
 \label{subsection:cell_death_signal}
 
-As mentioned in Subsection \ref{subsection:treatment}, the introduction of cancer treatment disrupts mitotic cell activities which in turn activates cell death pathways. To 
-
-%TODO expand
+As mentioned in Subsection \ref{subsection:treatment}, the introduction of cancer treatment disrupts mitotic cell activities which in turn activates cell death pathways. Two biochemical signals are selected to observe cell death caused by the disruption of mitotic process: %Caspase3/7 and Propium Iodide (PI).
 
 \subsubsection*{Caspase 3/7}
+
+Caspase 3 and 7 are both known as executioner Caspases in programmed cell death pathways \cite{alberts2017molecular}.
 
 %TODO expand
 
@@ -446,7 +447,7 @@ As mentioned in Subsection \ref{subsection:treatment}, the introduction of cance
 
 %TODO expand
 
-2.1.5\subsection{Cell treatments}
+\subsection{Cell treatments}
 \label{subsection:cell_treatments}
 
 Generally, following questions are to be investigated in the experiment:
@@ -899,9 +900,10 @@ To refine the filtering further, iterative correction is applied. First, a quadt
 
 Within smallest square,a local threshold $T_R$ is computed in following way:
 
-$$
+\begin{equation}
 T_R = \frac{\sum g_{x,y} \cdot M_{t, x, y}}{\sum g_{x, y}}
-$$
+\label{eq:local_threshold_rats}
+\end{equation}
 
 If a square only contains noises for example, in which case the $T_r$ filters no point at all as it is too low that no points are removed, the local threshold of the parent square is taken instead (note that the quadree is defined as a tree, see for example the original descrption of quadtree by Finkel and Bentley, 1974 \cite{finkel1974quad}). This step is iterated until a parent square with at least one filtered pixel is reached. Visually, the refining step is equal to filtering out area of an image in which the pixels are mostly noise. In the initial global filtering process, many noisy pixels might not be filtered since happen to have gradients larger than $\lambda \sigma$. Using bottom-up these pixels will be eventually filtered out.
 
@@ -1106,14 +1108,14 @@ This method can be improved by iteratively repeating the calculation of $\langle
 
 \subsubsection*{Laplacian of Gaussian (LoG)}
 
-\subsection*{Parameters}
+\subsubsection*{Parameters}
 
 
 \subsection{Cell tracking}
 
 \subsubsection*{Linear Assignment Problem}
 
-\subsection*{Parameters}
+\subsubsection*{Parameters}
 
 Linear Assignment Problem
 
@@ -1178,7 +1180,7 @@ In this experiment, two cell signals are used as indicator of cell death. %TODO 
 
 \subsection{Support vector machine (SVM)}
 
-In statistical learning theory, an SVM is a construct which, given training set $\mathbf{S} \subset \mathbf{D}$ with,
+In machine learning, an SVM is a construct which, given training set $\mathbf{S} \subset \mathbf{D}$ with,
 
 $$
 \mathbf{S} = \{\mathbf{x_1}, \cdots, \mathbf{x}_{\|\mathbb{S}\|}\}
@@ -1190,47 +1192,142 @@ $$
 \mathbf{T} = \{y_1, \cdots, y_{\|\mathbb{S}\|}\}
 $$
 
-finds a hyperplane that separates the input by its class. Initially proposed by Cortes and Vapnik in 1995\cite{cortes1995support}, the original authors proposed to transform the data $\mathbf{S}$ in a higher dimensional representation so that it is separable by the kernel function $\Phi$, a method known nowadays as \textbf{kernel trick}.
+finds following things,
 
-%TODO put SVM illustration here and more explanation
+\begin{itemize}
+\item A hyperplane that separates the input by its class, so that every point belonging to one class is located on one side of the hyperplane. This hyperplane is, in turn, defined by,
+\item support vectors.
+\end{itemize}
 
-Given separability in higher dimensional representation, the support vector $\mathbf{w}$ can then be solved by solving following optimizing problem, 
+A hyperplane is defined as set of points $\mathbf{x}$ in $\mathbf{S}$ satisfying following criteria,
 
-$$
-min_{\mathbf{w}}\{\|\mathbf{w}\|\}
-$$
+\begin{equation}
+\mathbf{w} \cdot \mathbf{x} - b = 0
+\label{equation:hyperplane}
+\end{equation}
 
-This hard-margin only converges only when the data are linearly separable in mapped space (also known as \textbf{feature space}). This is especially bad since:
+(See Figure \ref{fig:svm}) where $\mathbf{w}$ and $\frac{b}{\| \mathbf{w} \|}$ denote the normal vector to the hyperplane and the distance of the hyperplane from the origin along the normal vector $\mathbf{w}$. For every class $c_i$, the set of of data points satisfyling criteria,
+
+\begin{equation}
+\mathbf{w} \cdot \mathbf{x} - b = c_i
+\label{equation:support_vector}
+\end{equation}
+
+are called support vectors. The distance from the hyperplane to support vectors is thus,
+
+$$\frac{1}{\| \mathbf{w} \|}$$
+
+For two-classes classification, the classes are conventionally annotated as $-1$ and $1$. As the Equations \label{equation:support_vector} suggests, for every point beyond (seen from the perspective of hyperplane) the support vectors of the class $c = -1$, following unequality applies,
+
+\begin{equation}
+\mathbf{w} \cdot \mathbf{x} - b < -1
+\label{equation:svm_class_1}
+\end{equation}
+
+the analogous applies to the class $c = 1$,
+
+\begin{equation}
+\mathbf{w} \cdot \mathbf{x} - b > 1
+\label{equation:svm_class_2}
+\end{equation}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{images/svm}
+\caption{Illustration of support vector machine in 2D. For black class there is one hyperplane-definining point (marked with grey margin) while for white class there are two (marked with bold black margin). The support vector $\mathbf{w}$ is maximized for each class.}
+\label{fig:svm}
+\end{figure}
+
+Following large margin principle \cite{vapnik1964note, murphy2012machine}, an SVM tries to find support vectors that maximize $\| \mathbf{w} \|$. Given separability of the training data, the support vector $\mathbf{w}$ can then be solved by solving following optimizing problem, 
+
+\begin{equation*}
+\begin{aligned}
+& \underset{\mathbf{
+w}}{\text{minimize}}
+& & \| \mathbf{w}\| \\
+& \text{subject to}
+& & y_i(\mathbf{w} \cdot \mathbf{x}_i - b \leq 1) \text{ for } i = 1, \cdots \| \mathbf{S} \|.
+\end{aligned}
+\label{eq:svm_hard_margin}
+\end{equation*}
+
+This hard-margin only converges only when the data are linearly separable in mapped space (also known as \textbf{feature space}). This is especially bad since many problems are not linearly separable in their original space. There are two fundamentals way of relaxing this problem to enable classification using SVM:
+
+\begin{itemize}
+\item Relaxation of the definition of SVM by allowing data points to be misclassified.
+\item Blowing up the input space into sufficiently high dimensional features using kernel trick.
+\end{itemize}
+
+\subsubsection*{Relaxation of SVM}
+
+A relaxation of above explained problem is known as soft margin SVM or $\xi$-SVM \cite{cortes1995support}. The problem allows misclassification of some training data. In SVM, misclassification occurs when a data point belonging to a certain class $c_j$ is located \textbf{not} in the area defined by the margin $\mathbf{w} x_{c_j} = c_j$ for class $c_j$.
+
+The problem is thus reduced to minimizing following term,
+
+\begin{equation}
+\left[\frac{1}{n} \sum_{i=1}^{\|\mathbf{S}\|} \max\left(0, 1 - y_i(\mathbf{w} \cdot \mathbf{x_i} - b)\right) \right] + \lambda\| w \|^2
+\label{eq:soft_margin_svm_term}
+\end{equation}
+
+The term inside of summation is called \textbf{classification error}. For correctly classified class we have $\mathbf{w} \cdot \mathbf{x}_i - b \leq -1$ and $\mathbf{w} \cdot \mathbf{x}_i - b \geq 1$ for $c_i = -1$ and $c_i = 1$ respectively, i.e. the summation term is $0$ for every correctly classified data point. The coefficient $\lambda$ is regularization coefficient which penalizes the magnitude of normal vector $\mathbf{w}$. Note that the higher the dimension of $\mathbf{w}$ the larger the penalty is. This is important for next part on \textbf{kernel methods}.
+
+Minimizing Term \ref{eq:soft_margin_svm_term} is equal to optimizable with differentiable objective function \cite{nocedal2006numerical}. We can for example introduce a variable $\zeta_i$ defined as,
+
+\begin{equation}
+\zeta_i = \max(0, 1 - y_i(\mathbf{w} \cdot \mathbf{x}_i - b))
+\label{eq:svm_zeta}
+\end{equation}
+
+This can be written as $y_i(\mathbf{w} \cdot \mathbf{x}_i - b) \geq 1 - \zeta_i$. Geometrically this is the maximum distance of a wrongly classified data point from the support vector. Using Definition \ref{eq:svm_zeta} we can reduce optimization posed in Term \ref{eq:soft_margin_svm_term} to,
+
+\begin{equation*}
+\begin{aligned}
+& \underset{\mathbf{
+w}}{\text{minimize}}
+& & \frac{1}{\| \mathbf{S} \|} \sum_{i=1}^{\| \mathbf{S} \|} \zeta_i + \lambda \| \mathbf{w} \|^2 \\
+& \text{subject to}
+& & y_i (\mathbf{w} \cdot \mathbf{x}_i - b) \leq 1 - \zeta_i \\
+& \text{and} && \zeta_i \geq 0 \text{ for all } i.
+\end{aligned}
+\end{equation*}
+
+\subsubsection*{Kernel method}
+
+As mentioned before, the optimization problem posed Subsection \ref{eq:svm_hard_margin} converges only in the case of linear separability of training data. While this mostly is not the case, Vapnik and Cortes \cite{cortes1995support} proposed the so-called \textbf{kernel trick}. It utilizes a kernel function $\Phi$ which maps the training set into high dimensional space representation. Essentially, a kernel function $\Phi: \mathbb{R} \times \mathbb{R} \rightarrow \mathbb{R}^+$ is a symmetric and non-negative function following the criteria by Mercer \cite{mercer1909functions} defining it as, among others, general measure of similarity between two vectors.
+
+In our case, we focus on two very well-known examples of kernel function, \textbf{the polynomial kernel function of order n}, defined as,
+
+\begin{equation}
+\Phi_{RBF}(\mathbf{x}_i, \mathbf{x}_j) = \left(\mathbf{x}_i^T \mathbf{x}_j + r \right)^n \text{ with } r > 0
+\label{eq:svm_rbf}
+\end{equation} 
+
+and the \textbf{radial basis function (RBF)}, defined as,
+
+\begin{equation}
+\Phi_{RBF}(\mathbf{x}_i, \mathbf{x}_j) = exp\left(\frac{\| \mathbf{x}_i - \mathbf{x}_j \|^2}{2 \sigma^2}\right)
+\label{eq:svm_rbf}
+\end{equation}
+
+In both examples we can observe the assumed dimensionality of target feature space. A polynomial kernel function of order n maps the training data to $n$-dimensional feature  space. Thus, blowing up the training data into higher dimensional requires the explicit assignment of a very high $n$ value. The  radial basis function on the other hand does not assume any dimensionality (or rather, it assumes \textit{unbounded} dimensionality) as the Gaussian function used only assumes the input vectors $\mathbf{x}_i$ and $\mathbf{x}_j$ to be of the same dimensionality. 
+
+While assuming very high/unbounded dimensionality seems convenient at the start, this is not very straightforward, since:
 
 \begin{itemize}
 \item Given a non-powerful kernel function $\Phi$ that only maps the input into bounded number of dimension, the optimization problem won't converge.
 \item Given a powerful kernel function $\Phi$ capable of blowing up the dimension to very high dimensions (see the part about kernel function later on) the kernel might settle for unnecessarily sparse dimensional reducing the generalizability of the problem.
 \end{itemize}
 
-A relaxation of this problem is known as soft margin SVM or $\xi$-SVM. The problem allows misclassification of some training data. In SVM, misclassification occurs when a data point belonging to a certain class $c_j$ is located in the area defined by the margin $\mathbf{w} x_{c_j} = c_j$ for class $c_j$. The error tolerance $\xi$ is thus defined as the proportion of training data that are wrongly classified $\mathbf{S}_w \in \mathbf{S}$ to the entire training data $\mathbf{S}$,
+\subsubsection*{Regularization}
 
-$$
-\xi = \frac{\|\mathbf{S}_w\|}{\|\mathbf{S}\|} 
-$$
+One solution is too introduce regularization. As already shown in Term \ref{eq:soft_margin_svm_term}, we can add a regularization term such as, 
 
-THe problem is thus reduced to minimizing following term,
+\begin{itemize}
+\item $L_1$-regularization: $\lambda \| \mathbf{w} \|^2$ \cite{park2007l1}, and
+\item $L_2$-regularization (Tikhonov regularization): $\lambda \| \mathbf{w} \|$ \cite{tikhonov1977solutions}.
+\end{itemize}
 
-$$
-\left[\frac{1}{n} \sum_{i=1}^{\|\mathbf{S}\|} \max\left(0, 1 - y_i(\mathbf{w} \cdot \mathbf{x_i} - b)\right) \right] + \lambda\| w \|^2
-$$
-
-Reducing above term we get then the optimization problem of %TODO derive reduction
-
-
-$$
-min_{\mathbf{w}, \epsilon} \{\frac{1}{2} \mathbf{w}^T \mathbf{w} + \lambda \sum_{i=1}^{\|S\|} \xi_i \}
-$$
-
-subject to $y_i(\mathbf{w}^T \Phi(S_i) + \epsilon) \leq 1 - \xi_i$ and $\xi_i \leq 0$.
-
-%TODO continue
-
-\subsubsection*{Kernel method}
+Adding regularization will control against overfitted model by penalizing higher dimensional hyperplane $\mathbf{w}$ as it the error will get blown up the higher dimensional, and its error minimizing hyperplane, are chosen.
 
 \subsection{Decision trees  (DTs)}
 
