@@ -1181,16 +1181,20 @@ In this experiment, two cell signals are used as indicator of cell death. %TODO 
 In statistical learning theory, an SVM is a construct which, given training set $\mathbf{S} \subset \mathbf{D}$ with,
 
 $$
-\mathbf{S} = \{\mathbf{x_1}, \cdots, \mathbf{x}_{\|S\|}\}
+\mathbf{S} = \{\mathbf{x_1}, \cdots, \mathbf{x}_{\|\mathbb{S}\|}\}
 $$
 
 and corresponding target class,
 
 $$
-\mathbf{T} = \{y_1, \cdots, y_{\|S\|}\}
+\mathbf{T} = \{y_1, \cdots, y_{\|\mathbb{S}\|}\}
 $$
 
-finds a hyperplane that separates the input by its class. Initially proposed by Cortes and Vapnik in 1995\cite{cortes1995support}, the original authors proposed to transform the data $\mathbf{S}$ in a higher dimensional representation so that it is separable by the kernel function $\Phi$, a method known nowadays as \textbf{kernel trick}. Given separability in higher dimensional representation, the support vector $\mathbf{w}$ can then be solved by solving following optimizing problem, 
+finds a hyperplane that separates the input by its class. Initially proposed by Cortes and Vapnik in 1995\cite{cortes1995support}, the original authors proposed to transform the data $\mathbf{S}$ in a higher dimensional representation so that it is separable by the kernel function $\Phi$, a method known nowadays as \textbf{kernel trick}.
+
+%TODO put SVM illustration here and more explanation
+
+Given separability in higher dimensional representation, the support vector $\mathbf{w}$ can then be solved by solving following optimizing problem, 
 
 $$
 min_{\mathbf{w}}\{\|\mathbf{w}\|\}
@@ -1200,18 +1204,29 @@ This hard-margin only converges only when the data are linearly separable in map
 
 \begin{itemize}
 \item Given a non-powerful kernel function $\Phi$ that only maps the input into bounded number of dimension, the optimization problem won't converge.
-\item Given a power kernel function $\Phi$ capable of blowing up the dimension to very high dimensions (see the part about kernel function later on) the kernel might settle for unnecessarily sparse dimensional reducing the generalizability of the problem.
+\item Given a powerful kernel function $\Phi$ capable of blowing up the dimension to very high dimensions (see the part about kernel function later on) the kernel might settle for unnecessarily sparse dimensional reducing the generalizability of the problem.
 \end{itemize}
 
-A relaxation of this problem is known as $\xi$-SVM, defined as following optimization problem:
+A relaxation of this problem is known as soft margin SVM or $\xi$-SVM. The problem allows misclassification of some training data. In SVM, misclassification occurs when a data point belonging to a certain class $c_j$ is located in the area defined by the margin $\mathbf{w} x_{c_j} = c_j$ for class $c_j$. The error tolerance $\xi$ is thus defined as the proportion of training data that are wrongly classified $\mathbf{S}_w \in \mathbf{S}$ to the entire training data $\mathbf{S}$,
 
-subject to $y_i(\mathbf{w} \cdot \mathbf{x}_i) \leq 1 \text{ for } i = 1, \cdots \|\mathbf{S}\|$
+$$
+\xi = \frac{\|\mathbf{S}_w\|}{\|\mathbf{S}\|} 
+$$
+
+THe problem is thus reduced to minimizing following term,
+
+$$
+\left[\frac{1}{n} \sum_{i=1}^{\|\mathbf{S}\|} \max\left(0, 1 - y_i(\mathbf{w} \cdot \mathbf{x_i} - b)\right) \right] + \lambda\| w \|^2
+$$
+
+Reducing above term we get then the optimization problem of %TODO derive reduction
+
 
 $$
 min_{\mathbf{w}, \epsilon} \{\frac{1}{2} \mathbf{w}^T \mathbf{w} + \lambda \sum_{i=1}^{\|S\|} \xi_i \}
 $$
 
-subject to $y_i(\mathbf{w}^T \Phi(S_i) + \epsilon) \leq 1 - \xi_i$ and $\xi_i \leq 0$,
+subject to $y_i(\mathbf{w}^T \Phi(S_i) + \epsilon) \leq 1 - \xi_i$ and $\xi_i \leq 0$.
 
 %TODO continue
 
