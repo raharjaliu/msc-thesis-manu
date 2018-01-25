@@ -23,6 +23,7 @@
 \usepackage[]{algorithm2e}
 \usepackage{lscape}
 \usepackage{graphicx}
+\usepackage{hyperref}
 \geometry{a4paper,left=2.5cm,right=2.5cm, top=2.5cm, bottom=3cm}
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
 
@@ -1086,6 +1087,7 @@ I^{c_G}(x, y) = \frac{I(x, y)}{I^{c_G}(x, y)}
 Visually, the method can be understood as low pass filter. It removes the higher frequency 2D signals, i.e. the value with high local variance, resulting with an image with lower fidelity and local variance.
 
 \subsection{Contrast limited adaptive histogram equalization (CLAHE)}
+\label{subsection:clahe}
 
 CLAHE, initially developed by Karel Zuiderveld in 1994 \cite{zuiderveld1994contras}, is an instance of the class of algorithms called adaptive histogram equalization (AHE) used to improve contrast in an image. An AHE algorithm generally works by transforming each pixel with a transformation function derived from the neighboring region instead of the whole image.  By doing this, an AHE algorithm can count for variation of  brightness and contrasts in areas of the image \cite{pizer1987adaptive}.
 
@@ -1118,6 +1120,7 @@ Figure \ref{fig:clahe} visualizes the step 2, 3 and 4 of the algorithm descripti
 \end{figure}
 
 \subsection{Subtraction by pixel-wise mean intensity}
+\label{subsection:substraction_by_mean}
 
 To substract an RGB image at time $M_t$ by pixel-wise mean intensity $\langle{M}\rangle$, the average intensity for each pixel across all time points is made for a position. For a stack with $n$ images, we can simply define the pixel-wise mean of the $i$-th channel for position $(x, y)$ as follows,
 
@@ -1170,20 +1173,55 @@ This method can be improved by iteratively repeating the calculation of $\langle
 \end{algorithm}
 
 \subsection{Cell recognition}
+\label{subsection:cell_recognition}
 
-The so-called Laplacian of Gaussian (LoG) method is used to recognize cell in a field of view, 
-
-%TODO expand
+Due to the cells' rotund shape, the \textbf{blob detection} family of algorithm is well-suited for recognizing cells. In our pipeline, we use the so-called Laplacian of Gaussian (LoG) method.
 
 \subsubsection*{Laplacian of Gaussian (LoG)}
 
-%TODO expand
+Laplacian of Gaussian (LoG), also known as Marr-Hildreth-Opreator, is among the first and still the most popular method for detecting blob. It is characterized by applying the second derivative of $\sigma$-scaled Gaussian to detect a blob in an image.
 
-\subsubsection*{Parameters}
+To derive the method we first consider a 2-dimensional Gaussian kernel function,
 
-%TODO expand
+\begin{equation}
+G(x,y) = \frac{1}{{2\pi \sigma^2}} e^{-\frac{x^2 + y^2}{2 \sigma^2}}
+\label{equation:gauss_2d_log}
+\end{equation}
+
+As the name suggest, the representation of LoG operator is obtained by applying the Laplace-Operator on the Gaussian,
+
+$$
+L(x, y) = \Delta G(x, y)
+$$
+
+This can be expanded into,
+
+\begin{equation*}
+\begin{aligned}
+L(x, y) & = \frac{\partial^2 G(x, y)}{\partial x^2} + \frac{\partial^2 G(x, y)}{\partial y^2} \\ 
+L(x, y) & = - \frac{1}{\pi \sigma^4} e^{-\frac{x^2 + y^2}{2\sigma^2}} \left( 1 - \frac{x^2 + y^2}{2 \sigma^2}\right)
+\end{aligned}
+\label{eq:svm_hard_margin}
+\end{equation*}
+
+Figure \ref{fig:pixdiff} shows the representation of LoG operator in 2D. Notice the inverse hat characteristic giving it the nickname \textbf{Mexican hat operator}.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{images/log_operator}
+\caption{A LoG operator. Notice the lack of dimension in an operator as it transforms an image (in one space) into another image (still in the same space).}
+\label{fig:pixdiff}
+\end{figure}
+
+The operator is then applied on two dimensional matrix of intensity image. To get maximum response from a blob, the zeros of the operator have to be aligned with the circle to detect \cite{marr1980theory}. Figure (TODO: show) shows an example of binary circle with diameter $r$ with the corresponding response from LoG operator on the surface of the circle.
+
+%TODO continue
+
+Applied to pre-processed out-of-focus image, LoG will return response with maxima in the center of cell sizes (see Figure TODO).
 
 \subsection{Cell tracking}
+
+We define
 
 %TODO expand
 
@@ -1409,7 +1447,6 @@ Adding regularization will control against overfitted model by penalizing higher
 
 \chapter{Analytic Pipeline}
 
-%TODO improve figure readability
 %TODO adjust figure references
 %TODO expand chapter
 
@@ -1419,17 +1456,26 @@ In this chapter the image and data analytic pipeline is presented. Each pipeline
 
 To assess single cell characteristics (like its lifetime, time-to-death, division time, daughter cells and other information relating to its time- and generation-dependent cell cycle information), we track all cells in the brightfield channel from the start of the movie, assign cells to individual micro-trenches to e.g. filter out micro-trenches with multiple starting cells, and determine cell death via marker onset in the fluorescent channels.
 
-Figure \ref{fig:pipeline}a shows how the image is sequentially processed from out-of-focus image to cell trees information.
+Figure \ref{fig:pipeline1}a shows how the image is sequentially processed from out-of-focus image to cell trees information.
 
 \section{Single cell tracking in the brightfield channel}
 
-To identify and track single cells from movie start, each out-of-focus brightfield image is processed in the following way (see Figure \ref{fig:pipeline}a for pipeline visualization): 
+%TODO add references
+%TODO correct wording
+
+To identify and track single cells from movie start, each out-of-focus brightfield image is processed in the following way (see Figure \ref{fig:pipeline1}a for pipeline visualization): 
 
 \begin{itemize}
-\item First, a Gaussian blur \ref{zuiderveld1994contrast} with a large radius of 50 pixel is applied to each brightfield image (Fig. S1b) to estimate its individual background and identify e.g. gradients at the edges of the imaged area (Fig. S1c) 
-\end{itemize}
+\item First, a Gaussian blur (Zuiderveld, 1994 \cite{zuiderveld1994contrast} and also Subsection \ref{subsection:gaussian_blur} of Data Methods chapter) with a large radius of 50 pixel is applied to each brightfield image (Figure \ref{fig:pipeline1}b) to estimate its individual background and identify e.g. gradients at the edges of the imaged area (Figure \ref{fig:pipeline1}c). Afterwards, we correct the original image by dividing through this background image (Figure \ref{fig:pipeline1}d)
 
-. We correct the original image by dividing through this background image (Fig. S1d). Next, we normalize the local contrast of each image in one position \ref{kittler1986minimum} to separate foreground from background. To reduce noise from micro-trench margins in the foreground (Fig. S1e), we calculate the pixel-wise intensity average from all timepoints of one position (Fig. S1f) and subtract this from each image to generate a binary image with mainly cells in the foreground (Fig. S1g).  This creates a mask of the cells. Therein, single cells are recognized using the Laplacian of Gaussian detector in the Fiji TrackMate plugin \ref{tinevez2017trackmate} (Fig. S1h) with a blob diameter of 15 inches and a downsampling factor of 2. The detected cells are concatenated to tracks (Fig S1i) and cellular trees using the Linear Assignment Problem (LAP) tracker\ref{jaqaman2008robust} in TrackMate with a maximal frame-to-frame linking distance of 25 inches, a maximal track segment gap closing distance of 35 inches, a maximal track segment gap closing of 4 frames, and a maximal track segment splitting distance of 25 inches.
+\item Then, we normalize the local contrast of each image in one position (Kittler and Illingworth, 1986 \cite{kittler1986minimum} and Subsection \ref{subsection:clahe}) to separate foreground from background (Figure \ref{fig:pipeline1}e). The method definition can be seen in Subsection \ref{subsection:clahe} of Data and Methods chapter.
+
+\item To reduce noise from micro-trench margins in the foreground (Figure \ref{fig:pipeline1}e), we calculate the pixel-wise intensity average from all timepoints of one position (Figure \ref{fig:pipeline1}f) and subtract this from each image to generate a binary image with mainly cells in the foreground (Figure \ref{fig:pipeline1}g). This creates a mask of the cells. The definition of the method can be seen in \ref{subsection:substraction_by_mean}.
+
+\item Therein, single cells are recognized using the Laplacian of Gaussian detector in the Fiji TrackMate plugin \cite{tinevez2017trackmate} (Figure \ref{fig:pipeline1}h) with a blob diameter of 15 inches and a downsampling factor of 2. See Subsection \ref{subsection:cell_recognition} of Data and Methods chapter for more details on the method.
+
+\item The detected cells are concatenated to tracks (Figure \ref{fig:pipeline1}i) and cellular trees using the Linear Assignment Problem (LAP) tracker\cite{jaqaman2008robust} in TrackMate with a maximal frame-to-frame linking distance of 25 inches, a maximal track segment gap closing distance of 35 inches, a maximal track segment gap closing of 4 frames, and a maximal track segment splitting distance of 25 inches.
+\end{itemize}
 
 \section{Assignment of cells to individual micro-trenches}
 
@@ -1451,8 +1497,8 @@ The image processing pipelines for both brightfield and florescence channels can
     %\includegraphics[width=1.0\textwidth]{Image.eps}
     \includegraphics[height=0.95\textheight]{images/pipeline/01.pdf}
     \caption{Brightfield channel pipeline}
-    \label{fig:pipeline1}
 \end{figure}
+\label{fig:pipeline1}
 \end{landscape}
 
 \begin{landscape}
@@ -1461,17 +1507,15 @@ The image processing pipelines for both brightfield and florescence channels can
     %\includegraphics[width=0.5\textwidth]{Image.eps}
     \includegraphics[height=\textheight]{images/pipeline/02.pdf}
     \caption{Fluoroscence channel pipeline}
-    \label{fig:pipeline2}
 \end{figure}
+\label{fig:pipeline2}
 \end{landscape}
-
-\section{Pipeline description}
-
-\subsection{Pipeline specification}
 
 \section{Implementation and availability}
 
-The image and tracking data is combined and post-processed using Python scripts utilizing OpenCV\ref{bradski2008learning}, NumPy\ref{walt2011numpy}, pandas\ref{mckinney2010data} and Matplotlib \ref{hunter2007matplotlib}, and the Jython and Trackmate \ref{tinevez2017trackmate, pedroni2002jython} plugin in Fiji \ref{schindelin2012fiji}. Our code is available at https://github.com/raharjaliu/MA/tree/master/source.
+The image and tracking data is combined and post-processed using Python scripts utilizing OpenCV\cite{bradski2008learning}, NumPy \cite{walt2011numpy}, pandas \cite{mckinney2010data} and Matplotlib \cite{hunter2007matplotlib}, and the Jython and Trackmate \cite{tinevez2017trackmate, pedroni2002jython} plugin in Fiji \cite{schindelin2012fiji}. The Python package scikit-learn is used for training and testing both support vector machine and random forest \cite{scikit-learn}. Our code is available at:
+
+\href{https://github.com/raharjaliu/MA/tree/master/source}{https://github.com/raharjaliu/MA/tree/master/source}.
 
 \chapter{Results}
 
