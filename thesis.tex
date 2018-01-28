@@ -298,11 +298,10 @@ Before the runaway advance of deep learning methods in the last years, object an
 
 %TODO fill
 
-\section{Fully automated pipeline for single-cell analysis}
+\section{Comparison with other methods}
 
-\subsection{Comparison with other methods}
-
-\subsubsection*{Cell death determination}
+\subsection{Cell death determination}
+\label{subsection:comp_cell_death_determination}
 
 Measuring cell death is a crucial part of the experiment, as the reliable determination of it is the basis of most analysis in this thesis. There are several way to measure cell deaths with varying complexity and accuracy. Each method contains certain assumptions of cell death.\\
 
@@ -1048,7 +1047,7 @@ Subfigures \ref{fig:rats} and \ref{fig:fill_holes} show the input and output of 
   \label{fig:fill_holes}
 \end{subfigure}%
 
-\caption{The upper left corner of position 41's in-focus-image recording at time $t=0$: (a) The original in-focus image of the upper left corner of position 41. (b) The view of the same area as (a) after applying brightness and contrast adustment. (c) The view of the same area after applying RATS on image in (b) showing the contour of micro-trenches in the area. (d) The contours filled with neutral color (black). Note that some micro-trenches are not filled as they are open and thus topologically not the outernmost contours.}
+\caption{The upper left corner of position 41's in-focus-image recording at time $t=0$: (a) The original in-focus image of the upper left corner of position 41. (b) The view of the same area as (a) after applying brightness and contrast adustment. (c) The view of the same area after applying RATS on image in (b) showing the contour of micro-trenches in the area. (d) The contours filled with neutral color (black). Note that some micro-trenches are not filled as they are open and thus topologically not the outernmost contours. Scale bar on the uppermost figure is $100 \mu M$ long.}
 
 \label{fig:trench_masking}
 \end{figure}
@@ -1120,16 +1119,14 @@ Figure \ref{fig:clahe} visualizes the step 2, 3 and 4 of the algorithm descripti
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.7\textwidth]{images/clahe}
-\caption{Desription of CLAHE. Taken from Pizer, Zuiderfeld et al, 1987 \cite{pizer1987adaptive}  Note the  smoothen CDF function (lower part of the figure) after reassigning some pixels with pixel values above the clipping value.
- \textit{Creative Commons courtesy of anonymous.}}
+\caption{Desription of CLAHE. Taken from Pizer, Zuiderfeld et al, 1987 \cite{pizer1987adaptive}  Note the  smoothen CDF function (lower part of the figure) after reassigning some pixels with pixel values above the clipping value.}
 \label{fig:clahe}
 \end{figure}
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{images/clahe_before_after}
-\caption{The upper left corner of position 43's in-focus-image recording at time $t=0$: before (left) and after (right) the application of CLAHE on the image.
- \textit{Creative Commons courtesy of anonymous.}}
+\caption{The upper left corner of position 43's in-focus-image recording at time $t=0$: before (left) and after (right) the application of CLAHE on the image. Scale bar on the left figure is $100 \mu M$ long.}
 \label{fig:clahe_before_after}
 \end{figure}
 
@@ -1170,7 +1167,7 @@ In the context of single-cell enclosure of micro-trench, this means that in the 
 
 On the other hand, applying the method on area with static objects such as micro-trench margin will reduce each pixel of the area with exactly the same intensity value as it barely changes during the experiment. This will nullify the static parts to large extent.
 
-This method can be improved by iteratively repeating the calculation of $\langle M \rangle$. This will periodically static parts or static parts that abruptly moved (due to sudden shift in the well with regard to the camera for example). We call this algorithm \textbf{k-substraction by pixel-mean intensity}:
+This method can be improved by iteratively repeating the calculation of $\langle M \rangle$. This will remove periodically static parts or static parts that abruptly moved (due to sudden shift in the well with regard to the camera for example). We call this algorithm \textbf{k-substraction by pixel-mean intensity}:
 
 \begin{algorithm}[H]
  \KwData{$M_t$}
@@ -1345,8 +1342,8 @@ Since some pixels are lost from the field of view during a shift, only a subset 
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.5\textwidth]{images/search_grid}
-\caption{Search grid shift for Position 26. The search was conducted for shift between the last time point before and the first time point after the drugs treatment. The minimum is marked with thick black dot, which is returned after every grid-search call as inferred shift. In the position, the shift was inferred to be 8 pixels upwards and 5 pixels leftwards. Notice the repeating pattern of relatively favorable configurations after approximately 50 horizontal and 100 vertical pixels caused by lattice nature of the trenches.}
+\includegraphics[width=0.6\textwidth]{images/search_grid}
+\caption{Search grid shift for Position 26. The search was conducted for shift between the last time point before and the first time point after the drugs treatment. The minimum is marked with thick black dot, which is returned after every grid-search call as inferred shift. In the position, the shift was inferred to be 8 pixels upwards and 5 pixels leftwards. Note the repeating pattern of relatively favorable configurations after approximately 50 horizontal and 100 vertical pixels caused by lattice nature of the micro-trenches.}
 \label{fig:searchgrid}
 \end{figure}
 
@@ -1373,13 +1370,45 @@ The algorithm for shift inference is available in Appendix \ref{appendix:algo}.
 
 \subsection{Cell death signal determination}
 
-As mentioned in previous parts, two cell death signals are deployed in this experiment: the PI and Caspase 3/7. As mentioned in 
+As mentioned in Subsection \ref{subsection:comp_cell_death_determination}, two cell death signals are deployed in this experiment: PI and Caspase 3/7. Recall that, as mentioned Subsection \ref{subsection:cell_treatments}, two kinds of images were captured during the experiment: brightfield and fluorescent images. There are in turn two channel of fluorescent images captured: red and green.
 
-%TODO continue
+The fluorescent channels can thus be exploited to detect cell deaths. As mentioned in Subsection \ref{subsection:treatment}, the deployment of cancer treatment regimes interfere with mitotic activities of the cells leading to programmed cell death. This in turn is indicated by the activation of PI and Caspase 3/7 paths. The bright emission is thereafter visible after a while in the location of cells. Figure \ref{fig:onset_samples} depicts example emission for one position in green (Figure \ref{fig:caspase_onset_sample})and red (Figure \ref{fig:pi_onset_sample}) florescent channels.
+
+Knowing at at one point the interference in cell mitotic process induces emission of PI or Caspase fluorescent signals (see $t_{PMP}$ in Figure \ref{fig:cell_death_determination_example} and the figure itself in general), finding the cell death time is reduced to simply finding the time point in which the blob of the cell in fluorescent channels is detected. Take for example the Figure \ref{fig:caspase_onset_sample}. Here we see that on the upper right side of the image there are at least two blobs visible in the naked eye. We can thus do similar pre-processing step as that of brightfield images followed by image detection to detect at which time the onset happened (see Figure \ref{fig:pipeline2}).
 
 
-%TODO rework subsection
-%TODO move to review section of Summary and Outlook
+As described in 
+
+\begin{figure}[H]
+
+\centering
+
+\begin{subfigure}{0.5\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{images/caspase_onset_sample}
+  \caption{}
+  \label{fig:caspase_onset_sample}
+\end{subfigure}%
+~
+\begin{subfigure}{0.5\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{images/pi_onset_sample}
+  \caption{}
+  \label{fig:pi_onset_sample}
+\end{subfigure}%
+
+\caption{Example of images captured in (a) green and (b) red fluorescent channels. Upon programmed cell death, the bright emission is detected in corresponding channels coming from the activation of PI and Caspase 3/7 expression paths.}
+
+\label{fig:onset_samples}
+\end{figure}
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{images/cell_death_detection}
+\caption{Illustration of annotation of of PI death signal emission as cell death time ($t_{PMP}$). (a) shows how the total emission intensity will look like if it's being tracked (image taken for one related experiment of Radler's lab). (b) The hypothetical progression of total intensity of \textit{the cell on the left} upon treatment with some approximate time points representing various cell phases marked with $\mathbf{t_1}$, $\mathbf{t_2}$, $\mathbf{t_3}$ and $\mathbf{t_4}$. Initially, the left cell behaves normally upon treatment (c/$\mathbf{t_1}$). Only upon reaching the mitotic phase, the addition of Vincristine/Daunorubicin disrupts the process. Failure of entering the next phase sets the cell onto programmed cell death (d/$\mathbf{t_2}$). As the programmed cell death process advances, the PI emission became stronger (e/$\mathbf{t_3}$). At this point, the cel recognition will recognize the cell death signal as cell and thus represents cell death annotation. After a while, the emission will keep going on after a while (f/$\mathbf{t_3}$). We are, however, only interested with the onset time ($t_{PMP}$) to determine the cell death time. Note especially the difference of onset time between the left and right cells. At $\mathbf{t_2}$}, the left cell has begun programmed cell death process while the right cell has not. This difference in time-to-death between sisters is one of the focuses of the project.
+\label{fig:cell_death_determination_example}
+\end{figure}
 
 \subsection{Support vector machine (SVM)}
 \label{subsection:svm}
@@ -1632,7 +1661,8 @@ II. Quantitative Analysis
 
 \section{Fully automated microfluidics pipeline}
 
-\section{Fully automated image analysis pipeline}
+\section{Fully automated pipeline for single-cell analysis}
+
 
 Improvements in analysis pipeline:
 
