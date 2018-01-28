@@ -298,6 +298,20 @@ Before the runaway advance of deep learning methods in the last years, object an
 
 %TODO fill
 
+\section{Fully automated pipeline for single-cell analysis}
+
+\subsection{Comparison with other methods}
+
+\subsubsection*{Cell death determination}
+
+Measuring cell death is a crucial part of the experiment, as the reliable determination of it is the basis of most analysis in this thesis. There are several way to measure cell deaths with varying complexity and accuracy. Each method contains certain assumptions of cell death.\\
+
+For example, determining cell death by cell movement assumes death of a cell if no movement beyond random flux is observed in certain amount of time. This obviously has certain drawbacks, such as when the observation is done in non-static environment. Moreover, defining the limit of the random flux, above which a given cell is assumed to actively move, is not a trivial task. Some kind of gold standard for a given cell line and environment has to be established manualy, which is very time consuming. This fact is again made even more complicated by the fact that many cells show different movement pattern upon introduction of treatment. It is well known that some cells tend to move faster or slower under stress, the situation many cancerous cells in our experiment will experience upon addition of cancer drugs treatment \cite{pienta1991effects, fenteany2003small, ruocco2012suppressing}.\\
+
+The second method is using cell size. During apopotosis, the cells would shrink. Given It is known that cell size %TODO continue.
+
+
+
 \section{The structure of the thesis}
 
 %TODO fill
@@ -1177,7 +1191,7 @@ This method can be improved by iteratively repeating the calculation of $\langle
 
 Due to the cells' rotund shape, the \textbf{blob detection} family of algorithm is well-suited for recognizing cells. In our pipeline, we use the so-called Laplacian of Gaussian (LoG) method.
 
-\subsubsection*{Laplacian of Gaussian (LoG)}
+\subsubsection*{Laplacian of Gaussian (LoG) detector}
 
 Laplacian of Gaussian (LoG), also known as Marr-Hildreth-Opreator, is among the first and still the most popular method for detecting blob. It is characterized by applying the second derivative of $\sigma$-scaled Gaussian to detect a blob in an image.
 
@@ -1220,20 +1234,95 @@ The operator is then applied on two dimensional matrix of intensity image. To ge
 Applied to pre-processed out-of-focus image, LoG will return response with maxima in the center of cell sizes (see Figure TODO).
 
 \subsection{Cell tracking}
+\label{subsection:cell_tracking}
 
-We define
+To track cell, the Linear Assignment Problem (LAP) tracker, by Jaqaman et al, 2018, is used. The method builds on the cell recognition method explained in Subsection \ref{subsection:cell_recognition}.
 
-%TODO expand
+\subsubsection*{Linear Assignment Problem (LAP) framework of cell tracking}
 
-\subsubsection*{Linear Assignment Problem}
+The algorithm follows closely the case of linear assignment problem in bipartite graph. Given a bipartite graph $\mathcal{G}_b:= {\mathcal{G}_1, \mathcal{G}_2}$ and assignment cost function 
+$c(v_i, v_j)$ for $v_i \in \mathcal{G}_1$ and $v_i \in \mathcal{G}_2$, find a bijection $f_{\mathcal{G}_b} : \mathcal{G}_1 \rightarrow \mathcal{G}_2$ so that the total cost function:
 
-%TODO expand
+\begin{equation}
+\sum_{v_i \in \mathcal{G}_1} c(v_i, f_{\mathcal{G}_b}(v_i))
+\label{eq:lap_standard}
+\end{equation}
 
-\subsubsection*{Parameters}
 
-%TODO expan
+is minimized. As seen in Equation \ref{eq:lap_standard}, the cost function and its corresponding constraint (bipartite assignment) is linear. Hence, the "linear" part of the assignment problem.
+
+We can frame our cell tracking problem in a variant of linear assignment problem. Recall that, for each slice, a set of blobs representing cells are detected. To track cells, each blob in a slice has ot be connected with a blob in proceeding and succeeding slices (except in the case where a cell died).
+
+Revisiting Subsection \ref{subsection:cell_recognition}, it is obvious that upon cell  detection the next step to track single cell movements in a stack is to assign to detected blobs $\mathcal{G_i}$ at time $t_i$ with the blobs detected at time $t_{i + 1}$, $\mathcal{G}_{i + 1}$ for $i \in [0, n - 1]$. To do that, first we define particle-to-particle cost function $c$. Jaqaman and his colleagues \cite{jaqaman2008robust} that, due to Brownian nature of cell movement, the square distance of blobs or its derivation sshould be used as cost function: 
+
+\begin{equation}
+d(v_i, v_j) = \| v_i - v_j\|^2_2
+\label{eq:particle_cost_function}
+\end{equation}
+
+The algorithm is roughly divided into two main steps:
+
+\begin{itemize}
+\item  Creation of track segments from frame-to-frame blob linking.
+\item  Gap closing and cell division inference to achieve closing of the track segments.
+\end{itemize}
+
+Both steps are framed as linear assigned problem. In the first step, two consecutive slices $M_i$  and $M_{i+1}$ are optimized for the links. To do that, a $(m + n) \times (n + m)$ matrix $\mathcal{C}$ is created, where $m$ and $n$ refer to the number of detected blobs in $M_u$ and $M_{i + 1}$ respectively. The matrix contains four quadrants:
+
+\begin{itemize}
+\item The upper left quadrant ($m \times n$ elements) contains the costs of linking blobs in $M_i$ to those in $M_{i + 1}$, also known as \textit{segment linking cost}.
+\item The upper right quadrant ($m \times m$ elements) contains the costs of not linking blobs in $M_i$ to any blobs in $M_{i + 1}$, also known as \textit{segment stop cost}.
+\item The lower left quadrant ($n \times n$ elements) contains the costs of of not linking blobs in $M_{i + 1}$ to any blobs in $M_i$, also known as \textit{segment start cost}.
+\item The lower right quadrant ($n \times m$ elements) is auxiliary matrix used by LAP framework as formalism for its algorithm. The matrix is created by transposing the upper right left quadrant and replacing all non-infinity cost with minimal cost. 
+\end{itemize}
+
+The segment linking cost (upper left quadrant) is calculated as follows:
+
+\begin{gather*}
+c(v_k, v_l) =
+\begin{cases}
+  (d(v_k, v_l) \cdot \left(1 + \sum_{\mathbb{f}} \left(3 W_{\mathbb{f}} \frac{ f_{\mathbb{f}1} - f_{\mathbb{f}2} }{f_{\mathbb{f}1} + f_{\mathbb{f}2}} \right)\right)^2 & \text{if } d(v_k, v_l) \leq d_{max} \\    
+  \infty & \text{else}  
+\end{cases}
+\end{gather*}
+
+where $\mathbb{f}$ refers to each feature penalty and $W_{\mathbb{f}}$, $f_{\mathbb{f}1}$ and $f_{\mathbb{f}2}$ refer to the feature penalty factor, the value of feature $\mathbb{f}$ of $v_k$ and the value of feature feature $\mathbb{f}$ of $v_l$ respectively. Note that:
+
+\begin{itemize}
+\item If the distance is larger than the pre-defined maximum distance, then the link is forbidden. A blocking cost ($\infty$) is assigned between two blobs.
+\item If no penalty feature is introduced then the cost is simply squared distance of two blobs.
+\end{itemize}
+
+The non-linking cost (upper right and lower left quadrants) is calculated as follows:
+
+\begin{gather*}
+c(v_k, v_l) =
+\begin{cases}
+  1.05 \cdot \mathbb{C} & \text{if } v_k = v_l \\
+  \infty & \text{else}  
+\end{cases}
+\end{gather*}
+
+where $\mathbb{C}$ is the maximum value of the upper left quadrant of the matrix.
+
+The optimization over the matrix is then solved with Munkers \& Kuhn algorithm \cite{munkres1957algorithms}, which solves the problem in cubic time $\mathcal{O}(n^3)$. The algorithm returns assignment minimizing the sum of the costs.
+
+The interpretation of the cost functions is thus: without any penalty, the optimization problem favors solution which minimizes the squared distance between two blobs. This is in line with previously mentioned assumption of Brownian motion of cells. By adding feature penalties, we aim at favoring linking bobs that are more similar to each other. In brute single particle linking problems, spots are generally all the same, and they only differ by position. However, there is a variety of problems for which these feature penalties can add robustness to the tracking process. In our case for example, the cells might pose several features that change over time depending on the treatment and cell-dependent characteristics (the phenomenon we further investigate using machine learning methods, see Subsections \ref{subsection:svm} and \ref{subsection:rf} and Section \ref{section:ml_results}).
+
+Upon the linking of blobs into track segments, more refinement is then do to achieve globally optimal cell tracks configuration. To do this, three events are considered in our model:
+
+\begin{itemize}
+\item In case of \textit{gap closing} events, the end of a track segment is linked to the start of another track segment.
+\item In case of \textit{splitting} events, the stat of one track segment is linked to non-terminal part of another track segment.
+\end{itemize}
+
+The matrix is created in similar fashion to the cost matrix in the first step, with the details best referenced directly to the article by Jaqaman et al \cite{jaqaman2008robust}. Also similar to the first part is the use of penalty features during segment creation. Unlike the the first part however, the segment merging cost is blocking ($\infty$) if the segments in question are separated by fames larger than pre-defined maximum number of frame gaps.
+
+The optimal solution for the problem is again found by using Munkers \& Kuhn algorithm \cite{munkres1957algorithms}.
 
 \subsection{Shift correction}
+
+%TODO improve subsection
 
 Now, consider a case in which images are shifted in a time-lapsed movie. TODO: explain mechanism. No rotation of camera is assumed, hence there are only two degree of freedoms (vertical and horizontal). Thus, a shift can be defined as a vector movement $\vec{v}$ of all points $x_{i,j} \in M_{t_i}$ in the time-lapse from time $t_i$ to $t_{i+1}$. Given two degrees of freedom and discreteness of the problem due to pixel representation, the task is reduced to finding difference in x- and y-axis ($\delta_x$ and $\delta_y$), so that the difference of transformed pixels at $t_i$ and $t_{i+1}$ are minimized, i.e.:
 
@@ -1271,7 +1360,7 @@ $$
 
 Due to lost pixels around the margin of before and after images, only the overlapping part of both slides are included after the correction. Thus, for an inferred shift of $(\delta_x, \delta_y)$, the new dimension of the images is then $(m - \delta_x) \times (n - \delta_y)$. This change would then propagation to the other time-lapse images to maintain consistency of the images.\\
 
-Ideally, the shift correction should be done for each position to reduce the track dropout rate caused by image shifts. This is however computationally very expensive and, as seen in Figure \ref{fig:pixdiff}, not really necessary since the biggest shift indeed only happens right before and after the treatment, as it was expected during the experiment setting. As seen in Chapter XX (TODO: quote), the tracking allows certain amount of tolerance. In this regard, the other frame shifts are way within the tolerance of our tracking algorithm. As shown in Figure YY (TODO: add droput rate), the dropouts caused by frame shifts in the other time points are basically noisy dropout caused by random noise in time-lapse movie being tracked as cells \cite{jaqaman2008robust}.
+Ideally, the shift correction should be done for each position to reduce the track dropout rate caused by image shifts. This is however computationally very expensive and, as seen in Figure \ref{fig:pixdiff}, not really necessary since the biggest shift indeed only happens right before and after the treatment, as it was expected during the experiment setting. As seen in Subsection \ref{subsection:cell_tracking}, the tracking allows certain amount of tolerance. In this regard, the other frame shifts are way within the tolerance of our tracking algorithm. As shown in Figure YY (TODO: add droput rate), the dropouts caused by frame shifts in the other time points are basically noisy dropout caused by random noise in time-lapse movie being tracked as cells \cite{jaqaman2008robust}.
 
 The algorithm for shift inference is available in Appendix \ref{appendix:algo}.
 
@@ -1284,15 +1373,16 @@ The algorithm for shift inference is available in Appendix \ref{appendix:algo}.
 
 \subsection{Cell death signal determination}
 
-Measuring cell death is a crucial part of the experiment, as the reliable determination of it is the basis of most analysis in this thesis. There are several way to measure cell deaths with varying complexity and accuracy. Each method contains certain assumptions of cell death.\\
+As mentioned in previous parts, two cell death signals are deployed in this experiment: the PI and Caspase 3/7. As mentioned in 
 
-For example, determining cell death by cell movement assumes death of a cell if no movement beyond random flux is observed in certain amount of time. This obviously has certain drawbacks, such as when the observation is done in non-static environment. Moreover, defining the limit of the random flux, above which a given cell is assumed to actively move, is not a trivial task. Some kind of gold standard for a given cell line and environment has to be established manualy, which is very time consuming. This fact is again made even more complicated by the fact that many cells show different movement pattern upon introduction of treatment. It is well known that some cells tend to move faster or slower under stress, the situation many cancerous cells in our experiment will experience upon addition of cancer drugs treatment \cite{pienta1991effects, fenteany2003small, ruocco2012suppressing}.\\
+%TODO continue
 
-The second method is using cell size. During apopotosis, the cells would shrink. Given It is known that cell size %TODO continue.
 
-In this experiment, two cell signals are used as indicator of cell death. %TODO continue
+%TODO rework subsection
+%TODO move to review section of Summary and Outlook
 
 \subsection{Support vector machine (SVM)}
+\label{subsection:svm}
 
 In machine learning, an SVM is a construct which, given training set $\mathbf{S} \subset \mathbf{D}$ with,
 
@@ -1444,6 +1534,7 @@ One solution is too introduce regularization. As already shown in Term \ref{eq:s
 Adding regularization will control against overfitted model by penalizing higher dimensional hyperplane $\mathbf{w}$ as it the error will get blown up the higher dimensional, and its error minimizing hyperplane, are chosen.
 
 \subsection{Random Forests (RF)}
+\label{subsection:rf}
 
 \chapter{Analytic Pipeline}
 
@@ -1460,28 +1551,31 @@ Figure \ref{fig:pipeline1}a shows how the image is sequentially processed from o
 
 \section{Single cell tracking in the brightfield channel}
 
-%TODO add references
-%TODO correct wording
-
 To identify and track single cells from movie start, each out-of-focus brightfield image is processed in the following way (see Figure \ref{fig:pipeline1}a for pipeline visualization): 
 
 \begin{itemize}
 \item First, a Gaussian blur (Zuiderveld, 1994 \cite{zuiderveld1994contrast} and also Subsection \ref{subsection:gaussian_blur} of Data Methods chapter) with a large radius of 50 pixel is applied to each brightfield image (Figure \ref{fig:pipeline1}b) to estimate its individual background and identify e.g. gradients at the edges of the imaged area (Figure \ref{fig:pipeline1}c). Afterwards, we correct the original image by dividing through this background image (Figure \ref{fig:pipeline1}d)
 
-\item Then, we normalize the local contrast of each image in one position (Kittler and Illingworth, 1986 \cite{kittler1986minimum} and Subsection \ref{subsection:clahe}) to separate foreground from background (Figure \ref{fig:pipeline1}e). The method definition can be seen in Subsection \ref{subsection:clahe} of Data and Methods chapter.
+\item Then, we normalize the local contrast of each image in one position (Kittler and Illingworth, 1986 \cite{kittler1986minimum} and Subsection \ref{subsection:clahe}) to separate foreground from background (Figure \ref{fig:pipeline1}e)..
 
-\item To reduce noise from micro-trench margins in the foreground (Figure \ref{fig:pipeline1}e), we calculate the pixel-wise intensity average from all timepoints of one position (Figure \ref{fig:pipeline1}f) and subtract this from each image to generate a binary image with mainly cells in the foreground (Figure \ref{fig:pipeline1}g). This creates a mask of the cells. The definition of the method can be seen in \ref{subsection:substraction_by_mean}.
+\item To reduce noise from micro-trench margins in the foreground (Figure \ref{fig:pipeline1}e and Subsection \ref{subsection:substraction_by_mean}), we calculate the pixel-wise intensity average from all timepoints of one position (Figure \ref{fig:pipeline1}f) and subtract this from each image to generate a binary image with mainly cells in the foreground (Figure \ref{fig:pipeline1}g). This creates a mask of the cells..
 
-\item Therein, single cells are recognized using the Laplacian of Gaussian detector in the Fiji TrackMate plugin \cite{tinevez2017trackmate} (Figure \ref{fig:pipeline1}h) with a blob diameter of 15 inches and a downsampling factor of 2. See Subsection \ref{subsection:cell_recognition} of Data and Methods chapter for more details on the method.
+\item Therein, single cells are recognized using the Laplacian of Gaussian detector in the Fiji TrackMate plugin \cite{tinevez2017trackmate} (Figure \ref{fig:pipeline1}h and Subsection \ref{subsection:cell_recognition}) with a blob diameter of 15 inches and a downsampling factor of 2. See Subsection \ref{subsection:cell_recognition} of Data and Methods chapter for more details on the method.
 
-\item The detected cells are concatenated to tracks (Figure \ref{fig:pipeline1}i) and cellular trees using the Linear Assignment Problem (LAP) tracker\cite{jaqaman2008robust} in TrackMate with a maximal frame-to-frame linking distance of 25 inches, a maximal track segment gap closing distance of 35 inches, a maximal track segment gap closing of 4 frames, and a maximal track segment splitting distance of 25 inches.
+\item The detected cells are concatenated to tracks (Figure \ref{fig:pipeline1}i and Subsection \ref{subsection:cell_tracking}) and cellular trees using the Linear Assignment Problem (LAP) tracker\cite{jaqaman2008robust} in TrackMate with a maximal frame-to-frame linking distance of 25 inches, a maximal track segment gap closing distance of 35 inches, a maximal track segment gap closing of 4 frames, and a maximal track segment splitting distance of 25 inches.
 \end{itemize}
 
 \section{Assignment of cells to individual micro-trenches}
 
+%TODO add references
+%TODO correct wording
+
 To assign individual micro-trenches to tracked single cells and emerging clones, we generate masks for each micro-trench. First, we adjust brightness and contrast manually for one position so that only the margin of the micro-trenches are visible (Fig. S1k). Then, Robust Automatic Threshold Selection (RATS) is applied on each adjusted brightfield image, which creates a binary image of the micro-trench margins (Fig. S1l). These margins are then filled to create micro-trench masks using fill holes command in Fiji (Fig. S1m). Each mask (appearing as a black rod-like form) is assigned an unique identity, which is then used as an identifier for tracks in both the brightfield and the fluorescent channel for filtering of cells and clones.
 
 \section{Single cell tracking in the fluorescent channel}
+
+%TODO add references
+%TODO correct wording
 
 Caspase and PI are imaged in the red (PI) and green (Caspase) fluorescent channel and used as indicator of cell death. Dying cells stop moving, become small and unstructured, and loose a distinctive bright signal in the brightfield channel, which makes them hard to track. We thus track dying cells in the fluorescent channels and concatenate the tracks with earlier tracks in the brightfield to determine time-to-death. To track cells in the fluorescent channel, we apply the following pipeline (see Fig. S2a): We first adjust brightness and contrast manually (Fig S2b) followed by mean correction of static noises by subtracting each imagewith average intensity over all imagess (Fig S2c and Fig S2d). The detection and tracking part of image computing pipeline is identical (Fig S2 subplot A). Eventually, death time of a cell is indicated by the onset of fluorescence track being recognized in red or green channel, depending on treatment:or Vincristine treatment and control, the cell death is based on tracks in red (PI) channel while the cell death in Daunorubicin treatment is based on green (Caspase) channel.
 
@@ -1519,6 +1613,7 @@ The image and tracking data is combined and post-processed using Python scripts 
 
 \chapter{Results}
 
+%TODO complete
 
 \begin{verbatim}
 I. Pipeline
@@ -1529,8 +1624,11 @@ II. Quantitative Analysis
 \section{Quantitative analysis}
 
 \section{Machine learning models}
+\label{section:ml_results}
 
 \chapter{Summary and Outlook}
+
+%TODO complete
 
 \section{Fully automated microfluidics pipeline}
 
@@ -1591,7 +1689,6 @@ Polydimethylsiloxane (PDMS) prepolymer solution is mixed with the crosslinker in
 \section{Images acquisition}
 \label{appendix:imageacquisition}
 
-%TODO move to main part
 %TODO add example picure setting
 
 Imaging was performed under an inverted Nikon Ti Eclipse microscope with a motorized stage (Tango XY Stage Controller, M\"arzh\"auser Wetzlar GmbH \& Co. KG, Germany), a CFI Plan Fluor DL 10X objective, a pco.edge 4.2 Camera (PCO AG, Kelheim, Germany) and a Lumencor Sprectra LED fluorescence lamp. For detection of the Caspase-3/7 and the PI marker, the following filters were used respectively, 474/27 nm, 554/23 (excitation) and 515/35 nm, 595/35 nm (emission). Brightfield out of focus (-20 $\mu$m) images were taken every 10 minutes and in-focus  brightfield and fluorescence images every 30 minutes for 48 hours. Vincristine or Daunorubicin were added after 20 hours from the beginning of the imaging. During the recording samples were kept at a constant temperature of 37\degree C and CO2 using an Okolab heating and CO\textsubscript{2} 2 box (OKOLAB S.R.L., NA, Italy). For the synchronized population, the double thymidine block protocol was followed. Briefly, MOLM-13s cells at the exponentially growing phase were incubated in blocking medium (culture medium supplemented with 2 mM Thymidine (CAS 50-89-5, Calbiochem\textsuperscript{\textregistered}, Germany)) for 24 hours. Cells were then released and incubated in culture medium for 8 hours and finally were incubated in blocking medium for 12 hours. After 2 hours, the synchronized population was seeded in the slide bearing the micro-trenches together with the markers and drugs at the same conditions as the unsynchronized population, and imaged for 24 hours.
