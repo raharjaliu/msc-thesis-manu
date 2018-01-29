@@ -785,16 +785,16 @@ We can for example, transform Figure \ref{fig:pos41} using $J_t(i, j)$ with $\be
 \begin{figure}[H]
 \centering
 
-\begin{subfigure}{\textwidth}
+\begin{subfigure}{0.4\textwidth}
   \centering
-  \includegraphics[width=0.4\textwidth]{images/pos_41_in_t0_br_up100}
+  \includegraphics[width=\textwidth]{images/pos_41_in_t0_br_up100}
   \caption{1a}
   \label{fig:pos41_brup100_bf}
 \end{subfigure}%
-
-\begin{subfigure}{\textwidth}
+~
+\begin{subfigure}{0.6\textwidth}
   \centering
-  \includegraphics[width=0.4\textwidth]{images/pos_41_in_t0_br_up100_hist}
+  \includegraphics[width=\textwidth]{images/pos_41_in_t0_br_up100_hist}
   \caption{}
   \label{fig:pos41_brup100_hist}
 \end{subfigure}%
@@ -811,16 +811,16 @@ We can also try to change $\beta$. This will scale the image's intensity and emp
 \begin{figure}[H]
 \centering
 
-\begin{subfigure}{\textwidth}
+\begin{subfigure}{0.4\textwidth}
   \centering
-  \includegraphics[width=0.4\textwidth]{images/pos_41_in_t0_br_times3}
+  \includegraphics[width=\textwidth]{images/pos_41_in_t0_br_times3}
   \caption{}
   \label{fig:pos41_times3_bf}
 \end{subfigure}%
-
-\begin{subfigure}{\textwidth}
+~
+\begin{subfigure}{0.6\textwidth}
   \centering
-  \includegraphics[width=0.4\textwidth]{images/pos_41_in_t0_br_times3_hist}
+  \includegraphics[width=\textwidth]{images/pos_41_in_t0_br_times3_hist}
   \caption{}
   \label{fig:pos41_times3_hist}
 \end{subfigure}%
@@ -863,6 +863,7 @@ Before us, there are several methods that exploit this kind of phenomenon. Cheng
 We could thus exploit this knowledge by designing micro-trench masking algorithm as follows:
 
 \subsubsection*{Brightness and contrast adjustment of in-focus image}
+\label{subsubsection:brightness_contrast_adjustment}
 
 First, we adjust the brightness and contrast so that the area far away from the margin is encoded as maximum intensity, while the area around the margin is encoded as minimum intensity. One simple and robust way to do this is to reduce the intensity of each position with the maximum intensity value of the region around the margin.
 
@@ -1219,16 +1220,19 @@ Figure \ref{fig:pixdiff} shows the representation of LoG operator in 2D. Notice 
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.4\textwidth]{images/log_operator}
+\includegraphics[width=0.6\textwidth]{images/log_operator}
 \caption{A LoG operator. Notice the lack of dimension in an operator as it transforms an image (in one space) into another image (still in the same space).}
-\label{fig:pixdiff}
+\label{fig:log_operator}
 \end{figure}
 
-The operator is then applied on two dimensional matrix of intensity image. To get maximum response from a blob, the zeros of the operator have to be aligned with the circle to detect \cite{marr1980theory}. Figure (TODO: show) shows an example of binary circle with diameter $r$ with the corresponding response from LoG operator on the surface of the circle.
+The operator is then applied on two dimensional matrix of intensity image. To get maximum response from a blob, the zeros of the operator have to be aligned with the circle to detect \cite{marr1980theory}. Figure \ref{fig:log_example} shows an example of idealized circle with diameter $r$ with the corresponding response from LoG operator on the surface of the circle. Applied to pre-processed out-of-focus image, LoG will return response with maxima in the center of cell sizes in similar fashion to the idealized circle.
 
-%TODO continue
-
-Applied to pre-processed out-of-focus image, LoG will return response with maxima in the center of cell sizes (see Figure TODO).
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{images/log_operator_example}
+\caption{Example of applying LoG operator on 2D circle. The minimum will be achieved if the diameter of the LoG operator is roughly equal to the diameter of the cell. This however does not to be the case. In case of non-perfect blob or blob with different diameter, local minimum can still be detected by the cel recognition algorithm.}
+\label{fig:log_example}
+\end{figure}
 
 \subsection{Cell tracking}
 \label{subsection:cell_tracking}
@@ -1369,6 +1373,9 @@ The algorithm for shift inference is available in Appendix \ref{appendix:algo}.
 \end{figure}
 
 \subsection{Cell death signal determination}
+\label{subsection:cell_death_signal_determination}
+
+%TODO add graphical representation of cell death determination (like the one made for Eli)
 
 As mentioned in Subsection \ref{subsection:comp_cell_death_determination}, two cell death signals are deployed in this experiment: PI and Caspase 3/7. Recall that, as mentioned Subsection \ref{subsection:cell_treatments}, two kinds of images were captured during the experiment: brightfield and fluorescent images. There are in turn two channel of fluorescent images captured: red and green.
 
@@ -1565,6 +1572,12 @@ Adding regularization will control against overfitted model by penalizing higher
 \subsection{Random Forests (RF)}
 \label{subsection:rf}
 
+\subsection{Statistical Tests}
+
+Some statistical tests are done in this project:
+
+\subsubsection{F-Test}
+
 \chapter{Analytic Pipeline}
 
 %TODO adjust figure references
@@ -1582,7 +1595,7 @@ Figure \ref{fig:pipeline1}a shows how the image is sequentially processed from o
 
 To identify and track single cells from movie start, each out-of-focus brightfield image is processed in the following way (see Figure \ref{fig:pipeline1}a for pipeline visualization): 
 
-\begin{itemize}
+\begin{enumerate}
 \item First, a Gaussian blur (Zuiderveld, 1994 \cite{zuiderveld1994contrast} and also Subsection \ref{subsection:gaussian_blur} of Data Methods chapter) with a large radius of 50 pixel is applied to each brightfield image (Figure \ref{fig:pipeline1}b) to estimate its individual background and identify e.g. gradients at the edges of the imaged area (Figure \ref{fig:pipeline1}c). Afterwards, we correct the original image by dividing through this background image (Figure \ref{fig:pipeline1}d)
 
 \item Then, we normalize the local contrast of each image in one position (Kittler and Illingworth, 1986 \cite{kittler1986minimum} and Subsection \ref{subsection:clahe}) to separate foreground from background (Figure \ref{fig:pipeline1}e)..
@@ -1592,7 +1605,7 @@ To identify and track single cells from movie start, each out-of-focus brightfie
 \item Therein, single cells are recognized using the Laplacian of Gaussian detector in the Fiji TrackMate plugin \cite{tinevez2017trackmate} (Figure \ref{fig:pipeline1}h and Subsection \ref{subsection:cell_recognition}) with a blob diameter of 15 inches and a downsampling factor of 2. See Subsection \ref{subsection:cell_recognition} of Data and Methods chapter for more details on the method.
 
 \item The detected cells are concatenated to tracks (Figure \ref{fig:pipeline1}i and Subsection \ref{subsection:cell_tracking}) and cellular trees using the Linear Assignment Problem (LAP) tracker\cite{jaqaman2008robust} in TrackMate with a maximal frame-to-frame linking distance of 25 inches, a maximal track segment gap closing distance of 35 inches, a maximal track segment gap closing of 4 frames, and a maximal track segment splitting distance of 25 inches.
-\end{itemize}
+\end{enumerate}
 
 \section{Assignment of cells to individual micro-trenches}
 
@@ -1603,10 +1616,17 @@ To assign individual micro-trenches to tracked single cells and emerging clones,
 
 \section{Single cell tracking in the fluorescent channel}
 
-%TODO add references
-%TODO correct wording
+Caspase and PI are imaged in the red (PI) and green (Caspase) fluorescent channel and used as indicator of cell death. Dying cells stop moving, become small and unstructured, and loose a distinctive bright signal in the brightfield channel, which makes them hard to track. We thus track dying cells in the fluorescent channels and concatenate the tracks with earlier tracks in the brightfield to determine time-to-death. To track cells in the fluorescent channel, we apply the following pipeline (see Figure \ref{fig:pipeline2}a):
 
-Caspase and PI are imaged in the red (PI) and green (Caspase) fluorescent channel and used as indicator of cell death. Dying cells stop moving, become small and unstructured, and loose a distinctive bright signal in the brightfield channel, which makes them hard to track. We thus track dying cells in the fluorescent channels and concatenate the tracks with earlier tracks in the brightfield to determine time-to-death. To track cells in the fluorescent channel, we apply the following pipeline (see Fig. S2a): We first adjust brightness and contrast manually (Fig S2b) followed by mean correction of static noises by subtracting each imagewith average intensity over all imagess (Fig S2c and Fig S2d). The detection and tracking part of image computing pipeline is identical (Fig S2 subplot A). Eventually, death time of a cell is indicated by the onset of fluorescence track being recognized in red or green channel, depending on treatment:or Vincristine treatment and control, the cell death is based on tracks in red (PI) channel while the cell death in Daunorubicin treatment is based on green (Caspase) channel.
+\begin{enumerate}
+\item We first adjust brightness and contrast manually (Figures \ref{fig:pipeline2}a and \ref{fig:pipeline2}b and Subsection \ref{subsubsection:brightness_contrast_adjustment}) in the similar fashion to the step taken to create micro-trench mask.
+
+\item The image then undergoes mean correction of static noises by subtracting each image with average intensity over all imagess (Figures \ref{fig:pipeline2}c and \ref{fig:pipeline2}d and Subsection \ref{subsection:substraction_by_mean}).
+
+\item Subsequently, the detection and tracking part of image computing pipeline is identical to brightfield images' (Figure \ref{fig:pipeline1} and Subsections \ref{subsection:cell_recognition} and \ref{subsection:cell_tracking})
+
+\item Eventually, death time of a cell is indicated by the onset of fluorescence track being recognized in red or green channel, depending on treatment:or Vincristine treatment and control, the cell death is based on tracks in red (PI) channel while the cell death in Daunorubicin treatment is based on green (Caspase) channel (Subsection \ref{subsection:cell_death_signal_determination}).
+\end{enumerate}
 
 \section{Pipeline visualization}
 
@@ -1634,6 +1654,13 @@ The image processing pipelines for both brightfield and florescence channels can
 \label{fig:pipeline2}
 \end{landscape}
 
+\begin{figure}[H]
+   \centering
+    \includegraphics[height=0.5\textwidth]{images/pipeline/03.pdf}
+    \caption{Combination of both brightfield and fluoroscent data creating cell death-corrected cell tracks data. The deat}
+    \label{fig:pipeline3}
+\end{figure}
+
 \section{Implementation and availability}
 
 The image and tracking data is combined and post-processed using Python scripts utilizing OpenCV\cite{bradski2008learning}, NumPy \cite{walt2011numpy}, pandas \cite{mckinney2010data} and Matplotlib \cite{hunter2007matplotlib}, and the Jython and Trackmate \cite{tinevez2017trackmate, pedroni2002jython} plugin in Fiji \cite{schindelin2012fiji}. The Python package scikit-learn is used for training and testing both support vector machine and random forest \cite{scikit-learn}. Our code is available at:
@@ -1642,17 +1669,19 @@ The image and tracking data is combined and post-processed using Python scripts 
 
 \chapter{Results}
 
-%TODO complete
+In this chapter the findings of the project are presented. The application of the pipeline in the image yields actionable data which in turn are analyzed. The chapter is separated into various parts:
 
-\begin{verbatim}
-I. Pipeline
+\begin{itemize}
+\item Variability of time-to-death between sister cells.
+\item Variability of time-to-death by time-in-cycle.
+\item Machine learning models of cell death.
+\end{itemize}
 
-II. Quantitative Analysis
-\end{verbatim}
+\section{Variability of time-to-death between sister cells}
 
-\section{Quantitative analysis}
+\section{Variability of time-to-death by time-in-cycle}
 
-\section{Machine learning models}
+\section{Machine learning models of cell death}
 \label{section:ml_results}
 
 \chapter{Summary and Outlook}
@@ -1729,6 +1758,8 @@ Imaging was performed under an inverted Nikon Ti Eclipse microscope with a motor
 The algorithms are, unless specified written in pseudo-code.
 
 \section*{Shift inference} 
+
+%TODO move algorithm to method chapter
 
 Following is the algorithm to infer shift between slice written in Python:
 
