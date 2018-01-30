@@ -175,6 +175,7 @@ micro-trench & Single unit of micro-trench inside a well \\
 wafer & The plate where the microtrench is manufactured on\\
 well & Macro-containment where wafer is located, usually part of larger wells\\
 & installation (2 by 4 wells in our case).\\
+sticky slide & The containment box where wells are located in\\
 slice & An image \\
 stack & An ordered sequence of images (usually coming from the same channel) \\
 channel & A connection between data source (camera) and storage. Images coming\\
@@ -284,6 +285,8 @@ As a method, passive mocrofluidic methods are mostly used to provide specialized
 
 In the last decades, the recent advances in both passive and active microfluidics have created an entire field \cite{whitesides2006origins} with use cases ranging from \textit{in vivo} imaging \cite{chronis2007microfluidics}, single-cell analysis \cite{wheeler2003microfluidic} to cellular biophysics \cite{di2010bacterial}. This project leverages in these advances coupled with equally outstanding advances in image acquisition, image processing and machine learning methods which will be described in the subsequent subsections.
 
+The use of microfluidics enables us firstly to study the distribution of division times among single cells and also to correlate the division times between sister cells, which are genetically very similar. Secondly, the array of micro-trenches enabled the study of the response dynamics of single-cells to doxorubicin, a widely used chemotherapeutic drug, and the comparison of the response to this agent between a chemically synchronized and a non-synchronized population
+
 \subsection{Image Processing and Computer Vision}
 
 \label{subsection:cv_advances}
@@ -303,13 +306,20 @@ Before the runaway advance of deep learning methods in the last years, object an
 \subsection{Cell death determination}
 \label{subsection:comp_cell_death_determination}
 
+%TODO modify
+
 Measuring cell death is a crucial part of the experiment, as the reliable determination of it is the basis of most analysis in this thesis. There are several way to measure cell deaths with varying complexity and accuracy. Each method contains certain assumptions of cell death.\\
 
 For example, determining cell death by cell movement assumes death of a cell if no movement beyond random flux is observed in certain amount of time. This obviously has certain drawbacks, such as when the observation is done in non-static environment. Moreover, defining the limit of the random flux, above which a given cell is assumed to actively move, is not a trivial task. Some kind of gold standard for a given cell line and environment has to be established manualy, which is very time consuming. This fact is again made even more complicated by the fact that many cells show different movement pattern upon introduction of treatment. It is well known that some cells tend to move faster or slower under stress, the situation many cancerous cells in our experiment will experience upon addition of cancer drugs treatment \cite{pienta1991effects, fenteany2003small, ruocco2012suppressing}.\\
 
 The second method is using cell size. During apopotosis, the cells would shrink. Given It is known that cell size %TODO continue.
 
+\subsection{Other model cell lines}
 
+%TODO modify
+
+
+Some other cell lines were examined as potential probe cell line in this experiment. One of them is Jurkat Cell, a model cell commonly used to study T Cell Leukimia, T cell signalling mechanism and the expression of various HIV-related chemokines \cite{schneider1977characterization}. The cell line was a considered since it is well-studied \cite{johnson2007genome, schena1996parallel}. This is especially true if we consider apoptotic mechanism of the cell line, a problem this project and other related projects by our  and partner labs are trying to investigate. There are several seminal publications about the dynamics of apoptotic mechanism of Jurkat cells we could well compare our results to \cite{gottlieb1996apoptosis}. Samali \textit{et al} \cite{samali1999presence} even studies the dynamics of caspase expression in Jurkat cells, a topic dealt a lot in this project as the chapters progress (see for example Subsection \ref{subsection:treatment}) while Kasai \textit{et al} considers the aspect of spindle checkpoint in the context of apopototic cell death \cite{kasai2002prevalent}. However, we figured out early on that the cell motility of the Jurkat cell line was increased dramatically (a phenomenon observed by others before us \cite{barnhart2004cd95}) upon the introduction of chemotherapeutic treatment -- the increase dramatic enough that the cells managed to escape the micro-trench it initially landed in.
 
 \section{The structure of the thesis}
 
@@ -342,27 +352,24 @@ To enable cross reference and comparability of experiment results, a model cell 
 
 For our experiment, the AML-M5a MOLM-13 cell line was cultured in Gibco\textsuperscript{\textregistered} RPMI 1640 GlutaMAX medium, produced by Life Technologies \cite{gibcocellculture2017}. The medium is popular choice in human cell biology for both experiments and biological syntheses using human cells and their derivatives \cite{blight2000efficient, shimizu2002fabrication}. It is pre-supplemented with stable form of L-glutamine to prevent ammonia buildup, a common and serious problem in cell culture due to its cell toxicity\cite{satter1974effect}. The medium is further supplemented with Gibco\textsuperscript{\textregistered} Fetal Bovine Serum (FBS), also offered by Life Technologies \cite{gibcofbs2017}, as supplement for the AML-M5a MOLM-13 cell culture.
 
-Some other cell lines were examined as potential probe cell line in this experiment. One of them is Jurkat Cell, a model cell commonly used to study T Cell Leukimia, T cell signalling mechanism and the expression of various HIV-related chemokines \cite{schneider1977characterization}. The cell line was a considered since it is well-studied \cite{johnson2007genome, schena1996parallel}. This is especially true if we consider apoptotic mechanism of the cell line, a problem this project and other related projects by our  and partner labs are trying to investigate. There are several seminal publications about the dynamics of apoptotic mechanism of Jurkat cells we could well compare our results to \cite{gottlieb1996apoptosis}. Samali \textit{et al} \cite{samali1999presence} even studies the dynamics of caspase expression in Jurkat cells, a topic dealt a lot in this project as the chapters progress (see for example Subsection \ref{subsection:treatment}) while Kasai \textit{et al} considers the aspect of spindle checkpoint in the context of apopototic cell death \cite{kasai2002prevalent}. However, we figured out early on that the cell motility of the Jurkat cell line was increased dramatically (a phenomenon observed by others before us \cite{barnhart2004cd95}) upon the introduction of chemotherapeutic treatment -- the increase dramatic enough that the cells managed to escape the micro-trench it initially landed in.
-
 
 \subsection{Microfluidics}
 \label{subsection:microfluid_env}
 
-%TODO change this subsection: see Carsten's comments
+In our cases, the microfluidics is designed by the Soft Condensed Matter Group at the  Faculty of Physics at the Ludwig-Maximillians-Universit\"at M\"unchen. There are several papers related to the system. For example, in 2013, Marel et al proposed the method of creating micro-wells for single-cell containement based on three-dimensional poly(ethylene glycol)-dimethacrylate (PEG-DMA) microstructures \cite{marel2013arraying}. Later on in 2015, Sekhavati et al publishes the first design of micro-trench arrays that are used in our experiment \cite{sekhavati2015marker, sekhavati2015dynamic}.
 
-In our cases, the microfluidic settings trace back to the works of our partner lab at Biophysics Department at Ludwig-Maximillians-Universit\"at M\"unchen in 2013 \cite{marel2013arraying} and 2015 \cite{sekhavati2015marker, sekhavati2015dynamic}.
+In order to track non-adherent cells in a label-free manner over several generations, a set of micro-trenches ($30 \times 120 \, \mu m$) out of PEG-DA (Polyethylene(glycol) Diacrylate), which can accommodate four to six cells are designed and fabricated. The platform facilitates cell tracking leading to the observation of hundreds of families of cells, derived from one single mother at each case.
 
-In order to track in a label-free manner non-adherent cells over several generations, we designed and fabricated micro-trenches ($30 \times 120 \, \mu m$) out of PEG-DA (Polyethylene(glycol) Diacrylate), which can accommodate four to six cells. The proposed platform facilitated cell tracking leading to the observation of hundreds of families of cells, derived from one single mother at each case. This enabled us firstly to study the distribution of division times among single cells and also to correlate the division times between sister cells, which are genetically identical. Secondly, the array of micro-trenches enabled the study of the response dynamics of single-cells to doxorubicin, a widely used chemotherapeutic drug, and the comparison of the response to this agent between a chemically synchronized and a non-synchronized population. The detailed methods and protocols for the fabrication of the microfluidic system used in the experiment could be found in Appendix \ref{appendix:microtrench}. The design of the micro-trench and the schematic representative of cell tracking are seen in Figure \ref{fig:microtrench_design}.
+Polydimethylsiloxane (PDMS) prepolymer solution is mixed with the crosslinker in a 10:1 ratio (w/w) (Sylgard 184, Dow Corning, USA) and then degassed under vacuum. PDMS is then purred on the SU-8 wafer, degassed and cured in 50 oC. The resulting PDMS stamp is peeled off the wafer and cut into appropriate shapes. The PDMS pieces, with 25 1/4 pillars in height, are activated with argon plasma and then immediately placed upside down on a silanized with TMSPMA (3-(Trimethoxysilyl)propyl methacrylate, Sigma-Aldrich) glass coverslip. A solution of PEG-DA (Mn=258) containing 2\% v/v of the 2-hydroxy-2methylpropiophenone (both from Sigma-Aldrich, Germany) is freshly prepared and then a drop is deposited at the edge of the PDMS stamp. The PDMS stamp is filled by capillary force induced flow. PEG-DA is then polymerized in an UV-ozone cleaning system (UVOH 150 LAB, FHR, Ottendorf, Germany). Next, the PDMS stamps are peeled off and the resulting micro-trenches of cross-linked PEG-DA are dried in an oven (Binder GmbH, Tuttlingen, Germany) overnight at 50oC. Finally, the slides are sonicated with 70\% ethanol and distilled water before a sticky slide is attached on top (8-well sticky slide, ibidi GmbH, Munich, Germany).
 
-The experiment setting looks as follows:
+The design of the micro-trench and the schematic representative of cell tracking are seen in Figure \ref{fig:microtrench_design}. After the manufacturing process the structure can be divided into two main parts:
 
-\subsubsection*{The micro-trenches:}
+\begin{itemize}
+\item The \textbf{micro-trenches} are The smallest structure of the setting, measuring about 120 microns by 30 microns. The base of the trench is made of Polyethylene (glycol) Diacrylate (PEGDA), an inert substance commonly found as construction material in microfluidic system \cite{sekhavati2015marker}. Each well contains about 2400 micro-trenches contained in one containment box.
 
-The smallest structure of the setting, measuring about 120 microns by 30 microns. The base of the trench is made of Polyethylene (glycol) Diacrylate (PEGDA), an inert substance commonly found as construction material in microfluidic system \cite{sekhavati2015marker}. Each tretment contains about 2400 micro-trenches (See \textbf{Results} section) contained in one containment box.
+\item The \textbf{sticky slide} contain 8 wells. The sticky slide chosen for containing the wafers holding the micro-trenches is ibidi\textsuperscript{\textregistered} sticky-Slide 8 Well (see Figure \ref{fig:ibidi}). In the project, each cell treatment is isolated in one containment box. This ensure the separations of different chemicals used in each treatment.
 
-\subsubsection*{The containment system:}
-
-The trench could contain up to 8 cells. The macro-container chosen for containing the wafers holding the micro-trenches is ibidi\textsuperscript{\textregistered} sticky-Slide 8 Well (see Figure \ref{fig:ibidi}). In the project, each cell treatment is isolated in one containment box. This ensure the separations of different chemicals used in each treatment. 
+\end{itemize}
 
 \begin{figure}[H]
 \centering
@@ -731,6 +738,7 @@ B_{x, y} =
 Note that, unless otherwise mentioned, every bit encoding of an image refers to unsigned encoding. Thus, an $m$-bit encoding allows value ranging from $0$ to $2^m - 1$.
 
 \subsection{Brightness and contrast adjustment}
+\label{subsection:brightness_contrast_adjustment}
 
 We consider following image: 
 
@@ -931,7 +939,7 @@ and,
 \mathbf{M_t}
 \]
 
-with asterisk symbol $\mathbf{M_t}$ denoting the image at time $t$ and $*$ two dimensional signal processing convoltion \cite{smith1997scientist}. For example, for a $3 \times 3$ matrix,
+with $\mathbf{M_t}$ denoting the image at time $t$ and asterisk symbol $*$ two dimensional signal processing convoltion \cite{smith1997scientist}. For example, for a $3 \times 3$ matrix,
 
 \[
 M_{3 \times 3} = 
@@ -1324,6 +1332,7 @@ The optimal solution for the problem is again found by using Munkers \& Kuhn alg
 \subsection{Shift correction}
 
 %TODO improve subsection
+%TODO : RESTRUCTURE THE CHAPTER
 
 Now, consider a case in which images are shifted in a time-lapsed movie. TODO: explain mechanism. No rotation of camera is assumed, hence there are only two degree of freedoms (vertical and horizontal). Thus, a shift can be defined as a vector movement $\vec{v}$ of all points $x_{i,j} \in M_{t_i}$ in the time-lapse from time $t_i$ to $t_{i+1}$. Given two degrees of freedom and discreteness of the problem due to pixel representation, the task is reduced to finding difference in x- and y-axis ($\delta_x$ and $\delta_y$), so that the difference of transformed pixels at $t_i$ and $t_{i+1}$ are minimized, i.e.:
 
@@ -1350,8 +1359,6 @@ Since some pixels are lost from the field of view during a shift, only a subset 
 \caption{Search grid shift for Position 26. The search was conducted for shift between the last time point before and the first time point after the drugs treatment. The minimum is marked with thick black dot, which is returned after every grid-search call as inferred shift. In the position, the shift was inferred to be 8 pixels upwards and 5 pixels leftwards. Note the repeating pattern of relatively favorable configurations after approximately 50 horizontal and 100 vertical pixels caused by lattice nature of the micro-trenches.}
 \label{fig:searchgrid}
 \end{figure}
-
-%TODO : RESTRUCTURE THE CHAPTER
 
 Since the time-lapsed data consists mainly of grayscale image, the RGB encoding could be the directly transformed to grayscale encoding. Using the transformed method also speeds up the calculation process since the distance function only computes the difference of grayscale channel's values:
 
@@ -1576,7 +1583,9 @@ Adding regularization will control against overfitted model by penalizing higher
 
 Some statistical tests are done in this project:
 
-\subsubsection{F-Test}
+\subsection{Pearson's correlation coefficient}
+
+\subsection{F-Test}
 
 \chapter{Analytic Pipeline}
 
@@ -1609,10 +1618,17 @@ To identify and track single cells from movie start, each out-of-focus brightfie
 
 \section{Assignment of cells to individual micro-trenches}
 
-%TODO add references
-%TODO correct wording
+To assign individual micro-trenches to tracked single cells and emerging clones, we generate masks for each micro-trench (see Subsection \ref{subsection:micro_trench_masking}):
 
-To assign individual micro-trenches to tracked single cells and emerging clones, we generate masks for each micro-trench. First, we adjust brightness and contrast manually for one position so that only the margin of the micro-trenches are visible (Fig. S1k). Then, Robust Automatic Threshold Selection (RATS) is applied on each adjusted brightfield image, which creates a binary image of the micro-trench margins (Fig. S1l). These margins are then filled to create micro-trench masks using fill holes command in Fiji (Fig. S1m). Each mask (appearing as a black rod-like form) is assigned an unique identity, which is then used as an identifier for tracks in both the brightfield and the fluorescent channel for filtering of cells and clones.
+\begin{enumerate}
+\item First, we adjust brightness and contrast manually for one position so that only the margin of the micro-trenches are visible (Figure \ref{fig:pipeline1}k).
+
+\item Then, Robust Automatic Threshold Selection (RATS) is applied on each adjusted brightfield image, which creates a binary image of the micro-trench margins (Figure \ref{fig:pipeline1}l and Subsection )
+
+\item These margins are then filled to create micro-trench masks using fill holes command in Fiji (Figure \ref{fig:pipeline1}m)
+
+\item Each mask (appearing as a black rod-like form) is assigned an unique identity, which is then used as an identifier for tracks in both the brightfield and the fluorescent channel for filtering of cells and clones.
+\end{enumerate}
 
 \section{Single cell tracking in the fluorescent channel}
 
@@ -1632,7 +1648,7 @@ Caspase and PI are imaged in the red (PI) and green (Caspase) fluorescent channe
 
 The image processing pipelines for both brightfield and florescence channels can be seen in following figures:
 
-%TODO complete
+%TODO separate huge images into smaller images
 
 \begin{landscape}
 \begin{figure}[H]
@@ -1669,22 +1685,49 @@ The image and tracking data is combined and post-processed using Python scripts 
 
 \chapter{Results}
 
+%TODO adjust and add
+
 In this chapter the findings of the project are presented. The application of the pipeline in the image yields actionable data which in turn are analyzed. The chapter is separated into various parts:
 
 \begin{itemize}
+\item Distribution of cell cycle duration times. Here we analyze how the cell cycle duration time varies by cells in the wells.
 \item Variability of time-to-death between sister cells.
 \item Variability of time-to-death by time-in-cycle.
 \item Machine learning models of cell death.
 \end{itemize}
 
+\section{Distribution of cell cycle duration times}
+
+Daughter cells contained in the micro-trenches and being separately trackable (Figure 2a) allow to accurately determine the cell cycle length (Figure 2b) and the time difference in division time points between sister cells (Figure 2c). For each cell, we determine the first division time point t0, the second division of the first daughter cell at time t1, and the division second daughter cell at t2. Figure 2a also shows an exemplary image series of one trench filled with initially one cell which gives rise to four cells within the first 30 hours. In our experiments 320 MOLM-13 cells were observed for 40 hours to detect a minimum of two divisions. The cell cycle duration distribution with a mean of $19.7 \pm 2.6$ (mean $\pm$ std) hours is well described by both a lognormal distribution (red dotted line, Figure 2b) and a gamma distribution (dashed blue line, Figure 2b). Figure 2c shows the distribution of the difference between the cell cycle duration times for sister cells. In this case, 160 pairs of daughter cells were analyzed. The dashed blue line is a gamma distribution fit with a mean value of 2 h. In the inset a correlation plot of the cell cycle duration times for sister cells (black dots) and for randomly paired cells (red dots) is presented. Daughter cells divide in a highly correlated manner with a Pearson correlation of r=0.85, while random paired cells show a much smaller correlation (r=0.25).
+
+The observed lognormal cell cycle duration distribution is well documented in literature, with both the size of mammalian cells as well as cell doubling times following a lognormal distribution [26, 27]. The underlying mechanism of cell division timing is an active field of research. It is however assumed that the so-called added model accepted in bacteria [28] is also valid in somatic cells. In general size regulation can arise from various types of coupling between cell size, cell growth and cell cycle progression [29]. It has also been proposed, based on a coupled mathematical model of mammalian cell cycle and circadian clock, that the circadian clock triggers critical size control in the mammalian cell cycle and that it is more readily observed in cell lines that contain circadian rhythms [30]. In this context it is important that the adder mechanism also predicts exponential time correlation between sister cells as observed in our experiments [28]. 
+
+
 \section{Variability of time-to-death between sister cells}
 
 \section{Variability of time-to-death by time-in-cycle}
+
+MOLM-13 cells were seeded from the cell culture flask in the micro-trenches array and directly placed under the time-lapse microscope. Mother cell mitosis, i.e. the division time (t0), is used as a reference point of the cell-phase indication. After 20 hours, when most cells had divided once based on the previously measured cell cycle duration distribution (Figure 2b), the drugs (Vincristine or Daunorubicin) were added (Figure 3a). Time-lapse movies were simultaneously taken in brightfield and fluorescence. To track the cells in an automated routine (see Methods) we acquired the brightfield images in a slightly defocused mode (focus at -20 μm), which resulted in images with slightly blurred but well peaked intensity distribution. Fluorescence images of both the propidium iodide (PI) and the Cell Event Caspase 3/7 marker for the Vincristine data and of only the Cell Event Caspase 3/7 marker for the Daunorubicin data, since Daunorubicin is autofluorescent in the red region, were acquired. In Figure 3a a timeline of the experimental procedure is shown together with exemplary brightfield and fluorescence (PI marker) images are shown in overlay.
+
+The measured time-to-death distribution is shown in figures in 3b for increasing drug concentration. The red black curves represent the Kernel density estimation of the probability density function of each histogram. The plots in Figure 3c depict, for each drug treatment, a scatter plot of the time passed in the cell cycle, i.e. the time passed from the division until the drug was added, with the time-to-death i.e. the time passed from the drug administration time point until the death of the cell. The blue lines are best linear fits and show the dependence of the time-to-death on the time spent in the cell cycle. The colored areas indicate the cell cycle phase based on the division distribution in figure 2b, the duration for each phase is calculated based on the phase durations proposed in T. S. Weber et al. 2014 [32]. We observed a negative correlation between the time in the cell cycle and the death time, which increased for increasing VCR concentrations (1-100 nM), but there was no correlation for the highest VCR concentration (1000 nM), indicating that in this high concentration side effect toxicities are prominent. The Pearson product-moment correlation test results are presented in Table 1. In the case of Daunorubicin (100 nM), we observed an even stronger negative correlation between the time spent in the cell-cycle and the time-to-death in the case of Daunorubicin (100 nM). Especially the time-to-death of the cells that were in the S phase when the drug was added, the phase in which Daunorubicin should be more effective, had a larger deviation in comparison to the time-of-death of cells that were in the G1 or in the G2/M phase. 
+
+Comparison of synchronized and unsynchronized populations. We performed a cytotoxic test on the micro-trenches array using a synchronized cell population with the "double thymidine block" procedure [33] (Figure 4). Thymidine arrests cells at the G1/S border, which is after the division time point within the length of G1 phase. Cells were released 3 h before the start of imaging and seeded in micro-trenches. The drug was added just before starting imaging. In Figure 4a, we show a timeline of the experimental procedure. In Figure 4b, we plot the distributions of the time-to-death in each drug concentration. The blue black curves represent the Kernel density estimation of the probability density function of each histogram. For all drug concentrations the maximum of these distributions is near the 15th hour after starting imaging.
+
+In Figure 5 we compare our results of the unsynchronized cell population (Figure 3) with a cell population synchronized with thymidine block (Figure 4). For both the unsynchronized and the synchronized population, the total number of dead cells as a function of drug concentration is shown in Figure 5a and shows the expected increase in death response with increasing dose. Figure 5b, shows the death times between the synchronized (blue) and the unsynchronized (red) population. The distributions plotted are the normalized number of cells in all drug treatments, for all cells tracked. Apart from a peak at the beginning of the measurement in the synchronized population, the shape of the two distributions is equivalent. In the synchronized population less cells haves a short time-to-death, especially evident in the VCR 1000 nM concentration (Figure 3b and 4b), indicating that the synchronized population is more resistant to death. In Figure 5c, we show scatter plots of the time-to-death between sister cells in an ensemble of all drug treatments. The Pearson correlation coefficient (r) is 0.5 (medium correlation) for the sister cells of the unsynchronized population and 0.06 for the synchronized. The ellipses indicate the directionality of the correlation. Thus, the time-to-death between sister cells was positively correlated for the unsynchronized population but not for the synchronized.
+
 
 \section{Machine learning models of cell death}
 \label{section:ml_results}
 
 \chapter{Summary and Outlook}
+
+We showed that arrays of micro-structured trenches provide a platform that enables a label-free method for tracking cells and for approximating the cell cycle phase without the use of molecular markers. Our approach allows to set individual clocks in single cells using the first division for each occupied trench as a starting point. This is highly accurate and overcomes typical drawbacks of low detection efficiency of fluorescence-based indicators such as the FUCCI marker, which usually have low transfection efficiency round 20-40\%, and generally short duration of staining, namely ~15 hours, which is no sufficient for our long-time measurements. By compartmentalizing the cell population in small groups we enable an image-based cell tracking. Without the use of such an array, time-lapse observation of a cell population for such long hours, even beyond 48 hours, is impossible for both adherent and non-adherent cells since cells escape from the field of view very fast, within a few hours. In addition, compartmentalization of the cell population not only reduces the error of mixing the identities of adjacent cells but also the time and computational power needed for tracking.
+
+In addition, we demonstrate the practicability of the micro-trench platform to determine the time-to-death after induction of cell death with vincristine and daunorubicin. At high concentration vincristine stimulates microtubule depolymerization and mitotic spindle destruction. At lower clinically relevant concentrations, it blocks mitotic progression. As a result, we expected a negative correlation between the time spent in the cell-cycle and the time-to-death in the case of VCR, since a cell that spent a long large amount of time in the cell-cycle should be closer to the M-phase so it should have a shorter time-to-death i.e. it should die earlier. Indeed here we observed that the time-to-death negatively correlates with the time spent in the cell cycle and that this correlation becomes more prominent with increasing VCR concentration up to 100 nM, but there is no correlation at the highest concentration (1000 nM). The reason for no correlation in the 1000 nM might be side effect toxicities that happen through the whole cell cycle and as it has been shown before [12], after exposure to antimitotic drugs cells display complex fate profiles, such as unequal cell division producing aneuploid daughter cells, exiting the cell cycle without undergoing cell division (mitotic slippage), or exiting G1 and undergoing apoptosis or senescence. On the other hand, the correlation of the time-to-death with the time spent in the cell cycle is more prominent in the case of Daunorubicin (100 nM) and the deviation of the time-to-death for the cells in the S-phase during drug addition, is larger compared to the cells in G1 or G2/M phase (Figure 3b).
+
+We furthermore find that the sister cell correlations of the time-to-death for the unsynchronized and the synchronized populations differ. We observed similar response between sister cells in the unsynchronized experiment as far as the time-to-death is concerned, during an observation period of 24 hours after the addition of the drugs. At the same time the distributions of the time-to-death (average of all different drug concentrations) of the unsynchronized and the synchronized populations are similar, which would suggest that synchronizing the cells with the double thymidine block did not affect their response to both tested drugs. However, a closer look into the data and especially when analyzing the response between sister cells of the synchronized population, we observed that there is no correlation of the time-to-death between sister cells, contrary to the results from the unsynchronized population. This observation suggests that the double thymidine block procedure has an effect on sister cell response heterogeneity to vincristine and daunorubicin. Sister cell response variability is a matter drawing attention since it is an indication whether different phenotypes stems from genetic differences or from differences in the protein state of the cells. The results available so far strongly depend on the cell process that is interrogated. For instance, it has been previously reported that sister cells undergo apoptosis synchronously [5, 34]. However, in response to antimitotic drugs the fate of one sister is independent of the fate of the other [12]. In another study, sister cell fate in response to TRAIL-induced apoptosis correlated, as did also the time-to-death between HeLa sister cells but this correlation decayed as a function of time since division, the time period tested was 8 hours. Based on this observation, the transient heritability in fate model was proposed, which states that protein synthesis promotes cell divergence so that sister cells soon become no more similar to each other than random paired cells[1].
+
+In future work, the micro-trenches array can be used with more than one drug, namely for combination therapy, to determine the optimal administration timing of each drug. Microfluidic devices have facilitated single-cell studies and boosted the collection of quantitative experimental data, such as the measurement of single-cell mass with high accuracy[35]. Measuring the cell size or the volume added to the cell after its mother division are crucial quantitative data to elucidate the underlying mechanisms that drive cell division. The micro-trenches array coupled with time-lapse microscopy and automated image analysis is a step toward this direction.
 
 %TODO complete
 
