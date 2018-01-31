@@ -172,7 +172,7 @@ Following terms are used frequently in this thesis and therefore merit special e
 \begin{tabular}{ l l }
 \textbf{Name} & \textbf{Explanation} \\
 micro-trench & Single unit of micro-trench inside a well \\
-wafer & The plate where the microtrench is manufactured on\\
+wafer & The plate where the micro-trench is manufactured on\\
 well & Macro-containment where wafer is located, usually part of larger wells\\
 & installation (2 by 4 wells in our case).\\
 sticky slide & The containment box where wells are located in\\
@@ -213,6 +213,8 @@ $M_t$ & An RGB image captured at time t \\
 $M_{t, x, y}$ & Pixel at $(x, y)$ in $M_t$ \\
 $M_{t, x, y, 1}$ & First channel of pixel $M_{t, x, y}$ \\
 $M^b_t$ & A $b$-bit encoded RGB image captured at time t\\
+$M^m_{t, x, y, i}$ & Pixel-wise mean-substracted pixel $M_{t, x, y}$ \\
+$\langle M \rangle$  & Pixel-wise mean image of stack $M$.
 \end{tabular}
 \endgroup
 
@@ -360,21 +362,24 @@ In our cases, the microfluidics is designed by the Soft Condensed Matter Group a
 
 In order to track non-adherent cells in a label-free manner over several generations, a set of micro-trenches ($30 \times 120 \, \mu m$) out of PEG-DA (Polyethylene(glycol) Diacrylate), which can accommodate four to six cells are designed and fabricated. The platform facilitates cell tracking leading to the observation of hundreds of families of cells, derived from one single mother at each case.
 
-Polydimethylsiloxane (PDMS) prepolymer solution is mixed with the crosslinker in a 10:1 ratio (w/w) (Sylgard 184, Dow Corning, USA) and then degassed under vacuum. PDMS is then purred on the SU-8 wafer, degassed and cured in 50 oC. The resulting PDMS stamp is peeled off the wafer and cut into appropriate shapes. The PDMS pieces, with 25 1/4 pillars in height, are activated with argon plasma and then immediately placed upside down on a silanized with TMSPMA (3-(Trimethoxysilyl)propyl methacrylate, Sigma-Aldrich) glass coverslip. A solution of PEG-DA (Mn=258) containing 2\% v/v of the 2-hydroxy-2methylpropiophenone (both from Sigma-Aldrich, Germany) is freshly prepared and then a drop is deposited at the edge of the PDMS stamp. The PDMS stamp is filled by capillary force induced flow. PEG-DA is then polymerized in an UV-ozone cleaning system (UVOH 150 LAB, FHR, Ottendorf, Germany). Next, the PDMS stamps are peeled off and the resulting micro-trenches of cross-linked PEG-DA are dried in an oven (Binder GmbH, Tuttlingen, Germany) overnight at 50oC. Finally, the slides are sonicated with 70\% ethanol and distilled water before a sticky slide is attached on top (8-well sticky slide, ibidi GmbH, Munich, Germany).
+First, the SU-8 (MicroChem Corp, USA) wafer was fabricated in a cleanroom facility using a ProtoLaser LDI system (LPKF Laser \& Electronika, Naklo, Slovenia), with a 375 nm wavelength laser and 1 μm spot diameter.
+Polydimethylsiloxane (PDMS) prepolymer solution is mixed with the crosslinker in a 10:1 ratio (w/w) (Sylgard 184, Dow Corning, USA) and then degassed under vacuum. PDMS is then purred on the SU-8 wafer, degassed and cured in 50 \degree C. The resulting PDMS stamp is peeled off the wafer and cut into appropriate shapes. The PDMS pieces, with 25 1/4 pillars in height, are activated with argon plasma and then immediately placed upside down on a silanized with TMSPMA (3-(Trimethoxysilyl)propyl methacrylate, Sigma-Aldrich) glass coverslip. A solution of PEG-DA (Mn=258) containing 2\% v/v of the 2-hydroxy-2methylpropiophenone (both from Sigma-Aldrich, Germany) is freshly prepared and then a drop is deposited at the edge of the PDMS stamp. The PDMS stamp is filled by capillary force induced flow. PEG-DA is then polymerized in an UV-ozone cleaning system (UVOH 150 LAB, FHR, Ottendorf, Germany). Next, the PDMS stamps are peeled off and the resulting micro-trenches of cross-linked PEG-DA are dried in an oven (Binder GmbH, Tuttlingen, Germany) overnight at 50 \degree C. Finally, the slides are sonicated with 70\% ethanol and distilled water before a sticky slide is attached on top (8-well sticky slide, ibidi GmbH, Munich, Germany).
 
 The design of the micro-trench and the schematic representative of cell tracking are seen in Figure \ref{fig:microtrench_design}. After the manufacturing process the structure can be divided into two main parts:
 
 \begin{itemize}
 \item The \textbf{micro-trenches} are The smallest structure of the setting, measuring about 120 microns by 30 microns. The base of the trench is made of Polyethylene (glycol) Diacrylate (PEGDA), an inert substance commonly found as construction material in microfluidic system \cite{sekhavati2015marker}. Each well contains about 2400 micro-trenches contained in one containment box.
 
-\item The \textbf{sticky slide} contain 8 wells. The sticky slide chosen for containing the wafers holding the micro-trenches is ibidi\textsuperscript{\textregistered} sticky-Slide 8 Well (see Figure \ref{fig:ibidi}). In the project, each cell treatment is isolated in one containment box. This ensure the separations of different chemicals used in each treatment.
+\item The \textbf{sticky slide} contain 8 wells where the wafer containing micro-trenches is located. The sticky slide chosen for containing the wafers holding the micro-trenches is ibidi\textsuperscript{\textregistered} sticky-Slide 8 Well (see Figure \ref{fig:ibidi}). In the project, each cell treatment is isolated in one containment box. This ensure the separations of different chemicals used in each treatment.
 
 \end{itemize}
+
+Due to limitation in image capturing coverage area, each well is further divided into eight image positions. Each image position represents an area in which the camera captures the full image of. In each well there are 7 to 8 image positions and in one experiment with eight wells, there are 63 image positions in total. Tables  \ref{table:unsyn_treatments} and \ref{table:syn_treatments} show the list of all image positions in the experiment and their drugs concentration.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.6\textwidth]{images/sticky-slide-8-well-marked}
-\caption{ibidi\textsuperscript{\textregistered} sticky-Slide 8 Well. The base SU-8 wafer is located in each of the containment box \textbf{(A)}. The SU-8 wafer is then fabricated in the surface of each containment box using nano photolitographic printing. The microfluidic system is then poured and stamped on top the wafer (see Appendix \ref{appendix:microtrench} for detailed manufacturing process). Note that each containment box is upside-open. The cap (\textbf{(B)} is used to prevent the ingress of foreign materials into the medium. \textit{Image taken and modified from ibidi GmbH's website}.}
+\caption{ibidi\textsuperscript{\textregistered} sticky-Slide 8 Well. The base SU-8 wafer is located in each of the containment box \textbf{(A)}. The SU-8 wafer is then fabricated in the surface of each containment box using nano photolitographic printing. The microfluidic system is then poured and stamped on top the wafer. Note that each containment box is upside-open. The cap (\textbf{(B)} is used to prevent the ingress of foreign materials into the medium. \textit{Image taken and modified from ibidi GmbH's website}.}
 \label{fig:ibidi}
 \end{figure}
 
@@ -387,7 +392,7 @@ The design of the micro-trench and the schematic representative of cell tracking
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\textwidth]{images/microtrench_in}
+\includegraphics[width=0.6\textwidth]{images/microtrench_in}
 \caption{The typical view of micro-trench setting. Some trenches contain no cell at all \textbf{(A)}. Several trenches contain exactly one cell \textbf{(B)}. A few more trenches contain two cells \textbf{(C)} while in rare cases the trench may contain more than two cells \textbf{(D)}.}
 \label{fig:microtrench_sample}
 \end{figure}
@@ -416,7 +421,7 @@ Vincristine is initially isolated from Madagascar pairwinkle \textit{Catharanthu
   \centering
   \includegraphics[width=.8\textwidth]{images/vincristine_mechanism}
   \caption{}
-  \label{fig:anthracyclines_dna}
+  \label{fig:vinchristine_mechanism}
 \end{subfigure}
 \caption{(a) Molecular structure of Vincristine. (b) Visualization of Vincristine's mechanism of action. During normal metaphase, microtubuli elongate from centrosome towards equator and bind fully replicated chromosomes. The microtubuli then pull chromosome pair apart during anaphase. Vincristine and other vinca alkaloids prevent this from happening by competitive inhibition, allosteric inhibition and active depolymerization of extending microtubuli. Unsuccessful exit metaphase forces the cell to undergo programmed cell death.}
 \label{fig:vincs}
@@ -441,28 +446,27 @@ Daunorubicin is initially isolated from bacterium \textit{Streptomyces peucetius
 In normal chemotherapeutic regime, both Vincristine and Daunorubicin are prescribed intravenously to the patients \cite{skeel2011handbook}. Needless to say, both drugs will disrupt both cancerous and healthy cells. The effect is however mostly felt in actively dividing cells and organs such as blood cells  and hair follicles due to chemotherapeutic agents' mostly disruptive effect during cell division as mentioned above \cite{skeel2011handbook, mayo2018chemotherapy}.
 
 \begin{figure}[H]
-\centering
-\begin{subfigure}{.8\textwidth}
+\begin{subfigure}{.55\textwidth}
   \centering
-  \includegraphics[width=.5\textwidth]{images/daunorubicin}
+  \includegraphics[width=\textwidth]{images/daunorubicin}
   \caption{}
   \label{fig:dauno}
 \end{subfigure}
-\centering
-\begin{subfigure}{.8\textwidth}
+~
+\begin{subfigure}{.4\textwidth}
   \centering
-  \includegraphics[width=.5\textwidth]{images/doxorubicin_dna}
+  \includegraphics[width=\textwidth]{images/doxorubicin_dna}
   \caption{}
   \label{fig:anthracyclines_dna}
 \end{subfigure}
 \centering
-\begin{subfigure}{.9\textwidth}
+\begin{subfigure}{\textwidth}
   \centering
-  \includegraphics[width=.8\textwidth]{images/daunorubicin_mechanism}
+  \includegraphics[width=\textwidth]{images/daunorubicin_mechanism}
   \caption{}
   \label{fig:dauno_mechanism}
 \end{subfigure}
-\caption{(aonoaunos}
+\caption{(a) Molecular structure of Daunorubicin. (b) Two anthracyclines intercalating with DNA double helix. (c) Schematic diagram of Daunorubicin's mechanism of action. From left to right: daunorubicin induce reactive oxygen species (ROS) which damage the DNA. Daunorubicin interfers with DNA by (1) covalently crosslinking with DNA mediated by formaldehyde and (2) intercalating DNA double helix. Daunorubicin also inhibits Topoisomerase II which prevents DNA supercoil's relaxation. Not shown in image: daunorubicin removes histone (shown in yellow in image) which disrupt epigenetic regulations. Modified from (Yang et al, 2014 \cite{yang2014doxorubicin})}
 \end{figure}
 
 \subsection{Cell death signal}
@@ -513,27 +517,29 @@ PI is membrane impermeable and generally excluded from viable cells. Therefore i
 \begin{figure}[H]
 \centering
 
-\begin{subfigure}{\textwidth}
+\begin{subfigure}{0.4\textwidth}
   \centering
-  \includegraphics[width=0.4\textwidth]{images/pi}
+  \includegraphics[width=\textwidth]{images/pi}
   \caption{}
   \label{fig:pi_molecule}
 \end{subfigure}%
-
-\begin{subfigure}{\textwidth}
+~
+\begin{subfigure}{0.6\textwidth}
   \centering
-  \includegraphics[width=0.8\textwidth]{images/pi_spectra}
+  \includegraphics[width=\textwidth]{images/pi_spectra}
   \caption{}
   \label{fig:pi_spectra}
 \end{subfigure}%
 
-\caption{a) Molecular structure of Propium Iodide (PI) b) The excitation (blue) and emission (red) spectra of PI. Notice the peaking around the 600\~600 nm range in red channel. Image taken from ThermoFisher Scientific product specification page \cite{thermofisher2018pi}.}
+\caption{a) Molecular structure of Propium Iodide (PI) b) The excitation (blue) and emission (red) spectra of PI. Notice the peaking around the 600-650 nm range in red channel. Image taken from ThermoFisher Scientific product specification page \cite{thermofisher2018pi}.}
 
 \label{fig:pi_stain}
 \end{figure}
 
-\subsection{Cell treatments}
+\subsection{Drug treatments}
 \label{subsection:cell_treatments}
+
+%TODO move to intro/review/results
 
 Generally, following questions are to be investigated in the experiment:
 
@@ -546,7 +552,7 @@ To answer aforementioned questions, we designed the experiments as follow. First
 
 \subsubsection*{Unsynchronized experiment.}
 
-In the unsynchronized experiment, all 8 wells of the ibidi\textsuperscript{\textregistered} sticky-Slide 8 Well ('slide') are used with one microtrench wafer in each well (see Subsection \ref{subsection:microfluid_env} for the description of the slide). Wvery well is poured with different concentrations of treatments. To cover as many concentration range as possible, logarithmic scale is used to select concentration starting with 1 nanomolar (nM) all the way to 1000 nM. The use of logarithmic scale is also in line with logarithmic nature of many enzymatic and molecular process in cell biology \cite{wilkinson1961statistical, savageau1969biochemical}. Following concentrations are used:  1 nM, 5 nM, 10 nM, 100 nM and 1000 nM of Vincristine; 10 nM and 100 nM of Daunorubicin; and control concentration (0 nM). The unsynchronized experiment concentration configuration can be seen in Table \ref{table:unsyn_treatments}. The recording lasts for 45 hours. After 21 hours of recording, the chemotherapeutic treatment is introduced into each well. Table \ref{table:image_capture_frequency} shows the image capturing frequency for each image type.
+In the unsynchronized experiment, all 8 wells of the ibidi\textsuperscript{\textregistered} sticky-Slide 8 Well ('slide') are used with one micro-trench wafer in each well (see Subsection \ref{subsection:microfluid_env} for the description of the slide). Every well is poured with different concentrations of drugs. To cover a large concentration range, a logarithmic scale is used to select concentration starting with 1 nanomolar (nM) all the way to 1000 nM (see Table \ref{table:unsyn_treatments}). The use of a logarithmic scale is also in line with the logarithmic nature of many enzymatic and molecular processes in cell biology \cite{wilkinson1961statistical, savageau1969biochemical}. Following concentrations are used:  1 nM, 5 nM, 10 nM, 100 nM and 1000 nM of Vincristine; 10 nM and 100 nM of Daunorubicin; and no drug as control. The unsynchronized experiment concentration configuration can be seen in Table \ref{table:unsyn_treatments}. The recording lasts for 45 hours. After 21 hours of recording, the drug treatment is introduced into each well. Table \ref{table:image_capture_frequency} shows the image capturing frequency for each image type.
 
 \begin{table}[H]
 \centering
@@ -580,16 +586,16 @@ Red fluorescence channel (PI)& Image tracking, image analysis & 15 minutes \\
 Green fluorescence channel (Csp3/7) & Image tracking, image analysis & 15 minutes \\
 \hline
 \end{tabular}
-\caption{Image capture frequency of the unsynchronized experiment}
+\caption{Image capture frequency of the experiment}
 \label{table:image_capture_frequency}
 \end{table}
 
 
 \subsubsection*{Synchronized experiment}
 
-The main difference between unsynchronized and synchronized experiments is, as the name already suggests, the synchronization step done in synchronized experiment. The process involves arresting cell cycle with the so-called "double thymidine block" protocol \cite{harper2005synchronization}, which arrests cell development at $G_1/S$-phase by stopping DNA synthesis using double thymidine block, a well known DNA synthesis inhibitor \cite{bostock1971evaluation}.
+The main difference between unsynchronized and synchronized experiments is the synchronization step. This process involves arresting cell cycle with the so-called "double thymidine block" protocol \cite{harper2005synchronization}, which arrests cell development at $G_1/S$-phase by stopping DNA synthesis using double thymidine block, a well known DNA synthesis inhibitor \cite{bostock1971evaluation}.
 
-Like unsynchronized experiment, several concentration levels are tested in this experiment (see Table \ref{table:syn_treatments}). The image capturing starts after the cells are synchronized and lasts 24 hours. The image capturing frequency is exactly the same as unsynchronized experiment's (see Table \ref{table:image_capture_frequency}).
+Like in the unsynchronized experiment, several concentration levels are tested in this experiment (see Table \ref{table:syn_treatments}). The image capturing starts right after the cells are synchronized and lasts 24 hours. The image capturing frequency is exactly the same as in the unsynchronized experiment (see Table \ref{table:image_capture_frequency}).
 
 \begin{table}[H]
 \centering
@@ -607,7 +613,7 @@ B2: 10 nM - Dauno & 48-55 \\
 B1: 100 nM - Dauno & 56-63 \\
 \hline
 \end{tabular}
-\caption{Configuration table of treatments for synchronized experiment}
+\caption{Configuration table of drug treatments for synchronized experiment}
 \label{table:syn_treatments}
 \end{table}
 
@@ -618,48 +624,40 @@ The detailed image capturing protocol for both unsynchronized and synchronized e
 
 This section contains formal definitions and methods used in this thesis.
 
-\subsection{Image encoding}
+\subsection{Image channels and encoding}
 \label{subsection:image_encoding}
 
-From the initial recordings on, there are several image standards and encodings being processed and analyzed in our pipeline. We would start from the raw image captured by recording apparatus going down to processed images (See Appendix \ref{appendix:imageacquisition} for detailed protocols on image acquisition).
-
-There are two kind of recordings taken in our project: brightfield channel and fluorescence channel recordings. Two brightfield channels are used in this experiment:
+Several image standards and encodings are being processed in our pipeline. We start from the raw image captured by the camera going down to processed images (See Appendix \ref{appendix:imageacquisition} for detailed protocols on image acquisition). There are two brightfield channels (in-focus and out-of-focus channel) and two fluoroscent channels (red and green) in this project. Out-of-focus brightfield images are used to track cells as their unsharpness can be exploited through image processing creating robust patch of cells, as shown by Buggenthin \cite{buggenthin2011computational}. The red and fluoroscent channels capture fluorescence emission in 620-750 nm and 495-570 nm respectively (see Subsection \ref{subsection:cell_death_signal}).
 
 \begin{itemize}
-\item In-focus brightfield image. The focal distance of the camera $d_f$ is exactly the same as the distance from the apparatus to the microfluidic system $d_m$, i.e. $d_f = d_m$.
-\item Out-of-focus brightfield image. To capture out-of-focus brightfield image, $d_f$ should be different than $d_m$. Several distances were tried during the experiments (see Figure \ref{fig:focustest}). Difference in focus-microfludics distance influences the quality of the image in several ways (see Figure \ref{fig:focustest}). It was determined that the best resulting image came from the lense with $d_f - d_m = -20 mu m$.
+\item In-focus brightfield image, the focal distance of the camera $d_f$ is exactly the same as the distance of the camera to the center of the cell $d_m$, i.e. $d_f = d_m$.
+
+\item In out-of-focus brightfield image, the difference of focal plane and center of the cells, $d_f - d_m$, influences the quality of the image in several ways (see Figure \ref{fig:focustest}). It was determined that the ideal image for segmentation came from the setting with $d_f - d_m = -20 \mu m$.
+
+\item The red fluoroscent channel is used to capture emission from PI activation due to PI's DNA binding emission (see Subsection \ref{subsection:cell_treatments}).
+
+\item The green fluoroscent channel is used to capture emission from caspase3/7 activation due to DAVD peptide cleavage (see Subsection \ref{subsection:cell_treatments}).
 \end{itemize}
+
+%TODO change image labeling
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{images/focus/pict.png}
-\caption{Comparison between in-focus image and out-of-focus images taken at various focus-microfluidics difference $d_f - d_m$. The images were taken from the section in the well. In the first row are images with focus behind the microfluidics system while in the second row are images with focus before the system. A: in focus image. B: $+10 \mu m$. C: $+20 \mu m$. D: $+30 \mu m$. E: $+40 \mu m$. F: $+50 \mu m$. G: $-10 \mu m$. H: $-20 \mu m$. I: $-30 \mu m$. J: $-40 \mu m$. K: $-50 \mu m$.}
+\caption{In-focus image and out-of-focus brightfield images taken at various focus levels.  In the first row are images focused behind the microfluidics system while in the second row are images focused before the system. A: in focus image. B: $+10 \mu m$. C: $+20 \mu m$. D: $+30 \mu m$. E: $+40 \mu m$. F: $+50 \mu m$. G: $-10 \mu m$. H: $-20 \mu m$. I: $-30 \mu m$. J: $-40 \mu m$. K: $-50 \mu m$.}
 \label{fig:focustest}
 \end{figure}
 
-To detect cell death signal, fluorescent channels are used: red and green. These channels only capture fluorescence emission in corresponding spectrum area (i.e. 620–750 $nm$ and 495–570 $nm$ respectively):
+The camera records TIFF images (see Appendix \ref{appendix:imageacquisition} for the detailed protocols) \cite{loc2006tiff}. Each recorded stack consists of slice with one slice representing a single image capture at a time point. Each stack is encoded using RGB color model. This is also the case for the fluorescent image in which each slice shows the intensity in corresponding color channel (red, green or blue) as a monochromatic RGB image.
 
-\begin{itemize}
-\item Red fluoroscent channel. This channel is used to capture emission coming out of PI activation due to PI's DNA binding emission being mostly in red wavelength (see Subsection \ref{subsection:cell_treatments}).
-\item Green fluoroscent channel. This channel is used to capture emission coming out of caspase3/7 activation due to caspase3/7's binding emission being mostly in green wavelength (see Subsection \ref{subsection:cell_treatments}).
-\end{itemize}
-
-From the recording apparatus, the image came as TIFF image (see Appendix \ref{appendix:imageacquisition} for the detailed protocols) \cite{loc2006tiff}. Each recorded stack consists of slices which. One slice represent a single image capture at a time point. Each stack is encoded using RGB color model. This includes fluorescent image in which each slice shows the intensity in corresponding color channel (red, green or blue) as monochromatic RGB image. 
-
-RGB color model represents the pixel as a combination of red, green and blue color. This encoding is able to represent various spectra of human visible color and useful enough for most use cases \cite{sonka2014image, jayant1993signal}. The most commonly used RGB encoding is the 8 bit encoding. Here, each pixel is represented as an RGB pixel having red, green and blue color values ranging from 0 to 255. Mathematically, this means that each pixel $M_{t,x,y}$ of a slice captured at time $t$ in this image can be represented a triple, i.e.:
+RGB color model represents the pixel as a combination of red, green and blue color. This encoding is able to represent any human visible color and is useful enough for most use cases \cite{sonka2014image, jayant1993signal}. The most commonly used RGB encoding is the 8 bit encoding. Here, each pixel is represented as an RGB pixel having red, green and blue color values ranging from 0 to 255. Mathematically, this means that each pixel $M_{t,x,y}$ of a slice captured at time $t$ can be represented as a triple, i.e.,
 
 \begin{equation}
 \label{equation:rgb_pixel_def}
-M_{t, x, y} := (M_{t, x, y, 1}, M_{t, x, y, 2}, M_{t, x, y, 3})
+M_{t, x, y} := (M_{t, x, y, R}, M_{t, x, y, G}, M_{t, x, y, B}) \in [0:255]^3
 \end{equation}
 
-with
-
-$$
-M_{t, x, y, 1} M_{t, x, y, 2} M_{t, x, y, 3} \in [0,255]
-$$
-
-for 8-bit RGB encoding. Consequently, a slice $M_t$ of width $w$ and height $h$ is a 3-dimensional matrix of dimension $h \times w \times h$, i.e.
+for 8-bit RGB encoding. Consequently, a slice $M_t$ captured at time $t$ of width $w$ and height $h$ is a 3-dimensional matrix of dimension $w \times h$, i.e.
 
 $$
 M_i \in p_c^{w \times h \times 3}
@@ -668,32 +666,34 @@ $$
 with $p_c \in [0:255]$. A stack (a sequence of slices) $M$ of $n$ slices is in turn a 4-dimensional matrix:
 
 $$
-M_i \in p_c^{n \times w \times h \times 3}
+Mw \in p_c^{n \times w \times h \times 3}
 $$ 
 
-In some steps in the analysis pipeline, the image will modified to other encoding and vice versa, e.g. from 8 bit to 16 and from 8 bit to 32 bit RGB encoding. To convert RGB value of a pixel $M^a_{x,y}$ from one encoding to another $M^n_{x,y}$, linear conversion is normally used:
+To convert the RGB value of a pixel $M^a_{x,y}$ from one bit-encoding to another $M^b_{x,y}$, linear conversion is used:
 
 \begin{equation}
-\label{euqation:linear_conv_rgb}
+\label{equation:linear_conv_rgb}
 M^b_{x,y} = (\lceil M^a_{x,y, 1} \frac{2^b}{2^a} \rceil, \lceil M^a_{x,y, 2} \frac{2^b}{2^a} \rceil, \lceil M^a_{x,y, 3} \frac{2^b}{2^a} \rceil)
 \end{equation}
 
-where $a$ and $b$ refer to the bit length of the source and target encoding respectively (commonly known as \textbf{bid depth}).  Commonly used depths are 8, 16 (\textit{high color} format), 24 (\textit{true color} format) and 48 bits (\textit{deep color} format) \cite{lim1990two, sharma1997digital, sullivan2012overview}. 
+where $a$ and $b$ refer to the bit length of the source and target encoding respectively (commonly known as bid depth).  Commonly used depths are 8, 16 (high color format), 24 (true color format) and 48 bits (deep color format) \cite{lim1990two, sharma1997digital, sullivan2012overview}.
 
-Sometimes, both grayscale and 1-bit monochrome encoding is used/produced during image analysis. A grayscale image essentially shows the intensity of an image. A grayscale slice $G$ can be represented as matrix of integer, i.e. $G \in p_c^{w \times h}$ for 8-bit grayscale for example. Like RGB image, linear scaling can be applied to transform grayscale images across bit depth:
+Sometimes, other type of encodingsa like grayscale and 1-bit monochrome are used. A grayscale image essentially shows the intensity of the pixels in an image. A grayscale slice $G$ can be represented as a matrix of integer, i.e. $G \in p_c^{w \times h}$. Like RGB image, linear scaling can be applied to transform grayscale images across bit depth:
 
 \begin{equation}
 \label{equation:linear_conv_gray}
 G^b_{x,y} = \lceil G^a_{x,y} \frac{2^b}{2^a} \rceil
 \end{equation}
 
-RGB image can be transformed to grayscale image by combining the intensity from every channel:
+An RGB image can be transformed to a grayscale image by combining the intensity from every channel:
 
 $$
 G_{x, y} = \frac{M_{x, y, 1} + M_{x, y, 2} + M_{x, y, 3}}{3}
 $$
 
-this however does not reflect human perception of light, as human eyes' spectral sensitivity is not uniform across sensitivity spectrum \cite{wyszecki1982color}. Indeed, as Osorio and Vorobyev shows in 2005, each species has its own specific spectral sensitivity distribution \cite{osoosorio2005photoreceptor}, as can be seen in following figure:
+This however does not reflect human perception of light, as human eyes' spectral sensitivity is not uniform across the color spectrum \cite{wyszecki1982color}. Indeed, as Osorio and Vorobyev shows in 2005, each species has its own specific spectral sensitivity distribution \cite{osorio2005photoreceptor}, as can be seen in following figure:
+
+%TODO find better picture
 
 \begin{figure}[H]
 \centering
@@ -702,45 +702,56 @@ this however does not reflect human perception of light, as human eyes' spectral
 \caption{Spectral sensitivity of human (a), honeybee (b), pigeon (c) and home fly (d). Note that the sensitivity distribution is maximum normalized (i.e. each value in a curve is relative only to the maximum value of the curve). Each species has its own set of cone cells, as can be seen in the variation of the number of curves for each species. D refers to double cone, while SVF refers to short visual fiber and LVF to long visual fiber. The y's and p's indicate the yellow/pale sensitivity of house fly's long visual fiber. Figure taken from (Osorio and Vorbyev, 2005 \cite{osorio2005photoreceptor}).}
 \end{figure}
 
-There are some conversions published on transforming RGB value to human intensity perception based on the measured spectral sensitivity \cite{anderson1996proposal, itu2007studio, itu2015parameter}. Among the most commonly used is the \textit{BT.601} standard from International Telecommunication Union (ITU). It recommends following luminosity weight for RGB to grayscale conversion \cite{itu2007studio}:
+There are some conversions published on transforming RGB value to human intensity perception based on the measured spectral sensitivity \cite{anderson1996proposal, itu2007studio, itu2015parameter}. Among the most commonly used is the \textit{BT.601} standard from International Telecommunication Union (ITU). It recommends the following luminosity weight for RGB to grayscale conversion \cite{itu2007studio}:
 
 \begin{equation}
+G_{x, y} = \frac{0.299 M_{x, y, R} + 0.587  M_{x, y, G} + 0.114 M_{x, y, B}}{3}
 \label{equation:rgb_to_gray_def}
-G_{x, y} = \frac{0.299 M_{x, y, 1} + 0.587  M_{x, y, 2} + 0.114 M_{x, y, 3}}{3}
 \end{equation}
 
-Reverting back grayscale to RGB image in turn only consists of applying grascale value to each color component:
+For following image: 
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{images/pos_41_in_t0}
+\caption{The in-focus image of position 41 from unsynchronized experiment.}
+\label{fig:pos41}
+\end{figure}
+
+using Equation \ref{equation:rgb_to_gray_def} to convert RGB to intensity , we can convert the image into grayscale image representing the intensity. The grayscale image has the intensity distribution as shown in following histogram:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{images/pos_41_in_t0_hist}
+\caption{Normalized distribution of intensity of Figure \ref{fig:pos41}.}
+\label{fig:pos41_density}
+\end{figure}
+
+Reverting back a grayscale image to an RGB image in turn only consists of applying grascale value to each color component:
 
 $$
-M_{x, y} := [G_{x, y}, G_{x, y}, G_{x, y}]
+M_{x, y} := (G_{x, y}, G_{x, y}, G_{x, y})
 $$
 
-A 1-bit monochrome image is encoded as binary matrix:
+A 1-bit monochrome image is encoded as a binary matrix:
 
 $$
-B \in p_b^{w \times h} \land p_b \in {0, 1}
+B \in p_b^{w \times h} \land p_b \in \{0, 1\}
 $$
 
-this encoding is superior to other encoding for uses cases that do not require complete information of the image but rather separation of interesting parts in the image, since since it requires less memory (1 bit per pixel vs 24 bits per pixel of normal RGB image) and enables bitwise operation native to CPU \cite{kernighan1988c}. 
+This encoding is useful when not using not the complete information of the image but rather separation of interesting parts in the image, since since it requires less memory (1 bit per pixel vs 24 bits per pixel of normal RGB image) and enables bitwise operation of the CPU which takes constant time \cite{kernighan1988c}.  Some use cases are for example region of interest (ROI) bounding and contour and boundary visualization \cite{hartley2003multiple}.
 
-Some use cases for this encoding are for example region of interest (ROI) bounding and contour and boundary visualization \cite{hartley2003multiple}.
-
-The conversion from RGB to binary image can be done by defining cutoff value $c$, i.e.
+The conversion from RGB to binary images can be done by defining a cutoff value $c$ on one of the channels, e.g. for red channel, following conversion can be used:
 
 \begin{gather*}
 B_{x, y} =
 \begin{cases}
-  1 & \text{if } M_{x, y} > c\\    
+  1 & \text{if } M_{x, y, R} > c\\    
   0 & \text{else}  
 \end{cases}
 \end{gather*}
 
-Note that, unless otherwise mentioned, every bit encoding of an image refers to unsigned encoding. Thus, an $m$-bit encoding allows value ranging from $0$ to $2^m - 1$.
-
-\subsection{Brightness and contrast adjustment}
-\label{subsection:brightness_contrast_adjustment}
-
-We consider following image: 
+Note that, a bit encoding of an image refers to unsigned encoding. Thus, an $m$-bit encoding allows value ranging from $0$ to $2^m - 1$. We consider following image: 
 
 \begin{figure}[H]
 \centering
@@ -758,9 +769,14 @@ using RGB to intensity conversion formula shown in Subsection \ref{subsection:im
 \label{fig:pos41_density}
 \end{figure}
 
-Mathematically, we can represent brightness and contrast adjustment as a mapping between one domain to another one. Let $l(M_{t, i, j})$ a function that maps the RGB value of a pixel $M_{t, i, j}$ to its corresponding intensity. Conventiently, we can use ITU's \textit{BT.601} standard the formula written in Subsection \ref{subsection:image_encoding}.
+\subsection{Intensity, brightness and contrast}
+\label{subsection:brightness_contrast_adjustment}
 
-We then define the $I: [0:w] \times [0:h] \rightarrow \mathbb{N}_0$ function that maps the coordinate of a pixel to its corresponding intensity value i.e.
+Intensity, brightness and contrast can be modified to show and hide parts of an image. In this project, many image processing steps utilize the modification of them. Previously we defined  intensity in image encoding. In this subsection we will define brightness and contrast and their adjustment.
+
+Mathematically, we can represent brightness and contrast adjustment as a mapping between one domain to another. Let $l(M_{t, i, j})$ be a function that maps the RGB value of a pixel $M_{t, i, j}$ to its corresponding intensity $I_t$. Conventiently, we can use ITU's \textit{BT.601} standard formula written in Subsection \ref{subsection:image_encoding} to convert an RGB to grayscale image.
+
+We then define the $I_t: [0:w] \times [0:h] \rightarrow \mathbb{N}_0$ function that maps the coordinate of a pixel to its corresponding intensity value i.e.
 
 $$
 I_t(i, j) := l(M_{t, i, j})
@@ -768,16 +784,16 @@ $$
 
 Note that the codomain of the function $I_t$ depends on the encoding used. For a 8-bit encoding this will be then $[0:255]$.
 
-An intensity transformation $J_t$ is then defined as a linear transformation of $I_t$ with \textbf{gain} and \textbf{bias} parameters $\alpha$ and $\beta$ respectively,
+An intensity transformation $J_t$ is then defined as a linear transformation of $I_t$ with \textbf{gain} and \textbf{bias} parameters $\alpha$ and $\beta$ respectively:
 
 \begin{equation}
 \label{equation:br_ct_transform}
 J_t(i, j) := \alpha \cdot I_t(i, j) + \beta
 \end{equation}
 
-with $\alpha > 0$ \cite{szeliski2010computer}. The gain and bias parameters are also known as \textbf{contrast} and \textbf{brightness} parameters accordingly. In this regard, increasing/decreasing brightness is equivalent to increasing/decreasing $\beta$. The same thing also applies for contrast parameter, increasing $\beta$ will increase the brightness of the image.
+with $\alpha > 0$ \cite{szeliski2010computer}. The gain and bias parameters are also known as \textbf{contrast} and \textbf{brightness} parameters. In this regard, increasing/decreasing brightness is equivalent to increasing/decreasing $\beta$. The same thing also applies for contrast parameter, increasing $\alpha$ will increase the contrast of the image.
 
-Predictably, doing transformation over by $J_t$ will inevitably cause the resulting intensity to be outside of the allowed value range $[0:2^m]$ for m-bit encoding. To understand this situation, we first have to consider the boundedness of eyes perception. The argumentation for boundedness can be shown by realizing that the excitation of a neuron follows sigmoid function \cite{gazzaniga2004cognitive}. Thus given no impuls the neuron will stay in ground state, while very large impulse is bounded due to biochemical constraint of a neuron. Mapped in the context of sigmoid function, a steady state corresponds to 0 while asymptotically unlimited excitation correspondes to 1. In our context, a non-excited state corresponds to 0 intensity while full-excitation corresponds to $2^m - 1$ intensity. Thus, the equation \ref{equation:br_ct_transform} could be closely bounded by introducing upper and lower bound of $0$ and $2^m - 1$, i.e.:
+Predictably, doing transformation using transformation function $J_t$ will inevitably cause the resulting intensity to be outside of the allowed value range $[0:2^m]$ for m-bit encoding. To understand this situation, we first have to consider the boundedness of eyes perception. The argumentation for boundedness can be shown by realizing that the excitation of a neuron follows a sigmoid function \cite{gazzaniga2004cognitive}. Thus given no impuls the neuron will stay in ground state, while very large impulse is bounded due to biochemical constraint of a neuron. Mapped in the context of a sigmoid function, a steady state corresponds to 0 while asymptotically unlimited excitation corresponds to 1. In our context, a non-excited state corresponds to 0 intensity while full-excitation corresponds to $2^m - 1$ intensity. Thus, the Equation \ref{equation:br_ct_transform} can be bounded by introducing upper and lower bounds of $0$ and $2^m - 1$, i.e.
 
 \begin{gather*}
 J_t(i, j) :=
@@ -788,7 +804,9 @@ J_t(i, j) :=
 \end{cases}
 \end{gather*}
 
-We can for example, transform Figure \ref{fig:pos41} using $J_t(i, j)$ with $\beta=100$. $\alpha$ is not changed in this case. Following images show the transformed image and its corresponding normalized intensity distribution:
+We can for example, transform Figure \ref{fig:pos41} using $J_t(i, j)$ with $\alpha = 1$ and $\beta=100$. The transformed image can be seen in Subfigre \ref{fig:pos41_brup100_bf} with Subfigure \ref{fig:pos41_brup100_hist} shows the intensity distribution of the transformed image. We can also try to modify $\alpha$. Changing $\alpha$ to a value larger than 1 will scale the image's intensity and emphasize/de-emphasize image contrast. Subfigure \ref{fig:pos41_brup100_hist} shows the transformed image for $\alpha = 3$ and $\beta  = 0$.
+
+See for example following image:
 
 \begin{figure}[H]
 \centering
@@ -800,120 +818,52 @@ We can for example, transform Figure \ref{fig:pos41} using $J_t(i, j)$ with $\be
   \label{fig:pos41_brup100_bf}
 \end{subfigure}%
 ~
-\begin{subfigure}{0.6\textwidth}
-  \centering
-  \includegraphics[width=\textwidth]{images/pos_41_in_t0_br_up100_hist}
-  \caption{}
-  \label{fig:pos41_brup100_hist}
-\end{subfigure}%
-
-\caption{(a) The in-focus image of position 41 from unsynchronized experiment tranoformed with $\alpha=1$ and $\beta = 100$. (b) Normalized distribution of intensity of the transformed figure. Compared to Figure \ref{fig:pos41_density}. Note that the difference in height across bins \textit{vis a vis} Figure \ref{fig:pos41_density} is mainly caused by the definition of bins in the histogram function.}
-
-\label{fig:pos41_brup100}
-\end{figure}
-
-Geometrically, brightness adjustment shifts the entire intensity distribution to the right by $\beta$ \footnote{Note the wording. For negative $\beta$, the shift is negative to the right, i.e. to the left}.
-
-We can also try to change $\beta$. This will scale the image's intensity and emphasize image contrast. See for example following image:
-
-\begin{figure}[H]
-\centering
-
 \begin{subfigure}{0.4\textwidth}
   \centering
   \includegraphics[width=\textwidth]{images/pos_41_in_t0_br_times3}
   \caption{}
   \label{fig:pos41_times3_bf}
 \end{subfigure}%
+
+\centering
+
+\begin{subfigure}{0.4\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{images/pos_41_in_t0_br_up100_hist}
+  \caption{}
+  \label{fig:pos41_brup100_hist}
+\end{subfigure}%
 ~
-\begin{subfigure}{0.6\textwidth}
+\begin{subfigure}{0.4\textwidth}
   \centering
   \includegraphics[width=\textwidth]{images/pos_41_in_t0_br_times3_hist}
   \caption{}
   \label{fig:pos41_times3_hist}
 \end{subfigure}%
 
-\label{fig:pos41_times3}
-\caption{(a) The in-focus image of position 41 from unsynchronized experiment tranoformed with $\alpha=3$ and $\beta = 0$. Notice the contrast has increased significantly, especially around area with high intensity differential such us the margin of a micro-trench and the dark spot in the lower left part of the slice. (b) Normalized distribution of intensity of the transformed figure}
+\caption{(a) The in-focus image of position 41 from unsynchronized experiment tranoformed with $\alpha=1$ and $\beta = 100$. (b) The in-focus image of position 41 from unsynchronized experiment tranoformed with $\alpha=3$ and $\beta = 0$. Notice the contrast has increased significantly, especially around area with high intensity differential such us the margin of a micro-trench and the dark spot in the lower left part of the slice. (c) Normalized distribution of intensity of (a). (d) Normalized distribution of intensity of the (b). Note that the difference in height across bins in two histograms is mainly caused by the definition of bins in the histogram function.}
+
+\label{fig:pos41_brup100}
 \end{figure}
 
-Geometrically, contrast can be understood as the distance of closely resembling pixel \cite{hartley2003multiple}. Two pixels which are very similar will look very different given a high contrast. Brightness, on the other hands, describes the level of visibleness of a pixel.
+Geometrically, brightness describes the level of visibleness of a pixel. Adjusting $\beta$ shifts the entire intensity distribution to the right by $\beta$ \footnote{Note the wording. For negative $\beta$, the shift is negative to the right, i.e. to the left}. On the other hand, contrast can be understood as the distance of closely resembling pixel \cite{hartley2003multiple}. Two pixels which are very similar will look very different given a high contrast.
 
-\subsection{Micro-trench masking}
-\label{subsection:micro_trench_masking}
-
-First, note that the following method is only semi- automatically done. The first step (brightness and contrast correction) is done manually in \textit{Fiji} while the Robust Automatic Threshold Selection (RATS) and the holes filling are done automatically, also in \textit{Fiji}.
-
-Several techniques could be applied to highlight certain area in the image. In Subsection \ref{subsection:cv_advances}, several advances in computer vision methods are described. While more general advances in the field of machine learning is chronicled in Subsection \ref{subsection:ml_advances}. While the collection of advanced methods for detection abound, some simple interpretable methods could be used best to detect and mask the micro-trench. In particular,  we can see for example that the area around a micro-trench exposes the so-called strong intensity gradient (see Figure \ref{fig:pos41_brightness}): the area around the marging of a micro-trench is much darker than the other parts of the well. This can be explained by the fact that the light is reflected less around the wall area and thus the intensity decreases. Moreover, the light beam coming out of the camera is not perfectly perpendicular to the well and thus the non-perpendicular reflection is not reflected back to the camera sensor.
-
-Before us, there are several methods that exploit this kind of phenomenon. Cheng et al for example shows it is possible to recognized salient objects in image by using contrast and brightness adjustment \cite{cheng2015global}. Our method on the other hand, goes further by doing robustness improvement by doing noise cancellation step (See \ref{subsubsection:rats}).
-
-\begin{figure}[H]
-\centering
-
-\begin{subfigure}{\textwidth}
-  \centering
-  \includegraphics[width=\textwidth]{images/pos_41_cut_highlight_y_500}
-  \caption{}
-  \label{fig:pos41_highlight}
-\end{subfigure}%
-
-\begin{subfigure}{\textwidth}
-  \centering
-  \includegraphics[width=\textwidth]{images/pos_41_cut_highlight_y_500_contrast}
-  \caption{}
-  \label{fig:pos41_contrast}
-\end{subfigure}%
-\caption{(a) The highlighted area around the 500-th column of the first slice of position 41. The range starts from the 450-th until the 550-th column. (b) The intensity of the red-marked area in (a), the region around micro-trench margin is indicated by the sudden drop of intensity. Note also the slow drift of the intensity as the pixel goes south (right side of the plot). This phenomenon is called \textit{intensity gradient} (see Subsection \ref{subsection:gaussian_blur} for more.}
-\label{fig:pos41_brightness}
-\end{figure}
-
-We could thus exploit this knowledge by designing micro-trench masking algorithm as follows:
-
-\subsubsection*{Brightness and contrast adjustment of in-focus image}
-\label{subsubsection:brightness_contrast_adjustment}
-
-First, we adjust the brightness and contrast so that the area far away from the margin is encoded as maximum intensity, while the area around the margin is encoded as minimum intensity. One simple and robust way to do this is to reduce the intensity of each position with the maximum intensity value of the region around the margin.
-
-Mathematically, we can define two sets of points, $\mathfrak{M}$ and $\mathfrak{S}$. $\mathfrak{M}$ refers to the set of points around the trench margin while $\mathfrak{S}$ denotes the set of points far away from it. This brings us to the following transformation,
-
-$$
-J_i(i, j) := I_t(i, j) + argmax_{(x, y) \, \in \, \mathfrak{M}}{I_t(x, y)}
-$$
-
-creating transformed intensity $I^t$.
-
-As can be seen in Figures \ref{fig:pos41_density} and \ref {fig:pos41_brightness}, while sets $\mathfrak{M}$ and $\mathfrak{S}$ are locally separable, across the board this does not seem so clear. We can thus improve the transformation by also adjusting the contrast parameter $\alpha$ by increasing it so that $\alpha > 1$. This brings the pixels with similar intensity values around the decision boundary (somewhere between the two distributions in Figure \ref{fig:pos41_density}) apart and thus ameliorates the determination of decision boundary by the user. Applying this, we have now the new transformation:
-
-$$
-J_i(i, j) := \alpha I_t(i, j) + argmax_{(x, y) \, \in \, \mathfrak{M}}{I_t(x, y)} \text{ with } \alpha > 1
-$$
-
-creating transformed intensity $I^t$.
-
-Note that this is still not a perfect transformation, as there are some pixels in $\mathfrak{S}$ with intensity lower than the minimum intensity of pixels in $\mathfrak{M}$. Besides doing this manually, we also improve this by refining the transformed intensity $I^t$ further with the next step: Robust Automatic Threshold Selection.
-
-Subfigures \ref{fig:orig_pic} and \ref{fig:brcon_adj} show images of micro-trenches before and after brightness and contrast adjustment. As mentioned, some parts inside the micro-trench still have pixels  that were not transformed to complete white color (maximum intensity). This can however be removed by global and local noise correction through Robust Automatic Threshold Selection (RATS, see next).
-
-\subsubsection*{Robust automatic threshold selection (RATS)}
+\subsection{Robust automatic threshold selection (RATS)}
 \label{subsubsection:rats}
 
-Robust Automated Threshold Selection (RATS), based on description by (Wilkinson and Schut, 1998 \cite{wilkinson1998digital}), computes a threshold map for an image based on two criteria:
+%TODO move parts to Chapter 3
 
-\begin{itemize}
-\item pixel values, and
-\item pixel gradients. \cite{fiji2017rats}
-\end{itemize}
+Robust Automated Threshold Selection (RATS), based on description by Wilkinson and Schut\cite{wilkinson1998digital}, computes a threshold map for an image based on two criteria: pixel values, and pixel gradients \cite{fiji2017rats}.
 
-The gradient is computed using the so-called Sobel kernels\cite{sobel1990isotropic}, a commonly used in computer vision for edge detection as it particularly emphasizes edges in image upon transformation. It is a discrete differential operator which computes an approximation of gradient of the intensity function $J$.
+The gradient is computed using the so-called Sobel kernel \cite{sobel1990isotropic} a commonly used in computer vision for edge detection as it particularly emphasizes edges in an image upon transformation. It is a discrete differential operator which computes an approximation of the gradient of the intensity function $J$.
 
-Originally, the Sobel gradient $\mathbb{G}_{x, y}$ of coordinate $(x, y)$ is defined as,
+Originally, the Sobel gradient $\mathbb{G}_{x, y}$ of coordinate $(x, y)$ is defined as
 
 $$
 \mathbb{G}_{x, y} := \sqrt{\Delta_x^2 + \Delta_y^2}
 $$
 
-Whereas $\Delta_x$ and $\Delta_y$ are defined as,
+Whereas $\Delta_x$ and $\Delta_y$ are defined as
 
 \[
 \Delta_x = 
@@ -926,7 +876,7 @@ Whereas $\Delta_x$ and $\Delta_y$ are defined as,
 \mathbf{M_t}
 \]
 
-and,
+and
 
 \[
 \Delta_y = 
@@ -939,10 +889,10 @@ and,
 \mathbf{M_t}
 \]
 
-with $\mathbf{M_t}$ denoting the image at time $t$ and asterisk symbol $*$ two dimensional signal processing convoltion \cite{smith1997scientist}. For example, for a $3 \times 3$ matrix,
+with $\mathbf{M_t}$ denoting the image at time $t$ and asterisk symbol $*$ denotes  a two dimensional signal processing convoltion \cite{smith1997scientist}. For example, for a $3 \times 3$ matrix,
 
 \[
-M_{3 \times 3} = 
+X_{3 \times 3} = 
 \begin{bmatrix}
 1 & 2 & 3 \\
 4 & 5 & 6 \\
@@ -950,7 +900,7 @@ M_{3 \times 3} =
 \end{bmatrix}
 \]
 
-and $\Delta_x$, the value of the middle pixel $(2, 2)$ after evaluating the convolution $\Delta_x * M_{3 \times 3}$ is,
+and $\Delta_x$, the value of the middle pixel $(2, 2)$ after evaluating the convolution $\Delta_x * X_{3 \times 3}$ is,
 
 \[
 \left( 
@@ -961,23 +911,23 @@ and $\Delta_x$, the value of the middle pixel $(2, 2)$ after evaluating the conv
 \end{bmatrix}
 *
 \begin{bmatrix}
-1 & 2 & 3 \\
-4 & 5 & 6 \\
-7 & 8 & 9
+a & b & c \\
+d & e & f \\
+g & h & i
 \end{bmatrix}
 \right) [2,2]
-= 1 \cdot 1 + 0 \cdot 2 + 1 \cdot 3 + -2 \cdot 4 + 0 \cdot 5 + 2 \cdot 6 + -1 \cdot 7 + 0 \cdot 8 + 1 \cdot 9
+= i \cdot 1 + 0 \cdot h - 1 \cdot g + 2 \cdot f + 0 \cdot e - 2 \cdot d - 1 \cdot g + 0 \cdot h - 1 \cdot a
 \]
 
-It has been shown, however, that only taking the quadratic gradient yields comparable result \cite{wilkinson1998digital}. The Sobel operator is thus only defined as quadratic gradient in Fiji RATS plugin,
+It has been shown, however, that only taking the quadratic gradient yields comparable result \cite{wilkinson1998digital}. The Sobel operator is thus defined as quadratic gradient in Fiji RATS plugin, i.e.
 
 $$
-\mathbb{g_{x, y}} = \mathbb{G_{x, y}^2} = \Delta_x^2 + \Delta_y^2
+\mathbb{g_{x, y}} = \mathbb{G_{x, y}^2}
 $$
 
-Pixels having gradients smaller than threshold $\lambda \sigma$ are then removed, where $\sigma$ is noise (generally, standard deviation of the expected background is used, e.g. standrd deviation of the whole image) and $\lambda$ is scaling factor (Wilkinson determined $\lambda = 3$ to be a good approximation. Visually, this step can be understood as removal of background noise from the image.
+Pixels having gradients smaller than threshold $\lambda \sigma$ are then removed, where $\sigma$ is the noise (generally, standard deviation of the expected background is used, e.g. standard deviation of the whole image) and $\lambda$ is the scaling factor (Wilkinson determined $\lambda = 3$ to be a good approximation \cite{wilkinson1998digital}). Visually, this step can be understood as removal of background noise from the image.
 
-To refine the filtering further, iterative correction is applied. First, a quadtree construction is applied in an image. Figure \ref{fig:quadtree} gives an example on how a quadree of an image looks like:
+To refine the filtering further, iterative correction is applied. First, a quadtree construction is applied in an image. A quadtree is a tree-like data structure in which each node has exactly four children (Finkel and Bentley, 1974 \cite{finkel1974quad}). In the context of an image, an image is recursively separated into smaller quadtree until the standard deviation of the intensity in every quadtree is lower than a pre-defined limit (usually the standard deviation of the intensity of the whole image $\sigma$). Figure \ref{fig:quadtree} gives an example on how a quadree is constructed from an image.
 
 \begin{figure}[H]
 \centering
@@ -986,23 +936,31 @@ To refine the filtering further, iterative correction is applied. First, a quadt
 \label{fig:quadtree}
 \end{figure}
 
-Within smallest square,a local threshold $T_R$ is computed in following way:
+In the second step, we attempt to remove the filter locally. To do that, we first define a local threshold $T_R$ within the smallest square. For a quadrant, the threshold is computed in following way:
 
 \begin{equation}
 T_R = \frac{\sum g_{x,y} \cdot M_{t, x, y}}{\sum g_{x, y}}
 \label{eq:local_threshold_rats}
 \end{equation}
 
-If a square only contains noises for example, in which case the $T_r$ filters no point at all as it is too low that no points are removed, the local threshold of the parent square is taken instead (note that the quadree is defined as a tree, see for example the original descrption of quadtree by Finkel and Bentley, 1974 \cite{finkel1974quad}). This step is iterated until a parent square with at least one filtered pixel is reached. Visually, the refining step is equal to filtering out area of an image in which the pixels are mostly noise. In the initial global filtering process, many noisy pixels might not be filtered since happen to have gradients larger than $\lambda \sigma$. Using bottom-up these pixels will be eventually filtered out.
+Where $\sum g_{x,y}$ the sum of all children quadrants' gradient. For the smallest quadrant, only $g_{x,y}$ is used instead, i.e.
 
-Subfigures \ref{fig:brcon_adj} and \ref{fig:rats} show the input and output of  RATS respectively. The noise partaining in a micro-trench is removed upon application of gradient-based filtering. We can that,
+\begin{equation}
+T_R = \frac{g_{x,y} \cdot M_{t, x, y}}{g_{x, y}}
+\label{eq:local_threshold_rats}
+\end{equation}
+
+This threshold is used to filter pixels within a quadrant. Pixels with gradient value smaller than $T_R$ of a quadrant are then filtered out. If $T_R$ is very low that no point in a quadrant is filtered out, the $T_R$ of the parent is taken instead. This step is iterated until a parent square with at least one filtered pixel is reached. Visually, the refining step is equal to filtering out the area of an image in which the pixels are mostly noise. In the initial global filtering process, many noisy pixels might not be filtered since they happen to have gradients larger than $\lambda \sigma$. Using this bottom-up approach these pixels will be eventually filtered out.
+
+Subfigures \ref{fig:brcon_adj} and \ref{fig:rats} show the input and output of  RATS. The noise partaining in a micro-trench is removed upon application of gradient-based filtering. We can thus say that,
 
 \begin{itemize}
-\item the first part of RATS ($\mathbb{B}$-filtering by $\lambda \sigma$) is designed to move global level noise  which in this case means white noises coming from non-perfect reflection of light from the well.
+\item the first part of RATS ($\mathbb{g}$-filtering by $\lambda \sigma$) is designed to move global level noise  which in this case means white noises coming from non-perfect reflection of light from the well.
 \item the second part of RATS (recursive $\mathbb{B}$-filtering by $T_r$)is designed to remove local noise cause by local distortion due to location-specific artifacts (direction of incoming light not perfectly perpendicular with regard to micro-trench's base etc).
 \end{itemize}
 
-\subsubsection*{Holes filling}
+\subsection{Holes filling}
+%TODO move parts to Chapter 3
 
 After brightness and contrast adjustment and RATS, the image now mostly contains the margin of the micro-trenches. We can then fill these holes to create micro-trench masks. The step consists of doing two processes:
 
@@ -1020,10 +978,9 @@ Following image explains the definition of contours and their hierarchy:
 \label{fig:contours}
 \end{figure}
 
-There are several well known algorithms for hierarchical contours recognition. In our case, the algorithm of Suzuki and Abe is used \cite{suzuki1985topological}. The algorithm works by following border between two regions of different color pixel by pixel. The border following process is done hierarchically creating tree-like dependency structure of contours. We then take the outermost contour (in the tree context, the uppermost contours) which are then filled. The filling in turn is simply done by assigning neutral value in every pixel located inside each contour, including all pixels inside all of each contour's children contours.
+There are several well known algorithms for hierarchical contours recognition. In our case, the algorithm of Suzuki and Abe \cite{suzuki1985topological} is used. The algorithm works by walking along the border between two regions of different color. The border walking process is done hierarchically creating tree-like dependency structure of contours. We then take the outermost (hierarchically the highest) contours which are then filled. The filling in turn is simply done by assigning neutral value in every pixel located inside every outermost contour.
 
-Subfigures \ref{fig:rats} and \ref{fig:fill_holes} show the input and output of the algorithm respectively.
-
+Subfigures \ref{fig:rats} and \ref{fig:fill_holes} show the input and output of the hole filing algorithm.
 
 \begin{figure}[H]
 \centering
@@ -1056,7 +1013,7 @@ Subfigures \ref{fig:rats} and \ref{fig:fill_holes} show the input and output of 
   \label{fig:fill_holes}
 \end{subfigure}%
 
-\caption{The upper left corner of position 41's in-focus-image recording at time $t=0$: (a) The original in-focus image of the upper left corner of position 41. (b) The view of the same area as (a) after applying brightness and contrast adustment. (c) The view of the same area after applying RATS on image in (b) showing the contour of micro-trenches in the area. (d) The contours filled with neutral color (black). Note that some micro-trenches are not filled as they are open and thus topologically not the outernmost contours. Scale bar on the uppermost figure is $100 \mu M$ long.}
+\caption{The upper left corner of the image position 41's in-focus-image recording at time $t=0$: (a) The original in-focus image of the upper left corner of position 41. (b) The view of the same area as (a) after applying brightness and contrast adustment. (c) The view of the same area after applying RATS on image in (b) showing the contour of micro-trenches in the area. (d) The contours filled with neutral color (black). Note that some micro-trenches are not filled as they are open and thus topologically not the outernmost contours. Scale bar on the uppermost figure is $100 \mu M$ long.}
 
 \label{fig:trench_masking}
 \end{figure}
@@ -1064,42 +1021,42 @@ Subfigures \ref{fig:rats} and \ref{fig:fill_holes} show the input and output of 
 \subsection{Gaussian blur}
 \label{subsection:gaussian_blur}
 
-Gaussian blurring in the context of image processing is  the process of applying Gaussian noise on an image. The Gaussian function $G: \mathbb{R} \rightarrow \mathbb{R}$ is a function defined as,
+Gaussian blurring in the context of image processing is the process of applying a Gaussian noise on an image. The Gaussian function $G: \mathbb{R} \rightarrow \mathbb{R}$ is a function defined as
 
 $$
 G(x) = \frac{1}{\sqrt{2\pi \sigma^2}} e^{-\frac{x^2}{2 \sigma^2}}
 $$
 
-In 2 dimensional setting, we extend the function to $G: \mathbb{R} \times \mathbb{R} \rightarrow \mathbb{R}$ defined as,
+In 2 dimensional setting, we extend the function to $G: \mathbb{R} \times \mathbb{R} \rightarrow \mathbb{R}$ defined as
 
 \begin{equation}
 G(x,y) = \frac{1}{{2\pi \sigma^2}} e^{-\frac{x^2 + y^2}{2 \sigma^2}}
 \label{equation:gauss_2d}
 \end{equation}
 
-Applying this function on a 2D image will create circles centered around the center of the distribution with values around the center distributed normally. This means that, for an arbitrary $\sigma$  and a uniform image with intensity of $n$ in every pixel,  convolving the image with Equation \ref{equation:gauss_2d} centered at point $i, j$ yields a transformed image with the transformed intensity $I^G$ of each point distributed normally around $(i, j)$ with scaling of $n$ and standard deviation $\sigma$,
+Applying this function on a 2D image creates concentric circles centered around the center of the distribution with values around the center distributed normally. This means that, for an arbitrary $\sigma$  and a uniform image with the intensity of $n$ in every pixel,  convolving the image with Equation \ref{equation:gauss_2d} centered at point $(i, j)$ yields a transformed image with the transformed intensity $I^G$ of each point distributed normally around $(i, j)$ with scaling of $n$ and standard deviation $\sigma$:
 
 \begin{equation}
 I^G(x, y) = n \cdot \frac{1}{{2\pi \sigma^2}} e^{-\frac{(x - i)^2 + (y - j)^2}{2 \sigma^2}}
 \label{equation:gauss_intens_trans}
 \end{equation}
 
-The idea of transforming an image with selected center point is however not very practical as the pixels far away from image will have intensity of almost zero. We can however, use this fact (namely, that the intensity of pixels around the center point fall exponentially the further the pixels are away) to introduce dependency of each pixel on its surrounding environment. This will introduce a blur due to pull-down effect of the neighboring pixels. Hence the name \textbf{Gaussian blurring}.
+The idea of transforming an image with one selected center point is however not very practical as the pixels far away from image will have intensity of almost zero. We can however, use the fact fact that the intensity of pixels around the center point fall exponentially the further the pixels are away to introduce a dependency of each pixel on its surrounding environment. This will introduce a blur due to pull-down effect of the neighboring pixels. Hence the name \textbf{Gaussian blurring}.
 
-Mathematically, we can express Gaussian blurring process as convolving the pixels around a position $(x, y)$ and take the average of the convolving image as the new intensity value in $(x, y)$. Using the continuous Gaussian intensity transformation defined in Equation \ref{equation:gauss_intens_trans}, the Gaussian convolution  function is defined as follows,
+Mathematically, we can express the Gaussian blurring process as convolving the pixels around a pixel $(x, y)$ and take the average of the convolved image as the new intensity value in $(x, y)$. Using the continuous Gaussian intensity transformation defined in Equation \ref{equation:gauss_intens_trans}, the Gaussian convolution  function is defined as following:
 
 $$
 I^{conv_G}(x, y) = \frac{\sum_{x - \lfloor d/2 \rfloor < i < x + \lfloor d/2 \rfloor} \sum_{x - \lfloor d/2 \rfloor < j < x + \lfloor d/2 \rfloor} I^G(i, j)}{(\lfloor d/2 \rfloor)^2}
 $$
 
-with $d$ denoting the $L_1$ distance of the blur.  We can furthermore refine the convolution further by using $L_2$ distance (i.e. radius) instead,
+with $d$ denoting the $L_1$ distance of the blur.  We can furthermore refine the convolution further by using $L_2$ distance (i.e. radius) instead:
 
 \begin{equation}
-I^{conv_G}(x, y) = \frac{\sum_{(i, j) \in C}  I^G(i, j)}{w \cdot d}
+I^{conv_G}(x, y) = \frac{\sum_{(i, j) \in C}  I^G(i, j)}{\| C \|}
 \label{equation:conv_gaussian_cont}
 \end{equation}
 
-for $C := \{(i, j)  \text{  where } d_{L_2}((x, y), (i, j)) \leq d\}$. It can be seen from the equation that increasing the radius $d$ will increase the pull-down effect on the pixel and hence increase the smoothness. We exploit this property to create regional gradient which will be used to normalize background image. By dividing the value of each pixel by the convoluted value of it we can correct the image by its global background noise. The Gaussian blur-corrected intensity $I^{c_G}$ is thus defined as,
+for $C := \{(i, j)  \text{  where } d_{L_2}((x, y), (i, j)) \leq d\}$. It can be seen from the equation that increasing the radius $d$ increases the pull-down effect on the pixel and hence increases the smoothness of in the image. We exploit this property to create regional gradient which will be used to normalize an image by its background gradient. By dividing the value of each pixel by the convoluted value of it we can correct the image by its global background noise. The Gaussian blur-corrected intensity $I^{conv_G}$ is thus defined as
 
 \begin{equation}
 I^{c_G}(x, y) = \frac{I(x, y)}{I^{c_G}(x, y)} 
@@ -1111,70 +1068,69 @@ Visually, the method can be understood as low pass filter. It removes the higher
 \subsection{Contrast limited adaptive histogram equalization (CLAHE)}
 \label{subsection:clahe}
 
-CLAHE, initially developed by Karel Zuiderveld in 1994 \cite{zuiderveld1994contras}, is an instance of the class of algorithms called adaptive histogram equalization (AHE) used to improve contrast in an image. An AHE algorithm generally works by transforming each pixel with a transformation function derived from the neighboring region instead of the whole image.  By doing this, an AHE algorithm can count for variation of  brightness and contrasts in areas of the image \cite{pizer1987adaptive}.
+CLAHE, initially developed by Karel Zuiderveld in 1994 \cite{zuiderveld1994contrast}, is an instance of the class of algorithms called adaptive histogram equalization (AHE) commonly used to improve contrast in an image. An AHE algorithm generally works by transforming each pixel with a transformation function derived from the neighboring region instead of the whole image.  By doing this, an AHE algorithm can count for the variation of brightness and contrasts in areas of an image \cite{pizer1987adaptive}.
 
-The distinction of CLAHE among other AHE algorithms is its contrast limiting property of algorithm. Given a contrast distribution of an area around a given point,  CLAHE conduct following steps:
+The distinction of CLAHE among other AHE algorithms is the contrast limiting property of the algorithm. Given a contrast distribution of an area around a given point, CLAHE conducts following steps:
 
 \begin{enumerate}
-\item First, the algorithm takes a predefined clipping value of intensity histogram of the area around a center point.
+\item First, the algorithm takes a predefined clipping value of the intensity histogram of the area around a center point.
 \item The algorithm then calculates the intensity histogram of the area.
-\item For some intensity values there will be more pixels than allowed having the corresponding intensity values.
-\item Adapt this intensity distribution by reassigning the intensity of some pixels in the clipping intensity area uniformly across the range of intensity in the image (see upper part of Figure \ref{fig:clahe}).
-\item Repeat until for randomly selected areas in the image the clipping constraint is satisfied.
+\item For some intensity values there will be more pixels than allowed with the intensity values. We call these intensity values the clipping intensity area.
+\item Adapt the intensity histogram by reassigning the intensity of some pixels in the clipping intensity area uniformly across the range of intensity in the image (see upper part of Figure \ref{fig:clahe}).
+\item Repeat until for randomly selected areas in the image the clipping value constraint is satisfied, i.e. for every randomly chosen pixel, the intensity histogram contains no clipping intensity area.
 \end{enumerate}
 
-Figure \ref{fig:clahe} visualizes the step 2, 3 and 4 of the algorithm description above. As can be seen in the area intensity CDF in the lower part of the figure, the algorithm results in more equalized intensity values. Visually, this reduces contrast and in turn sharpens the image. Figure \ref{fig:clahe_before_after} shows an area of the well before and after the application of CLAHE on the taken image. Note the increased brightness and emphasized  convolution effect around the micro-trench margin area.
+Figure \ref{fig:clahe} visualizes the step 2, 3 and 4 of the algorithm description above. As can be seen in the area intensity CDF in the lower part of Figure \ref{fig:clahe}, the algorithm results in a more equalized distribution of intensity. Visually, this increases the contrast and in turn sharpens the image. Figure \ref{fig:clahe_before_after} shows an area of the well before and after the application of CLAHE. Note the increased brightness and emphasized convolution effect around the micro-trench margin area.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.7\textwidth]{images/clahe}
-\caption{Desription of CLAHE. Taken from Pizer, Zuiderfeld et al, 1987 \cite{pizer1987adaptive}  Note the  smoothen CDF function (lower part of the figure) after reassigning some pixels with pixel values above the clipping value.}
+\caption{Desription of CLAHE. Taken from Pizer, Zuiderfeld et al, 1987 \cite{pizer1987adaptive}  Note the  smoothen intensity CDF function (lower part of the figure) after reassigning some pixels with pixel values above the clipping value.}
 \label{fig:clahe}
 \end{figure}
 
+%TODO improve image
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{images/clahe_before_after}
-\caption{The upper left corner of position 43's in-focus-image recording at time $t=0$: before (left) and after (right) the application of CLAHE on the image. Scale bar on the left figure is $100 \mu M$ long.}
+\caption{The upper left corner of the in-focus brightfield chanenl of the image position 43 at time $t=0$: before (left) and after (right) the application of CLAHE on the image. Scale bar on the left figure is $100 \mu M$ long.}
 \label{fig:clahe_before_after}
 \end{figure}
 
 \subsection{Subtraction by pixel-wise mean intensity}
 \label{subsection:substraction_by_mean}
 
-To substract an RGB image at time $M_t$ by pixel-wise mean intensity $\langle{M}\rangle$, the average intensity for each pixel across all time points is made for a position. For a stack with $n$ images, we can simply define the pixel-wise mean of the $i$-th channel for position $(x, y)$ as follows,
+To substract an RGB image at time $M_t$ by its pixel-wise mean intensity $\langle M \rangle$, the average intensity for each pixel across all time points is made for a pixel. For a stack with $n$ images, we can simply define the pixel-wise mean of the R channel for pixel $(x, y)$ as following:
 
 $$
-\langle M \rangle_{x, y, i} := \frac{\sum_{1 \leq t \leq n} M_{t, x, y, i}}{n}
+\langle M \rangle_{x, y, R} := \frac{\sum_{1 \leq t \leq n} M_{t, x, y, R}}{n}
 $$
 
-For grayscale stack we define analogously,
+The same applies to $\langle M \rangle_{x, y, G}$ and $\langle M \rangle_{x, y, B}$. For a grayscale stack we define analogously:
 
 $$
 \langle G \rangle_{x, y} := \frac{\sum_{1 \leq t \leq n} G_{t, x, y, i}}{n}
 $$
 
-The pixel-wise substracted value of $i$-th channel is thus defined as point-wise operation for each position,
+The pixel-wise substracted value of R channel is thus defined as point-wise operation for each pixel,
 
 \begin{equation}
-M^m_{t, x, y, i} := M_{t, x, y, i} - \langle M \rangle_{x, y, i}
+M^m_{t, x, y, R} := M_{t, x, y, R} - \langle M \rangle_{x, y, R}
 \end{equation}
 
-with the corresponding RGB value defined as,
+The same applies to $\langle M \rangle_{x, y, G}$ and $\langle M \rangle_{x, y, B}$. The transformed RGB value is thus defined as
 
 $$
 M^m_{t, x, y} := [M^m_{t, x, y, 1}; M^m_{t, x, y, 2}; M^m_{t, x, y, 3}]
 $$
 
-As for grayscale image we define following,
+As for a grayscale image we define following:
 
 \begin{equation}
 G^m_{t, x, y} := G_{t, x, y} - \langle G \rangle_{x, y}
 \end{equation}
 
-In the context of single-cell enclosure of micro-trench, this means that in the parts of images in which only dynamic movement of cells are observed, the pixel-wise mean intensity value of aforementioned parts will be very low. Subtracting every pixel the area from every time point with the average will barely affect the original intensity value.
-
-On the other hand, applying the method on area with static objects such as micro-trench margin will reduce each pixel of the area with exactly the same intensity value as it barely changes during the experiment. This will nullify the static parts to large extent.
+In the context of the single-cell enclosure on a wafer, this means that in the parts of images in which only dynamic movement of cells are observed, the pixel-wise mean intensity value of dynamic parts will be very low. Subtracting every pixel the area from every time point with the average will barely affect the original intensity value. On the other hand, applying the method on areas with static objects such as micro-trench wall and its surrounding reduces each pixel of the area with exactly the same intensity value as it barely changes during the experiment. This will nullify the static parts to large extent.
 
 This method can be improved by iteratively repeating the calculation of $\langle M \rangle$. This will remove periodically static parts or static parts that abruptly moved (due to sudden shift in the well with regard to the camera for example). We call this algorithm \textbf{k-substraction by pixel-mean intensity}:
 
@@ -1188,27 +1144,27 @@ This method can be improved by iteratively repeating the calculation of $\langle
  	$M_t = M^m_t$ \; 
  }
 
-\caption{k-substraction by pixel-mean intensity algorithm}
+\caption{The k-substraction by pixel-mean intensity algorithm}
 \label{algorithm:k_mean_substraction}
 \end{algorithm}
 
 \subsection{Cell recognition}
 \label{subsection:cell_recognition}
 
-Due to the cells' rotund shape, the \textbf{blob detection} family of algorithm is well-suited for recognizing cells. In our pipeline, we use the so-called Laplacian of Gaussian (LoG) method.
+Due to the cells' rotund shape, the \textbf{blob detection} family of algorithm is well-suited for recognizing cells. In our pipeline, we use the Laplacian of Gaussian (LoG) detector method.
 
 \subsubsection*{Laplacian of Gaussian (LoG) detector}
 
-Laplacian of Gaussian (LoG), also known as Marr-Hildreth-Opreator, is among the first and still the most popular method for detecting blob. It is characterized by applying the second derivative of $\sigma$-scaled Gaussian to detect a blob in an image.
+Laplacian of Gaussian (LoG), also known as Marr-Hildreth-Opreator \cite{marr1980theory}, is among the first and still the most popular method for detecting blob \cite{sonka2014image}. It is characterized by applying the second derivative of the $\sigma$-scaled Gaussian to detect a blob in an image.
 
-To derive the method we first consider a 2-dimensional Gaussian kernel function,
+To derive the method we first consider a 2-dimensional Gaussian kernel function:
 
 \begin{equation}
 G(x,y) = \frac{1}{{2\pi \sigma^2}} e^{-\frac{x^2 + y^2}{2 \sigma^2}}
 \label{equation:gauss_2d_log}
 \end{equation}
 
-As the name suggest, the representation of LoG operator is obtained by applying the Laplace-Operator on the Gaussian,
+As the name suggests, the representation of LoG operator is obtained by applying the Laplace-Operator $\Delta$ on the Gaussian,
 
 $$
 L(x, y) = \Delta G(x, y)
@@ -1224,7 +1180,7 @@ L(x, y) & = - \frac{1}{\pi \sigma^4} e^{-\frac{x^2 + y^2}{2\sigma^2}} \left( 1 -
 \label{eq:svm_hard_margin}
 \end{equation*}
 
-Figure \ref{fig:pixdiff} shows the representation of LoG operator in 2D. Notice the inverse hat characteristic giving it the nickname \textbf{Mexican hat operator}.
+Figure \ref{fig:pixdiff} shows the representation of the LoG operator in 2D. Notice the inverse hat characteristic giving it the nickname \textbf{Mexican hat operator}.
 
 \begin{figure}[H]
 \centering
@@ -1233,23 +1189,24 @@ Figure \ref{fig:pixdiff} shows the representation of LoG operator in 2D. Notice 
 \label{fig:log_operator}
 \end{figure}
 
-The operator is then applied on two dimensional matrix of intensity image. To get maximum response from a blob, the zeros of the operator have to be aligned with the circle to detect \cite{marr1980theory}. Figure \ref{fig:log_example} shows an example of idealized circle with diameter $r$ with the corresponding response from LoG operator on the surface of the circle. Applied to pre-processed out-of-focus image, LoG will return response with maxima in the center of cell sizes in similar fashion to the idealized circle.
+The operator is then applied on two dimensional matrix of a grayscale image. To get maximum response from a blob, the zeros of the operator have to be aligned with the circle to be detected \cite{marr1980theory}. Figure \ref{fig:log_example} shows an example of idealized circle with the diameter $r$ and the corresponding response from the LoG operator on the surface of the circle. Applied to pre-processed out-of-focus image, LoG will return response with maxima in the center of cell sizes in similar fashion to the idealized circle.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{images/log_operator_example}
-\caption{Example of applying LoG operator on 2D circle. The minimum will be achieved if the diameter of the LoG operator is roughly equal to the diameter of the cell. This however does not to be the case. In case of non-perfect blob or blob with different diameter, local minimum can still be detected by the cel recognition algorithm.}
+\caption{Example of applying the LoG operator on a 2D circle. The minimum will be achieved if the diameter of the LoG operator is roughly equal to the diameter of the cell. This however does not to be the case. In case of non-perfect blob or blob with different diameter, local minimum can still be detected by the cell recognition algorithm \cite{tinevez2017trackmate}.}
 \label{fig:log_example}
 \end{figure}
 
 \subsection{Cell tracking}
 \label{subsection:cell_tracking}
 
-To track cell, the Linear Assignment Problem (LAP) tracker, by Jaqaman et al, 2018, is used. The method builds on the cell recognition method explained in Subsection \ref{subsection:cell_recognition}.
+
+To track detected cells, the Linear Assignment Problem (LAP) tracker, by Jaqaman et al, 2018, is used. The method builds upon the cell recognition method explained in Subsection \ref{subsection:cell_recognition}.
 
 \subsubsection*{Linear Assignment Problem (LAP) framework of cell tracking}
 
-The algorithm follows closely the case of linear assignment problem in bipartite graph. Given a bipartite graph $\mathcal{G}_b:= {\mathcal{G}_1, \mathcal{G}_2}$ and assignment cost function 
+The algorithm follows closely the case of linear assignment problem in bipartite graph. Given a bipartite graph $\mathcal{G}_b:= \{\mathcal{G}_1, \mathcal{G}_2\}$ and the assignment cost function 
 $c(v_i, v_j)$ for $v_i \in \mathcal{G}_1$ and $v_i \in \mathcal{G}_2$, find a bijection $f_{\mathcal{G}_b} : \mathcal{G}_1 \rightarrow \mathcal{G}_2$ so that the total cost function:
 
 \begin{equation}
@@ -1260,9 +1217,9 @@ $c(v_i, v_j)$ for $v_i \in \mathcal{G}_1$ and $v_i \in \mathcal{G}_2$, find a bi
 
 is minimized. As seen in Equation \ref{eq:lap_standard}, the cost function and its corresponding constraint (bipartite assignment) is linear. Hence, the "linear" part of the assignment problem.
 
-We can frame our cell tracking problem in a variant of linear assignment problem. Recall that, for each slice, a set of blobs representing cells are detected. To track cells, each blob in a slice has ot be connected with a blob in proceeding and succeeding slices (except in the case where a cell died).
+We can frame our cell tracking problem as a variant of linear assignment problem. Recall that, for each slice, a set of blobs representing cells are detected. To track cells, each blob in a slice has to be connected with a blob in proceeding and succeeding slices (except in the case where a cell died).
 
-Revisiting Subsection \ref{subsection:cell_recognition}, it is obvious that upon cell  detection the next step to track single cell movements in a stack is to assign to detected blobs $\mathcal{G_i}$ at time $t_i$ with the blobs detected at time $t_{i + 1}$, $\mathcal{G}_{i + 1}$ for $i \in [0, n - 1]$. To do that, first we define particle-to-particle cost function $c$. Jaqaman and his colleagues \cite{jaqaman2008robust} that, due to Brownian nature of cell movement, the square distance of blobs or its derivation sshould be used as cost function: 
+Revisiting Subsection \ref{subsection:cell_recognition}, it is obvious that upon cell detection the next step is to track single cell movements in a stack is to assign detected blobs $\mathcal{G}_t$ at time $t$ with the blobs $\mathcal{G}_{t + 1}$ detected at time $t + 1$,  for $t \in [1:n - 1]$. To do that, first we define particle-to-particle cost function $c$. Jaqaman and his colleagues argued that \cite{jaqaman2008robust}, due to Brownian nature of cell movement, the square distance of blobs or its derivation should be used as cost function: 
 
 \begin{equation}
 d(v_i, v_j) = \| v_i - v_j\|^2_2
@@ -1272,20 +1229,20 @@ d(v_i, v_j) = \| v_i - v_j\|^2_2
 The algorithm is roughly divided into two main steps:
 
 \begin{itemize}
-\item  Creation of track segments from frame-to-frame blob linking.
-\item  Gap closing and cell division inference to achieve closing of the track segments.
+\item  Creation of track segments through frame-to-frame blobs linking.
+\item  Gap closing and cell division inference to achieve the closing of the track segments.
 \end{itemize}
 
-Both steps are framed as linear assigned problem. In the first step, two consecutive slices $M_i$  and $M_{i+1}$ are optimized for the links. To do that, a $(m + n) \times (n + m)$ matrix $\mathcal{C}$ is created, where $m$ and $n$ refer to the number of detected blobs in $M_u$ and $M_{i + 1}$ respectively. The matrix contains four quadrants:
+Both steps are framed as a linear assigned problem. In the first step, two consecutive slices $M_i$  and $M_{i+1}$ are optimized for the links. To do that, a $(m + n) \times (n + m)$ matrix $\mathcal{C}$ is created, where $m$ and $n$ refer to the number of detected blobs in $M_t$ and $M_{t + 1}$ respectively. The matrix contains four quadrants:
 
 \begin{itemize}
-\item The upper left quadrant ($m \times n$ elements) contains the costs of linking blobs in $M_i$ to those in $M_{i + 1}$, also known as \textit{segment linking cost}.
-\item The upper right quadrant ($m \times m$ elements) contains the costs of not linking blobs in $M_i$ to any blobs in $M_{i + 1}$, also known as \textit{segment stop cost}.
-\item The lower left quadrant ($n \times n$ elements) contains the costs of of not linking blobs in $M_{i + 1}$ to any blobs in $M_i$, also known as \textit{segment start cost}.
-\item The lower right quadrant ($n \times m$ elements) is auxiliary matrix used by LAP framework as formalism for its algorithm. The matrix is created by transposing the upper right left quadrant and replacing all non-infinity cost with minimal cost. 
+\item The upper left quadrant ($m \times n$ elements) contains the costs of linking blobs in $M_t$ to those in $M_{t + 1}$, also known as the segment linking cost.
+\item The upper right quadrant ($m \times m$ elements) contains the costs of not linking blobs in $M_t$ to any blobs in $M_{t + 1}$, also known as the segment stop cost.
+\item The lower left quadrant ($n \times n$ elements) contains the costs of of not linking blobs in $M_{t + 1}$ to any blobs in $M_t$, also known as the segment start cost.
+\item The lower right quadrant ($n \times m$ elements) is the auxiliary matrix used by the LAP framework as formalism for its algorithm. The matrix is created by transposing the upper right left quadrant and replacing all non-infinity cost with the minimal cost (by default 0).
 \end{itemize}
 
-The segment linking cost (upper left quadrant) is calculated as follows:
+The segment linking cost (upper left quadrant) is calculated as following:
 
 \begin{gather*}
 c(v_k, v_l) =
@@ -1295,14 +1252,14 @@ c(v_k, v_l) =
 \end{cases}
 \end{gather*}
 
-where $\mathbb{f}$ refers to each feature penalty and $W_{\mathbb{f}}$, $f_{\mathbb{f}1}$ and $f_{\mathbb{f}2}$ refer to the feature penalty factor, the value of feature $\mathbb{f}$ of $v_k$ and the value of feature feature $\mathbb{f}$ of $v_l$ respectively. Note that:
+where $\mathbb{f}$ refers to each feature penalty defined for the optimization and $W_{\mathbb{f}}$, $f_{\mathbb{f}1}$ and $f_{\mathbb{f}2}$ refer to the feature penalty factor, the value of feature $\mathbb{f}$ of $v_k$ and the value of feature feature $\mathbb{f}$ of $v_l$ respectively. Generally, only blob related features are used in the algorithm, e.g. total blob intensity, average blob intensity and minimum/maximum blob intensity. Note that:
 
 \begin{itemize}
 \item If the distance is larger than the pre-defined maximum distance, then the link is forbidden. A blocking cost ($\infty$) is assigned between two blobs.
-\item If no penalty feature is introduced then the cost is simply squared distance of two blobs.
+\item If no penalty feature is introduced then the cost is simply the squared distance of two blobs.
 \end{itemize}
 
-The non-linking cost (upper right and lower left quadrants) is calculated as follows:
+The non-linking cost (the upper right and lower left quadrants) is calculated as follows:
 
 \begin{gather*}
 c(v_k, v_l) =
@@ -1314,23 +1271,24 @@ c(v_k, v_l) =
 
 where $\mathbb{C}$ is the maximum value of the upper left quadrant of the matrix.
 
-The optimization over the matrix is then solved with Munkers \& Kuhn algorithm \cite{munkres1957algorithms}, which solves the problem in cubic time $\mathcal{O}(n^3)$. The algorithm returns assignment minimizing the sum of the costs.
+The optimization over the matrix is then solved with the Munkers \& Kuhn algorithm \cite{munkres1957algorithms}, which solves the problem in cubic time $\mathcal{O}(n^3)$. The algorithm returns assignment minimizing the sum of the assignment costs.
 
-The interpretation of the cost functions is thus: without any penalty, the optimization problem favors solution which minimizes the squared distance between two blobs. This is in line with previously mentioned assumption of Brownian motion of cells. By adding feature penalties, we aim at favoring linking bobs that are more similar to each other. In brute single particle linking problems, spots are generally all the same, and they only differ by position. However, there is a variety of problems for which these feature penalties can add robustness to the tracking process. In our case for example, the cells might pose several features that change over time depending on the treatment and cell-dependent characteristics (the phenomenon we further investigate using machine learning methods, see Subsections \ref{subsection:svm} and \ref{subsection:rf} and Section \ref{section:ml_results}).
+The interpretation of the cost functions is following: without any penalty, the optimization problem favors the solution which minimizes the sum of squared distance between two blobs. This is in line with previously mentioned assumption of the Brownian motion of cells. By adding feature penalties, we aim at favoring linking blobs that are more similar to each other. In brute single particle linking problems, spots are generally all the same, and they only differ by the coordinate. However, there is a variety of problems for which these feature penalties can add robustness to the tracking process. In our case for example, the cells might pose several features that change over time depending on the treatment and cell-dependent characteristics (the phenomenon we further investigate using machine learning methods, see Subsections \ref{subsection:svm} and \ref{subsection:rf} and Section \ref{section:ml_results}).
 
-Upon the linking of blobs into track segments, more refinement is then do to achieve globally optimal cell tracks configuration. To do this, three events are considered in our model:
+Upon the linking of blobs into track segments, more refinement is then done to achieve globally optimal cell tracks configuration. To do this, three events are considered in our model:
 
 \begin{itemize}
 \item In case of \textit{gap closing} events, the end of a track segment is linked to the start of another track segment.
 \item In case of \textit{splitting} events, the stat of one track segment is linked to non-terminal part of another track segment.
 \end{itemize}
 
-The matrix is created in similar fashion to the cost matrix in the first step, with the details best referenced directly to the article by Jaqaman et al \cite{jaqaman2008robust}. Also similar to the first part is the use of penalty features during segment creation. Unlike the the first part however, the segment merging cost is blocking ($\infty$) if the segments in question are separated by fames larger than pre-defined maximum number of frame gaps.
+The matrix is created in similar fashion to the cost matrix in the first step, with the details best referenced directly to the article by Jaqaman et al \cite{jaqaman2008robust}. Also similar to the first part is the use of penalty features during segment creation. Unlike the the first part however, the segment merging cost is blocking ($\infty$) if the segments in question are separated by frames larger than pre-defined maximum number of frame gaps.
 
-The optimal solution for the problem is again found by using Munkers \& Kuhn algorithm \cite{munkres1957algorithms}.
+The optimal solution for the problem is again found using the Munkers \& Kuhn algorithm \cite{munkres1957algorithms}.
 
 \subsection{Shift correction}
 
+%TODO continue correction from here
 %TODO improve subsection
 %TODO : RESTRUCTURE THE CHAPTER
 
@@ -1375,23 +1333,25 @@ The algorithm for shift inference is available in Appendix \ref{appendix:algo}.
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.8\textwidth]{images/pixdiff}
-\caption{Pixel difference between consecutive frames at Position 26. In most cases, the pixel difference between the frames is mainly caused by moving cells. The diference during the treatment, on the other hand, is caused by physical shift of the frame. While moving cells mostly caused minimum noise-like pixel difference, the physical shift of field of view distorts the physical alignment and evokes immense pixel difference.}
+\caption{Pixel difference between consecutive frames at the image position 26. In most cases, the pixel difference between the frames is mainly caused by moving cells. The diference during the treatment, on the other hand, is caused by physical shift of the frame. While moving cells mostly caused minimum noise-like pixel difference, the physical shift of field of view distorts the physical alignment and evokes immense pixel difference.}
 \label{fig:pixdiff}
 \end{figure}
 
 \subsection{Cell death signal determination}
 \label{subsection:cell_death_signal_determination}
 
+%TODO move to Chapter 3
 %TODO add graphical representation of cell death determination (like the one made for Eli)
 
 As mentioned in Subsection \ref{subsection:comp_cell_death_determination}, two cell death signals are deployed in this experiment: PI and Caspase 3/7. Recall that, as mentioned Subsection \ref{subsection:cell_treatments}, two kinds of images were captured during the experiment: brightfield and fluorescent images. There are in turn two channel of fluorescent images captured: red and green.
 
-The fluorescent channels can thus be exploited to detect cell deaths. As mentioned in Subsection \ref{subsection:treatment}, the deployment of cancer treatment regimes interfere with mitotic activities of the cells leading to programmed cell death. This in turn is indicated by the activation of PI and Caspase 3/7 paths. The bright emission is thereafter visible after a while in the location of cells. Figure \ref{fig:onset_samples} depicts example emission for one position in green (Figure \ref{fig:caspase_onset_sample})and red (Figure \ref{fig:pi_onset_sample}) florescent channels.
+The fluorescent channels can thus be exploited to detect cell deaths. As mentioned in Subsection \ref{subsection:treatment}, the deployment of cancer treatment regimes interfere with mitotic activities of the cells leading to programmed cell death. This in turn is indicated by the activation of PI and Caspase 3/7 paths. The bright emission is thereafter visible after a while in the location of cells. Figure \ref{fig:onset_samples} depicts example emission for one image position in green (Figure \ref{fig:caspase_onset_sample})and red (Figure \ref{fig:pi_onset_sample}) florescent channels.
 
 Knowing at at one point the interference in cell mitotic process induces emission of PI or Caspase fluorescent signals (see $t_{PMP}$ in Figure \ref{fig:cell_death_determination_example} and the figure itself in general), finding the cell death time is reduced to simply finding the time point in which the blob of the cell in fluorescent channels is detected. Take for example the Figure \ref{fig:caspase_onset_sample}. Here we see that on the upper right side of the image there are at least two blobs visible in the naked eye. We can thus do similar pre-processing step as that of brightfield images followed by image detection to detect at which time the onset happened (see Figure \ref{fig:pipeline2}).
 
-
 As described in 
+
+%TODO continue
 
 \begin{figure}[H]
 
@@ -1420,7 +1380,8 @@ As described in
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{images/cell_death_detection}
-\caption{Illustration of annotation of of PI death signal emission as cell death time ($t_{PMP}$). (a) shows how the total emission intensity will look like if it's being tracked (image taken for one related experiment of Radler's lab). (b) The hypothetical progression of total intensity of \textit{the cell on the left} upon treatment with some approximate time points representing various cell phases marked with $\mathbf{t_1}$, $\mathbf{t_2}$, $\mathbf{t_3}$ and $\mathbf{t_4}$. Initially, the left cell behaves normally upon treatment (c/$\mathbf{t_1}$). Only upon reaching the mitotic phase, the addition of Vincristine/Daunorubicin disrupts the process. Failure of entering the next phase sets the cell onto programmed cell death (d/$\mathbf{t_2}$). As the programmed cell death process advances, the PI emission became stronger (e/$\mathbf{t_3}$). At this point, the cel recognition will recognize the cell death signal as cell and thus represents cell death annotation. After a while, the emission will keep going on after a while (f/$\mathbf{t_3}$). We are, however, only interested with the onset time ($t_{PMP}$) to determine the cell death time. Note especially the difference of onset time between the left and right cells. At $\mathbf{t_2}$}, the left cell has begun programmed cell death process while the right cell has not. This difference in time-to-death between sisters is one of the focuses of the project.
+\caption{Illustration of annotation of of PI death signal emission as cell death time ($t_{PMP}$). (a) shows how the total emission intensity will look like if it's being tracked (image taken for one related experiment of Radler's lab). (b) The hypothetical progression of total intensity of \textit{the cell on the left} upon treatment with some approximate time points representing various cell phases marked with $\mathbf{t_1}$, $\mathbf{t_2}$, $\mathbf{t_3}$ and $\mathbf{t_4}$. Initially, the left cell behaves normally upon treatment (c/$\mathbf{t_1}$). Only upon reaching the mitotic phase, the addition of Vincristine/Daunorubicin disrupts the process. Failure of entering the next phase sets the cell onto programmed cell death (d/$\mathbf{t_2}$). As the programmed cell death process advances, the PI emission became stronger (e/$\mathbf{t_3}$). At this point, the cel recognition will recognize the cell death signal as cell and thus represents cell death annotation. After a while, the emission will keep going on after a while (f/$\mathbf{t_3}$). We are, however, only interested with the onset time ($t_{PMP}$) to determine the cell death time. Note especially the difference of onset time between the left and right cells. At $\mathbf{t_2}$, the left cell has begun programmed cell death process while the right cell has not. This difference in time-to-death between sisters is one of the focuses of the project.
+}
 \label{fig:cell_death_determination_example}
 \end{figure}
 
@@ -1576,16 +1537,55 @@ One solution is too introduce regularization. As already shown in Term \ref{eq:s
 
 Adding regularization will control against overfitted model by penalizing higher dimensional hyperplane $\mathbf{w}$ as it the error will get blown up the higher dimensional, and its error minimizing hyperplane, are chosen.
 
-\subsection{Random Forests (RF)}
-\label{subsection:rf}
+\subsubsection*{Regressive SVM}
 
-\subsection{Statistical Tests}
+%TODO fill subsubsection
 
-Some statistical tests are done in this project:
+%\subsection{Random Forests (RF)}
+%\label{subsection:rf}
 
-\subsection{Pearson's correlation coefficient}
+\subsection{Pearson's correlation coefficient (PCC)}
+
+In statistics, the PCC is a measure of the linear correlation between two random variables $X$ and $Y$ \cite{fahrmeir2016statistik}. It has a value ranging from $-1$ to $1$. A correlation value of $-1$ denotes a perfectly inverse correlation, 0 denotes no linear correlation and $1$ denotes a perfect positive correlation.
+
+For two random variables $X$ and $Y$, the PCC is defined as follows:
+
+\begin{equation}
+\rho_{X, Y} = \frac{\mathbf{cov}(X, Y)}{\sigma_X \sigma_Y}
+\label{eq:rho}
+\end{equation}
+
+where $\mathbf{cov}(X, Y)$ is the covariance of random variables $X$  and $Y$, $\sigma_X$ is the standard deviation of $X$ and $\sigma_Y$ is the standard deviation of $Y$.
+
+The covariance of two random variables is in turn defined as
+
+\begin{equation}
+\mathbf{cov}(X, Y) = E[(X - \mu_X)(Y - \mu_Y)]
+\label{eq:cov}
+\end{equation}
+
+Combining Equations \ref{eq:rho} and \ref{eq:cov} and using definition of mean ($\mu_X = E[X]$) and standard deviation ($\sigma^2_X = E[(X - E[X])^2]$) we can derive the formula of $\rho_{X,Y}$ to:
+
+\begin{equation}
+\rho_{X, Y} = \frac{E[XY] - E[X]E[Y]}{\sqrt{E[X^2] - [E[X]]^2} \sqrt{E[Y^2] - [E[Y]]^2}}
+\label{eq:rho_cov}
+\end{equation}
+
+To calculate p-value, we  first calculate $t^*$-value, defined  as
+
+\begin{equation}
+t^* = \frac{\rho_{X,Y} \sqrt{n - 2}}{\sqrt{1 - \rho_{X,Y}^2}}
+\end{equation}
+
+where $n$ denotes the number of observation. The p-value is then defined as probability of Student's t distribution $T$ with $n - 2$ degrees of freedom having value $x$ smaller than $t$, i.e.
+
+\begin{equation}
+p = P(Z \leq t^* \mid Z \sim T)
+\end{equation}
 
 \subsection{F-Test}
+
+%TODO fill subsection
 
 \chapter{Analytic Pipeline}
 
@@ -1607,7 +1607,7 @@ To identify and track single cells from movie start, each out-of-focus brightfie
 \begin{enumerate}
 \item First, a Gaussian blur (Zuiderveld, 1994 \cite{zuiderveld1994contrast} and also Subsection \ref{subsection:gaussian_blur} of Data Methods chapter) with a large radius of 50 pixel is applied to each brightfield image (Figure \ref{fig:pipeline1}b) to estimate its individual background and identify e.g. gradients at the edges of the imaged area (Figure \ref{fig:pipeline1}c). Afterwards, we correct the original image by dividing through this background image (Figure \ref{fig:pipeline1}d)
 
-\item Then, we normalize the local contrast of each image in one position (Kittler and Illingworth, 1986 \cite{kittler1986minimum} and Subsection \ref{subsection:clahe}) to separate foreground from background (Figure \ref{fig:pipeline1}e)..
+\item Then, we normalize the local contrast of each image in one image position (Kittler and Illingworth, 1986 \cite{kittler1986minimum} and Subsection \ref{subsection:clahe}) to separate foreground from background (Figure \ref{fig:pipeline1}e)..
 
 \item To reduce noise from micro-trench margins in the foreground (Figure \ref{fig:pipeline1}e and Subsection \ref{subsection:substraction_by_mean}), we calculate the pixel-wise intensity average from all timepoints of one position (Figure \ref{fig:pipeline1}f) and subtract this from each image to generate a binary image with mainly cells in the foreground (Figure \ref{fig:pipeline1}g). This creates a mask of the cells..
 
@@ -1618,10 +1618,74 @@ To identify and track single cells from movie start, each out-of-focus brightfie
 
 \section{Assignment of cells to individual micro-trenches}
 
+
+\subsection{Micro-trench masking}
+\label{subsection:micro_trench_masking}
+
+%TODO proofread
+%TODO modify section and subsection
+
+First, note that the following method is only semi- automatically done. The first step (brightness and contrast correction) is done manually in \textit{Fiji} while the Robust Automatic Threshold Selection (RATS) and the holes filling are done automatically, also in \textit{Fiji}.
+
+Several techniques could be applied to highlight certain area in the image. In Subsection \ref{subsection:cv_advances}, several advances in computer vision methods are described. While more general advances in the field of machine learning is chronicled in Subsection \ref{subsection:ml_advances}. While the collection of advanced methods for region and image detection abound \cite{krahenbuhl2011efficient, long2015fully, ronneberger2015u}, some simple interpretable methods could be used best to detect and mask the micro-trenches. In particular,  we can see that the area around a micro-trench exposes strong intensity gradient (see Figure \ref{fig:pos41_brightness}): the area around the margin of a micro-trench is much darker than the other parts of the well. This can be explained by the fact that the light is reflected less around the wall area and thus the intensity decreases. Moreover, the light beam coming out of the laser is not perfectly perpendicular to the well and thus the non-perpendicular reflection is not reflected back to the camera sensor.
+
+Before us, there are several methods that exploit this kind of phenomenon. Cheng et al \cite{cheng2015global} for example shows it is possible to recognized salient objects in image by using contrast and brightness adjustment. Our method on the other hand, goes further by doing robustness improvement by doing noise cancellation step (See \ref{subsubsection:rats}).
+
+\begin{figure}[H]
+\centering
+
+\begin{subfigure}{0.8\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{images/pos_41_cut_highlight_y_500}
+  \caption{}
+  \label{fig:pos41_highlight}
+\end{subfigure}%
+
+\begin{subfigure}{\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{images/pos_41_cut_highlight_y_500_contrast}
+  \caption{}
+  \label{fig:pos41_contrast}
+\end{subfigure}%
+\caption{(a) The highlighted area around the 500-th column of the first slice of the image position 41. The range starts from the 450-th until the 550-th column. (b) The intensity of the red-marked area in (a), the region around micro-trench margin is indicated by the sudden drop of intensity. Note also the slow drift of the intensity as the pixel goes south (right side of the plot). This phenomenon is called \textit{intensity gradient} (see Subsection \ref{subsection:gaussian_blur} for more.}
+\label{fig:pos41_brightness}
+\end{figure}
+
+We could thus exploit this knowledge by designing micro-trench masking algorithm as follows:
+
+\subsubsection*{Brightness and contrast adjustment of in-focus image}
+\label{subsubsection:brightness_contrast_adjustment}
+
+First, we adjust the brightness and contrast so that the area far away from the margin is encoded as maximum intensity, while the area around the margin is encoded as minimum intensity. One simple and robust way to do this is to reduce the intensity of each position with the maximum intensity value of the region around the margin.
+
+Mathematically, we can define two sets of points, $\mathfrak{M}$ and $\mathfrak{S}$. $\mathfrak{M}$ refers to the set of points around the trench margin while $\mathfrak{S}$ denotes the set of points far away from it. This brings us to the following transformation,
+
+$$
+J_i(i, j) := I_t(i, j) + argmax_{(x, y) \, \in \, \mathfrak{M}}{I_t(x, y)}
+$$
+
+creating transformed intensity $I^t$.
+
+As can be seen in Figures \ref{fig:pos41_density} and \ref {fig:pos41_brightness}, while sets $\mathfrak{M}$ and $\mathfrak{S}$ are locally separable, across the board this does not seem so clear. We can thus improve the transformation by also adjusting the contrast parameter $\alpha$ by increasing it so that $\alpha > 1$. This brings the pixels with similar intensity values around the decision boundary (somewhere between the two distributions in Figure \ref{fig:pos41_density}) apart and thus ameliorates the determination of decision boundary by the user. Applying this, we have now the new transformation:
+
+$$
+J_i(i, j) := \alpha I_t(i, j) + argmax_{(x, y) \, \in \, \mathfrak{M}}{I_t(x, y)} \text{ with } \alpha > 1
+$$
+
+creating transformed intensity $I^t$.
+
+Note that this is still not a perfect transformation, as there are some pixels in $\mathfrak{S}$ with intensity lower than the minimum intensity of pixels in $\mathfrak{M}$. Besides doing this manually, we also improve this by refining the transformed intensity $I^t$ further with the next step: Robust Automatic Threshold Selection.
+
+Subfigures \ref{fig:orig_pic} and \ref{fig:brcon_adj} show images of micro-trenches before and after brightness and contrast adjustment. As mentioned, some parts inside the micro-trench still have pixels  that were not transformed to complete white color (maximum intensity). This can however be removed by global and local noise correction through Robust Automatic Threshold Selection (RATS, see next).
+
+\subsection{The remaining of the pipeline}
+
+%TODO put micro-trench part here
+
 To assign individual micro-trenches to tracked single cells and emerging clones, we generate masks for each micro-trench (see Subsection \ref{subsection:micro_trench_masking}):
 
 \begin{enumerate}
-\item First, we adjust brightness and contrast manually for one position so that only the margin of the micro-trenches are visible (Figure \ref{fig:pipeline1}k).
+\item First, we adjust brightness and contrast manually for one image position so that only the margin of the micro-trenches are visible (Figure \ref{fig:pipeline1}k).
 
 \item Then, Robust Automatic Threshold Selection (RATS) is applied on each adjusted brightfield image, which creates a binary image of the micro-trench margins (Figure \ref{fig:pipeline1}l and Subsection )
 
@@ -1753,7 +1817,7 @@ Improvemnt capability
 
 \subsection{Automated micro-trench masking}
 
-One positive thing about the design of our data analysis pipeline is the modularity of its component. As mentioned multiple times in this thesis (in particular in Subsection \ref{subsection:micro_trench_masking}, our method can well be improved by automatizing the micro-trench masking process. Although itself not a bottleneck of the process, as the entire dataset of 64 positions could be processed in less than an hour, automating this process will save time and more importantly, clicking and draging efforts, thus lets scientists do the things that matter more for them.
+One positive thing about the design of our data analysis pipeline is the modularity of its component. As mentioned multiple times in this thesis (in particular in Subsection \ref{subsection:micro_trench_masking}, our method can well be improved by automatizing the micro-trench masking process. Although itself not a bottleneck of the process, as the entire dataset of 63 image positions could be processed in less than an hour, automating this process will save time and more importantly, clicking and draging efforts, thus lets scientists do the things that matter more for them.
 
 There are several methods that came to mind in improving the micro-trench masking, which generally can be separated in two groups: ML-based methods and non-ML-based methods. ML-based methods generally require either a manual annotation of correctly recognized micro-trench (a class of methods called supervised learning methods) or certain prior knowledge regarding distinctive features of micro-trench that separate it from background image and/or the cells (a class of methods called unsupervised/semi-supervised learning methods).
 
@@ -1777,16 +1841,16 @@ Introduced by Oliver Hilsenbeck in his master's thesis in 2014 \cite{hilsenbeck2
 
 \chapter{Experiment Protocols}
 
-\section{Micro-trenches array fabrication}
-\label{appendix:microtrench}
+%\section{Micro-trenches array fabrication}
+%\label{appendix:microtrench}
 
-\subsection*{Photolithography of the SU-8 wafer}
+%\subsection*{Photolithography of the SU-8 wafer}
 
-The fabrication of the SU-8 (MicroChem Corp, USA) wafer was executed in a in-house cleanroom facility using a ProtoLaser LDI system (LPKF Laser \& Electronika, Naklo, Slovenia), with a 375 nm wavelength laser and 1 μm spot diameter.
+%The fabrication of the SU-8 (MicroChem Corp, USA) wafer was executed in a in-house cleanroom facility using a ProtoLaser LDI system (LPKF Laser \& Electronika, Naklo, Slovenia), with a 375 nm wavelength laser and 1 μm spot diameter.
 
-\subsection*{Softlithography and micromolding}
+%\subsection*{Softlithography and micromolding}
 
-Polydimethylsiloxane (PDMS) prepolymer solution is mixed with the crosslinker in a 10:1 ratio (w/w) (Sylgard 184, Dow Corning, USA) and then degassed under vacuum. PDMS is then purred on the SU-8 wafer, degassed and cured in 50 oC. The resulting PDMS stamp is peeled off the wafer and cut into appropriate shapes. The PDMS pieces, with 25 1/4 pillars in height, are activated with argon plasma and then immediately placed upside down on a silanized with TMSPMA (3-(Trimethoxysilyl)propyl methacrylate, Sigma-Aldrich) glass coverslip. A solution of PEG-DA (Mn=258) containing 2\% v/v of the 2-hydroxy-2methylpropiophenone (both from Sigma-Aldrich, Germany) is freshly prepared and then a drop is deposited at the edge of the PDMS stamp. The PDMS stamp is filled by capillary force induced flow. PEG-DA is then polymerized in an UV-ozone cleaning system (UVOH 150 LAB, FHR, Ottendorf, Germany). Next, the PDMS stamps are peeled off and the resulting micro-trenches of cross-linked PEG-DA are dried in an oven (Binder GmbH, Tuttlingen, Germany) overnight at 50oC. Finally, the slides are sonicated with 70\% ethanol and distilled water before a sticky slide is attached on top (8-well sticky slide, ibidi GmbH, Munich, Germany).
+%Polydimethylsiloxane (PDMS) prepolymer solution is mixed with the crosslinker in a 10:1 ratio (w/w) (Sylgard 184, Dow Corning, USA) and then degassed under vacuum. PDMS is then purred on the SU-8 wafer, degassed and cured in 50 oC. The resulting PDMS stamp is peeled off the wafer and cut into appropriate shapes. The PDMS pieces, with 25 1/4 pillars in height, are activated with argon plasma and then immediately placed upside down on a silanized with TMSPMA (3-(Trimethoxysilyl)propyl methacrylate, Sigma-Aldrich) glass coverslip. A solution of PEG-DA (Mn=258) containing 2\% v/v of the 2-hydroxy-2methylpropiophenone (both from Sigma-Aldrich, Germany) is freshly prepared and then a drop is deposited at the edge of the PDMS stamp. The PDMS stamp is filled by capillary force induced flow. PEG-DA is then polymerized in an UV-ozone cleaning system (UVOH 150 LAB, FHR, Ottendorf, Germany). Next, the PDMS stamps are peeled off and the resulting micro-trenches of cross-linked PEG-DA are dried in an oven (Binder GmbH, Tuttlingen, Germany) overnight at 50oC. Finally, the slides are sonicated with 70\% ethanol and distilled water before a sticky slide is attached on top (8-well sticky slide, ibidi GmbH, Munich, Germany).
 
 \section{Images acquisition}
 \label{appendix:imageacquisition}
