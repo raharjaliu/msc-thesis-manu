@@ -5,7 +5,7 @@
 \usepackage{geometry}
 \usepackage{bbold}
 \usepackage{program}
-\usepackage[toc,page]{appendix}
+\usepackage[page]{appendix}
 \usepackage{subcaption}
 \usepackage{url}
 \usepackage{textcomp}
@@ -26,6 +26,7 @@
 \usepackage{hyperref}
 \geometry{a4paper,left=2.5cm,right=2.5cm, top=2.5cm, bottom=3cm}
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\SetKwInOut{Parameter}{Parameters}
 
 % definitions for pseudocode
 \newcommand{\forcond}{$i=0$ \KwTo $k - 1$}
@@ -204,6 +205,7 @@ Note that in this thesis, following things are used interchangeably:
 $B_t$ & A 1-bit monochrome image taken at time t (t-th image)\\
 $G_t$ & Grayscale image at time $t$\\
 $\mathbb{G}_{x, y}$ & Sobel gradient of pixel $M_{t, x, y}$\\
+$\mathbb{g}_{x, y}$ & Quadratic Sobel gradient of pixel $M_{t, x, y}$\\
 $G(x)$ & One dimensional Gaussian function\\
 $G(x, y)$ & Two dimensional Gaussian function\\
 $I_t(x, y)$ & Intensity function for pixel $(x, y)$ of RGB image taken at time t\\
@@ -214,7 +216,8 @@ $M_{t, x, y}$ & Pixel at $(x, y)$ in $M_t$ \\
 $M_{t, x, y, 1}$ & First channel of pixel $M_{t, x, y}$ \\
 $M^b_t$ & A $b$-bit encoded RGB image captured at time t\\
 $M^m_{t, x, y, i}$ & Pixel-wise mean-substracted pixel $M_{t, x, y}$ \\
-$\langle M \rangle$  & Pixel-wise mean image of stack $M$.
+$\langle M \rangle$  & Pixel-wise mean image of stack $M$.\\
+$T_R$ & Gradient threshold value in a quadtree  (used in RATS algorithm).
 \end{tabular}
 \endgroup
 
@@ -228,6 +231,14 @@ Quantitative measurement of cancer drug response is esential to objectively gaug
 \newpage
 
 \tableofcontents
+
+\newpage
+
+\listoffigures
+
+\newpage
+
+\listoftables
 
 \newpage
 
@@ -312,7 +323,7 @@ Before the runaway advance of deep learning methods in the last years, object an
 
 Measuring cell death is a crucial part of the experiment, as the reliable determination of it is the basis of most analysis in this thesis. There are several way to measure cell deaths with varying complexity and accuracy. Each method contains certain assumptions of cell death.\\
 
-For example, determining cell death by cell movement assumes death of a cell if no movement beyond random flux is observed in certain amount of time. This obviously has certain drawbacks, such as when the observation is done in non-static environment. Moreover, defining the limit of the random flux, above which a given cell is assumed to actively move, is not a trivial task. Some kind of gold standard for a given cell line and environment has to be established manualy, which is very time consuming. This fact is again made even more complicated by the fact that many cells show different movement pattern upon introduction of treatment. It is well known that some cells tend to move faster or slower under stress, the situation many cancerous cells in our experiment will experience upon addition of cancer drugs treatment \cite{pienta1991effects, fenteany2003small, ruocco2012suppressing}.\\
+For example, determining cell death by cell movement assumes death of a cell if no movement beyond random flux is observed in certain amount of time. This obviously has certain drawbacks, such as when the observation is done in non-static environment. Moreover, defining the limit of the random flux, above which a given cell is assumed to actively move, is not a trivial task. Some kind of gold standard for a given cell line and environment has to be established manualy, which is very time consuming. This fact is again made even more complicated by the fact that many cells show different movement pattern upon introduction of treatment. It is well known that some cells tend to move faster or slower under stress, the situation many cancerous cells in our experiment will experience upon addition of cancer drug treatment \cite{pienta1991effects, fenteany2003small, ruocco2012suppressing}.\\
 
 The second method is using cell size. During apopotosis, the cells would shrink. Given It is known that cell size %TODO continue.
 
@@ -347,6 +358,8 @@ The second part deals mostly with the quantitative methods and algorithms used t
 
 \section{Experimental setting and data}
 
+%TODO review section
+
 \subsection{Cell culture}
 \label{subsection:cell_culture}
 
@@ -379,21 +392,21 @@ Due to limitation in image capturing coverage area, each well is further divided
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.6\textwidth]{images/sticky-slide-8-well-marked}
-\caption{ibidi\textsuperscript{\textregistered} sticky-Slide 8 Well. The base SU-8 wafer is located in each of the containment box \textbf{(A)}. The SU-8 wafer is then fabricated in the surface of each containment box using nano photolitographic printing. The microfluidic system is then poured and stamped on top the wafer. Note that each containment box is upside-open. The cap (\textbf{(B)} is used to prevent the ingress of foreign materials into the medium. \textit{Image taken and modified from ibidi GmbH's website}.}
+\caption[ibidi\textsuperscript{\textregistered} sticky-Slide 8 Well]{ibidi\textsuperscript{\textregistered} sticky-Slide 8 Well. The base SU-8 wafer is located in each of the containment box \textbf{(A)}. The SU-8 wafer is then fabricated in the surface of each containment box using nano photolitographic printing. The microfluidic system is then poured and stamped on top the wafer. Note that each containment box is upside-open. The cap (\textbf{(B)} is used to prevent the ingress of foreign materials into the medium. \textit{Image taken and modified from ibidi GmbH's website}.}
 \label{fig:ibidi}
 \end{figure}
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=1\textwidth]{images/trenches-sekhavati}
-\caption{The structure of micro-trenches: \textbf{(A)} 3D model of micro-trench on surface with cells inside. \textbf{(B)} The schematic representation of a time-lapse in a trench. First, a singly-placed cell is tracked in a micro-trench. At time $t_0$, the cell divides into two daughter cells. The two cells will be kept tracked until at one point each of the daughter cells will divide at the same time at time $t_{div}$. Note the simplification of the sample. First, not every cell is singly-placed inside a trench. Indeed, not every trench is occupied by cells. Second, not every cell divides. Third, not every cell line observed has three generations in it. And finally, not every children's division times are at the same time. Indeed, this special case almost never happens in real life. \textbf{(C)} The sample view into the environment with cells occupying some micro-trenches. Here, the micro-trenches have dimension of 120 $\mu m$ long and 30 $\mu m$ wide. Note also the pointish characteristic of the cells taken in out-of-focus fashion. This improves the performance of the tracking algorithms. \textit{Figure taken from (Sekhavati, 2015) \cite{sekhavati2015dynamic}}.}
+\caption[The structure of micro-trenches]{The structure of micro-trenches: \textbf{(A)} 3D model of micro-trench on surface with cells inside. \textbf{(B)} The schematic representation of a time-lapse in a trench. First, a singly-placed cell is tracked in a micro-trench. At time $t_0$, the cell divides into two daughter cells. The two cells will be kept tracked until at one point each of the daughter cells will divide at the same time at time $t_{div}$. Note the simplification of the sample. First, not every cell is singly-placed inside a trench. Indeed, not every trench is occupied by cells. Second, not every cell divides. Third, not every cell line observed has three generations in it. And finally, not every children's division times are at the same time. Indeed, this special case almost never happens in real life. \textbf{(C)} The sample view into the environment with cells occupying some micro-trenches. Here, the micro-trenches have dimension of 120 $\mu m$ long and 30 $\mu m$ wide. Note also the pointish characteristic of the cells taken in out-of-focus fashion. This improves the performance of the tracking algorithms. \textit{Figure taken from (Sekhavati, 2015) \cite{sekhavati2015dynamic}}.}
 \label{fig:microtrench_design}
 \end{figure}
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.6\textwidth]{images/microtrench_in}
-\caption{The typical view of micro-trench setting. Some trenches contain no cell at all \textbf{(A)}. Several trenches contain exactly one cell \textbf{(B)}. A few more trenches contain two cells \textbf{(C)} while in rare cases the trench may contain more than two cells \textbf{(D)}.}
+\caption[The typical view of micro-trench setting]{The typical view of micro-trench setting. Some trenches contain no cell at all \textbf{(A)}. Several trenches contain exactly one cell \textbf{(B)}. A few more trenches contain two cells \textbf{(C)} while in rare cases the trench may contain more than two cells \textbf{(D)}.}
 \label{fig:microtrench_sample}
 \end{figure}
 
@@ -423,7 +436,7 @@ Vincristine is initially isolated from Madagascar pairwinkle \textit{Catharanthu
   \caption{}
   \label{fig:vinchristine_mechanism}
 \end{subfigure}
-\caption{(a) Molecular structure of Vincristine. (b) Visualization of Vincristine's mechanism of action. During normal metaphase, microtubuli elongate from centrosome towards equator and bind fully replicated chromosomes. The microtubuli then pull chromosome pair apart during anaphase. Vincristine and other vinca alkaloids prevent this from happening by competitive inhibition, allosteric inhibition and active depolymerization of extending microtubuli. Unsuccessful exit metaphase forces the cell to undergo programmed cell death.}
+\caption[The structure and mechanism of Vincristine]{(a) Molecular structure of Vincristine. (b) Visualization of Vincristine's mechanism of action. During normal metaphase, microtubuli elongate from centrosome towards equator and bind fully replicated chromosomes. The microtubuli then pull chromosome pair apart during anaphase. Vincristine and other vinca alkaloids prevent this from happening by competitive inhibition, allosteric inhibition and active depolymerization of extending microtubuli. Unsuccessful exit metaphase forces the cell to undergo programmed cell death.}
 \label{fig:vincs}
 \end{figure}
 
@@ -466,7 +479,7 @@ In normal chemotherapeutic regime, both Vincristine and Daunorubicin are prescri
   \caption{}
   \label{fig:dauno_mechanism}
 \end{subfigure}
-\caption{(a) Molecular structure of Daunorubicin. (b) Two anthracyclines intercalating with DNA double helix. (c) Schematic diagram of Daunorubicin's mechanism of action. From left to right: daunorubicin induce reactive oxygen species (ROS) which damage the DNA. Daunorubicin interfers with DNA by (1) covalently crosslinking with DNA mediated by formaldehyde and (2) intercalating DNA double helix. Daunorubicin also inhibits Topoisomerase II which prevents DNA supercoil's relaxation. Not shown in image: daunorubicin removes histone (shown in yellow in image) which disrupt epigenetic regulations. Modified from (Yang et al, 2014 \cite{yang2014doxorubicin})}
+\caption[The structure and mechanism of Daunorubicin]{(a) Molecular structure of Daunorubicin. (b) Two anthracyclines intercalating with DNA double helix. (c) Schematic diagram of Daunorubicin's mechanism of action. From left to right: daunorubicin induce reactive oxygen species (ROS) which damage the DNA. Daunorubicin interfers with DNA by (1) covalently crosslinking with DNA mediated by formaldehyde and (2) intercalating DNA double helix. Daunorubicin also inhibits Topoisomerase II which prevents DNA supercoil's relaxation. Not shown in image: daunorubicin removes histone (shown in yellow in image) which disrupt epigenetic regulations. Modified from (Yang et al, 2014 \cite{yang2014doxorubicin})}
 \end{figure}
 
 \subsection{Cell death signal}
@@ -476,7 +489,7 @@ As mentioned in Subsection \ref{subsection:treatment}, the introduction of cance
 
 \subsubsection*{Caspase 3/7}
 
-Caspase 3 and 7 are both known as executioner Caspases in programmed cell death pathways \cite{alberts2017molecular}.  The reagent consists of a four amino acid peptide (DEVD) conjugated to a nucleic acid binding dye. This cell-permeable substrate is intrinsically non-fluorescent, because the DEVD peptide inhibits the ability of the dye to bind to DNA. After activation of caspase-3 or caspase-7 in apoptotic cells, the DEVD peptide is cleaved, enabling the dye to bind to DNA and produce a bright, fluorogenic response.  It has excitation/emission maxima of ~502/530 nm (see Figure \cite{fig:caspase_spectra}). For the project CellEvent Caspase3/7 vial from ThermoFisher Scientific is used  \cite{thermofisher2018casp}.
+Caspase 3 and 7 are both known as executioner Caspases in programmed cell death pathways \cite{alberts2017molecular}.  The reagent consists of a four amino acid peptide (DEVD) conjugated to a nucleic acid binding dye. This cell-permeable substrate is intrinsically non-fluorescent, because the DEVD peptide inhibits the ability of the dye to bind to DNA. After activation of caspase-3 or caspase-7 in apoptotic cells, the DEVD peptide is cleaved, enabling the dye to bind to DNA and produce a bright, fluorogenic response.  It has excitation/emission maxima of 502/530 nm (see Figure \ref{fig:caspase_spectra}). For the project CellEvent Caspase3/7 vial from ThermoFisher Scientific is used  \cite{thermofisher2018casp}.
 
 \begin{figure}[H]
 
@@ -505,7 +518,7 @@ Caspase 3 and 7 are both known as executioner Caspases in programmed cell death 
   \label{fig:caspase_spectra}
 \end{subfigure}%
 
-\caption{a) Molecular structure of Caspase 3 heterodimer b) Molecular structure of Caspase 7 homodimer. The p17 (light blue) and p12 (pink) subunites are show. c) The excitation (blue) and emission (red) spectra of Caspase3/7 vial by ThermoFisher Scientific. Notice the peaking around the 525\~535 nm range in green channel. Image taken from ThermoFisher Scientific product specification page \cite{thermofisher2018casp}.}
+\caption[The structure and mechanism of Caspase 3/7]{a) Molecular structure of Caspase 3 heterodimer b) Molecular structure of Caspase 7 homodimer. The p17 (light blue) and p12 (pink) subunites are show. c) The excitation (blue) and emission (red) spectra of Caspase3/7 vial by ThermoFisher Scientific. Notice the emission peaking around the 525-535 nm range in green channel. Image taken from ThermoFisher Scientific product specification page \cite{thermofisher2018casp}.}
 
 \label{fig:caspase_stain}
 \end{figure}
@@ -531,13 +544,13 @@ PI is membrane impermeable and generally excluded from viable cells. Therefore i
   \label{fig:pi_spectra}
 \end{subfigure}%
 
-\caption{a) Molecular structure of Propium Iodide (PI) b) The excitation (blue) and emission (red) spectra of PI. Notice the peaking around the 600-650 nm range in red channel. Image taken from ThermoFisher Scientific product specification page \cite{thermofisher2018pi}.}
+\caption[The structure and mechanism of Propium Iodide (PI)]{a) Molecular structure of Propium Iodide (PI) b) The excitation (blue) and emission (red) spectra of PI. Notice the peaking around the 630-650 nm range in red channel. Image taken from ThermoFisher Scientific product specification page \cite{thermofisher2018pi}.}
 
 \label{fig:pi_stain}
 \end{figure}
 
-\subsection{Drug treatments}
-\label{subsection:cell_treatments}
+\subsection{Experiment setup and image capturing}
+\label{subsection:exp_setup}
 
 %TODO move to intro/review/results
 
@@ -550,7 +563,7 @@ Generally, following questions are to be investigated in the experiment:
 
 To answer aforementioned questions, we designed the experiments as follow. First, two experiments are done:
 
-\subsubsection*{Unsynchronized experiment.}
+\subsubsection{Unsynchronized experiment.}
 
 In the unsynchronized experiment, all 8 wells of the ibidi\textsuperscript{\textregistered} sticky-Slide 8 Well ('slide') are used with one micro-trench wafer in each well (see Subsection \ref{subsection:microfluid_env} for the description of the slide). Every well is poured with different concentrations of drugs. To cover a large concentration range, a logarithmic scale is used to select concentration starting with 1 nanomolar (nM) all the way to 1000 nM (see Table \ref{table:unsyn_treatments}). The use of a logarithmic scale is also in line with the logarithmic nature of many enzymatic and molecular processes in cell biology \cite{wilkinson1961statistical, savageau1969biochemical}. Following concentrations are used:  1 nM, 5 nM, 10 nM, 100 nM and 1000 nM of Vincristine; 10 nM and 100 nM of Daunorubicin; and no drug as control. The unsynchronized experiment concentration configuration can be seen in Table \ref{table:unsyn_treatments}. The recording lasts for 45 hours. After 21 hours of recording, the drug treatment is introduced into each well. Table \ref{table:image_capture_frequency} shows the image capturing frequency for each image type.
 
@@ -591,7 +604,7 @@ Green fluorescence channel (Csp3/7) & Image tracking, image analysis & 15 minute
 \end{table}
 
 
-\subsubsection*{Synchronized experiment}
+\subsubsection{Synchronized experiment}
 
 The main difference between unsynchronized and synchronized experiments is the synchronization step. This process involves arresting cell cycle with the so-called "double thymidine block" protocol \cite{harper2005synchronization}, which arrests cell development at $G_1/S$-phase by stopping DNA synthesis using double thymidine block, a well known DNA synthesis inhibitor \cite{bostock1971evaluation}.
 
@@ -617,7 +630,10 @@ B1: 100 nM - Dauno & 56-63 \\
 \label{table:syn_treatments}
 \end{table}
 
-The detailed image capturing protocol for both unsynchronized and synchronized experiments can be seen in Appendix \ref{appendix:imageacquisition}.
+\subsubsection{Image capturing}
+\label{subsubsection:image_capturing}
+
+Imaging was performed under an inverted Nikon Ti Eclipse microscope with a motorized stage (Tango XY Stage Controller, M\"arzh\"auser Wetzlar GmbH \& Co. KG, Germany), a CFI Plan Fluor DL 10X objective, a pco.edge 4.2 Camera (PCO AG, Kelheim, Germany) and a Lumencor Sprectra LED fluorescence lamp. For detection of the Caspase-3/7 and the PI marker, the following filters were used respectively, 474/27 nm, 554/23 (excitation) and 515/35 nm, 595/35 nm (emission). Brightfield out of focus (-20 $\mu$m) images were taken every 10 minutes and in-focus  brightfield and fluorescence images every 30 minutes for 48 hours. Vincristine or Daunorubicin were added after 20 hours from the beginning of the imaging. During the recording samples were kept at a constant temperature of 37\degree C and CO2 using an Okolab heating and CO\textsubscript{2} 2 box (OKOLAB S.R.L., NA, Italy). For the synchronized population, the double thymidine block protocol was followed. Briefly, MOLM-13s cells at the exponentially growing phase were incubated in blocking medium (culture medium supplemented with 2 mM Thymidine (CAS 50-89-5, Calbiochem\textsuperscript{\textregistered}, Germany)) for 24 hours. Cells were then released and incubated in culture medium for 8 hours and finally were incubated in blocking medium for 12 hours. After 2 hours, the synchronized population was seeded in the slide bearing the micro-trenches together with the markers and drugs at the same conditions as the unsynchronized population, and imaged for 24 hours.
 
 
 \section{Definitions}
@@ -627,16 +643,16 @@ This section contains formal definitions and methods used in this thesis.
 \subsection{Image channels and encoding}
 \label{subsection:image_encoding}
 
-Several image standards and encodings are being processed in our pipeline. We start from the raw image captured by the camera going down to processed images (See Appendix \ref{appendix:imageacquisition} for detailed protocols on image acquisition). There are two brightfield channels (in-focus and out-of-focus channel) and two fluoroscent channels (red and green) in this project. Out-of-focus brightfield images are used to track cells as their unsharpness can be exploited through image processing creating robust patch of cells, as shown by Buggenthin \cite{buggenthin2011computational}. The red and fluoroscent channels capture fluorescence emission in 620-750 nm and 495-570 nm respectively (see Subsection \ref{subsection:cell_death_signal}).
+Several image standards and encodings are being processed in our pipeline. We start from the raw image captured by the camera going down to processed images (See Subsubsection \ref{subsubsection:image_capturing} for detailed protocols on image acquisition). There are two brightfield channels (in-focus and out-of-focus channel) and two fluoroscent channels (red and green) in this project. Out-of-focus brightfield images are used to track cells as their unsharpness can be exploited through image processing creating robust patch of cells, as shown by Buggenthin \cite{buggenthin2011computational}. The red and fluoroscent channels capture fluorescence emission in 620-750 nm and 495-570 nm respectively (see Subsection \ref{subsection:cell_death_signal}).
 
 \begin{itemize}
 \item In-focus brightfield image, the focal distance of the camera $d_f$ is exactly the same as the distance of the camera to the center of the cell $d_m$, i.e. $d_f = d_m$.
 
 \item In out-of-focus brightfield image, the difference of focal plane and center of the cells, $d_f - d_m$, influences the quality of the image in several ways (see Figure \ref{fig:focustest}). It was determined that the ideal image for segmentation came from the setting with $d_f - d_m = -20 \mu m$.
 
-\item The red fluoroscent channel is used to capture emission from PI activation due to PI's DNA binding emission (see Subsection \ref{subsection:cell_treatments}).
+\item The red fluoroscent channel is used to capture emission from PI activation due to PI's DNA binding emission (see Subsection \ref{subsection:exp_setup}).
 
-\item The green fluoroscent channel is used to capture emission from caspase3/7 activation due to DAVD peptide cleavage (see Subsection \ref{subsection:cell_treatments}).
+\item The green fluoroscent channel is used to capture emission from caspase3/7 activation due to DAVD peptide cleavage (see Subsection \ref{subsection:exp_setup}).
 \end{itemize}
 
 %TODO change image labeling
@@ -644,7 +660,7 @@ Several image standards and encodings are being processed in our pipeline. We st
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{images/focus/pict.png}
-\caption{In-focus image and out-of-focus brightfield images taken at various focus levels.  In the first row are images focused behind the microfluidics system while in the second row are images focused before the system. A: in focus image. B: $+10 \mu m$. C: $+20 \mu m$. D: $+30 \mu m$. E: $+40 \mu m$. F: $+50 \mu m$. G: $-10 \mu m$. H: $-20 \mu m$. I: $-30 \mu m$. J: $-40 \mu m$. K: $-50 \mu m$.}
+\caption[Effect on focal plane on out-of-focus image]{In-focus image and out-of-focus brightfield images taken at various focus levels.  In the first row are images focused behind the microfluidics system while in the second row are images focused before the system. A: in focus image. B: $+10 \mu m$. C: $+20 \mu m$. D: $+30 \mu m$. E: $+40 \mu m$. F: $+50 \mu m$. G: $-10 \mu m$. H: $-20 \mu m$. I: $-30 \mu m$. J: $-40 \mu m$. K: $-50 \mu m$.}
 \label{fig:focustest}
 \end{figure}
 
@@ -699,7 +715,7 @@ This however does not reflect human perception of light, as human eyes' spectral
 \centering
 \includegraphics[width=0.5\textwidth]{images/spectral_sensitivity}
 \label{fig:spectral_sensitivity}
-\caption{Spectral sensitivity of human (a), honeybee (b), pigeon (c) and home fly (d). Note that the sensitivity distribution is maximum normalized (i.e. each value in a curve is relative only to the maximum value of the curve). Each species has its own set of cone cells, as can be seen in the variation of the number of curves for each species. D refers to double cone, while SVF refers to short visual fiber and LVF to long visual fiber. The y's and p's indicate the yellow/pale sensitivity of house fly's long visual fiber. Figure taken from (Osorio and Vorbyev, 2005 \cite{osorio2005photoreceptor}).}
+\caption[Spectral sensitivity of human]{Spectral sensitivity of human (a), honeybee (b), pigeon (c) and home fly (d). Note that the sensitivity distribution is maximum normalized (i.e. each value in a curve is relative only to the maximum value of the curve). Each species has its own set of cone cells, as can be seen in the variation of the number of curves for each species. D refers to double cone, while SVF refers to short visual fiber and LVF to long visual fiber. The y's and p's indicate the yellow/pale sensitivity of house fly's long visual fiber. Figure taken from (Osorio and Vorbyev, 2005 \cite{osorio2005photoreceptor}).}
 \end{figure}
 
 There are some conversions published on transforming RGB value to human intensity perception based on the measured spectral sensitivity \cite{anderson1996proposal, itu2007studio, itu2015parameter}. Among the most commonly used is the \textit{BT.601} standard from International Telecommunication Union (ITU). It recommends the following luminosity weight for RGB to grayscale conversion \cite{itu2007studio}:
@@ -714,7 +730,7 @@ For following image:
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.4\textwidth]{images/pos_41_in_t0}
-\caption{The in-focus image of position 41 from unsynchronized experiment.}
+\caption{The in-focus image position 41 from unsynchronized experiment.}
 \label{fig:pos41}
 \end{figure}
 
@@ -751,23 +767,7 @@ B_{x, y} =
 \end{cases}
 \end{gather*}
 
-Note that, a bit encoding of an image refers to unsigned encoding. Thus, an $m$-bit encoding allows value ranging from $0$ to $2^m - 1$. We consider following image: 
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.4\textwidth]{images/pos_41_in_t0}
-\caption{The in-focus image of position 41 from unsynchronized experiment.}
-\label{fig:pos41}
-\end{figure}
-
-using RGB to intensity conversion formula shown in Subsection \ref{subsection:image_encoding}, we can convert the image into grayscale image representing the intensity. The grayscale image has the intensity distribution as shown in following histogram:
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.4\textwidth]{images/pos_41_in_t0_hist}
-\caption{Normalized distribution of intensity of Figure \ref{fig:pos41}.}
-\label{fig:pos41_density}
-\end{figure}
+Note that, a bit encoding of an image refers to unsigned encoding. Thus, an $m$-bit encoding allows value ranging from $0$ to $2^m - 1$.
 
 \subsection{Intensity, brightness and contrast}
 \label{subsection:brightness_contrast_adjustment}
@@ -841,7 +841,7 @@ See for example following image:
   \label{fig:pos41_times3_hist}
 \end{subfigure}%
 
-\caption{(a) The in-focus image of position 41 from unsynchronized experiment tranoformed with $\alpha=1$ and $\beta = 100$. (b) The in-focus image of position 41 from unsynchronized experiment tranoformed with $\alpha=3$ and $\beta = 0$. Notice the contrast has increased significantly, especially around area with high intensity differential such us the margin of a micro-trench and the dark spot in the lower left part of the slice. (c) Normalized distribution of intensity of (a). (d) Normalized distribution of intensity of the (b). Note that the difference in height across bins in two histograms is mainly caused by the definition of bins in the histogram function.}
+\caption[Brightness and contrast transformation]{(a) The in-focus image position 41 from unsynchronized experiment transformed with $\alpha=1$ and $\beta = 100$. (b) The in-focus image of position 41 from unsynchronized experiment transformed with $\alpha=3$ and $\beta = 0$. Notice the contrast has increased significantly, especially around area with high intensity differential such us the margin of a micro-trench and the dark spot in the lower left part of the slice. (c) Normalized distribution of intensity of (a). (d) Normalized distribution of intensity of the (b). Note that the difference in height across bins in two histograms is mainly caused by the definition of bins in the histogram function.}
 
 \label{fig:pos41_brup100}
 \end{figure}
@@ -932,7 +932,7 @@ To refine the filtering further, iterative correction is applied. First, a quadt
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.8\textwidth]{images/quadtree}
-\caption{Example of quadtree. The left side is the quadtree representation of original image on the right. \textit{Creative Commons courtesy of anonymous.}}
+\caption[Example of quadtree]{Example of quadtree. The left side is the quadtree representation of original image on the right. \textit{Creative Commons courtesy of anonymous.}}
 \label{fig:quadtree}
 \end{figure}
 
@@ -947,7 +947,7 @@ Where $\sum g_{x,y}$ the sum of all children quadrants' gradient. For the smalle
 
 \begin{equation}
 T_R = \frac{g_{x,y} \cdot M_{t, x, y}}{g_{x, y}}
-\label{eq:local_threshold_rats}
+\label{eq:local_threshold_rats_smallest}
 \end{equation}
 
 This threshold is used to filter pixels within a quadrant. Pixels with gradient value smaller than $T_R$ of a quadrant are then filtered out. If $T_R$ is very low that no point in a quadrant is filtered out, the $T_R$ of the parent is taken instead. This step is iterated until a parent square with at least one filtered pixel is reached. Visually, the refining step is equal to filtering out the area of an image in which the pixels are mostly noise. In the initial global filtering process, many noisy pixels might not be filtered since they happen to have gradients larger than $\lambda \sigma$. Using this bottom-up approach these pixels will be eventually filtered out.
@@ -956,7 +956,7 @@ Subfigures \ref{fig:brcon_adj} and \ref{fig:rats} show the input and output of  
 
 \begin{itemize}
 \item the first part of RATS ($\mathbb{g}$-filtering by $\lambda \sigma$) is designed to move global level noise  which in this case means white noises coming from non-perfect reflection of light from the well.
-\item the second part of RATS (recursive $\mathbb{B}$-filtering by $T_r$)is designed to remove local noise cause by local distortion due to location-specific artifacts (direction of incoming light not perfectly perpendicular with regard to micro-trench's base etc).
+\item the second part of RATS (recursive $\mathbb{g}$-filtering by $T_r$)is designed to remove local noise cause by local distortion due to location-specific artifacts (direction of incoming light not perfectly perpendicular with regard to micro-trench's base etc).
 \end{itemize}
 
 \subsection{Holes filling}
@@ -974,7 +974,7 @@ Following image explains the definition of contours and their hierarchy:
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.8\textwidth]{images/contours}
-\caption{Example of contours and their hierarchy. \textbf{Contours 0}, \textbf{1} and \textbf{2} are \textbf{outernmost contours} and of \textbf{hierarchy-0}. \textbf{Contour 2a} is \textbf{child contour} and of \textbf{hierarchy-1}. \textbf{Contour 3} is child contour of \textbf{contour 2a} and of \textbf{hierarcy-2}. \textbf{Contour 3a} is child contour of  \textbf{contour 3} and of \textbf{hierarchy-3}. Both \textbf{contours 4} and \textbf{5} are children of \textbf{contour 3a} and of \textbf{hierarchy-4}. All contours with same hierarchy are topologically equal. Contour Adopted from OpenCV tutorials by Bradski and Kaehler \cite{bradski2008learning}.}
+\caption[Example of image contours]{Example of contours and their hierarchy. \textbf{Contours 0}, \textbf{1} and \textbf{2} are \textbf{outernmost contours} and of \textbf{hierarchy-0}. \textbf{Contour 2a} is \textbf{child contour} and of \textbf{hierarchy-1}. \textbf{Contour 3} is child contour of \textbf{contour 2a} and of \textbf{hierarcy-2}. \textbf{Contour 3a} is child contour of  \textbf{contour 3} and of \textbf{hierarchy-3}. Both \textbf{contours 4} and \textbf{5} are children of \textbf{contour 3a} and of \textbf{hierarchy-4}. All contours with same hierarchy are topologically equal. Contour Adopted from OpenCV tutorials by Bradski and Kaehler \cite{bradski2008learning}.}
 \label{fig:contours}
 \end{figure}
 
@@ -1013,7 +1013,7 @@ Subfigures \ref{fig:rats} and \ref{fig:fill_holes} show the input and output of 
   \label{fig:fill_holes}
 \end{subfigure}%
 
-\caption{The upper left corner of the image position 41's in-focus-image recording at time $t=0$: (a) The original in-focus image of the upper left corner of position 41. (b) The view of the same area as (a) after applying brightness and contrast adustment. (c) The view of the same area after applying RATS on image in (b) showing the contour of micro-trenches in the area. (d) The contours filled with neutral color (black). Note that some micro-trenches are not filled as they are open and thus topologically not the outernmost contours. Scale bar on the uppermost figure is $100 \mu M$ long.}
+\caption[Micro-trenches masking process]{The upper left corner of the image position 41's in-focus-image recording at time $t=0$: (a) The original in-focus image of the upper left corner of  the image position 41. (b) The view of the same area as (a) after applying brightness and contrast adustment. (c) The view of the same area after applying RATS on image in (b) showing the contour of micro-trenches in the area. (d) The contours filled with neutral color (black). Note that some micro-trenches are not filled as they are open and thus topologically not the outernmost contours. Scale bar on the uppermost figure is $100 \mu M$ long.}
 
 \label{fig:trench_masking}
 \end{figure}
@@ -1085,7 +1085,7 @@ Figure \ref{fig:clahe} visualizes the step 2, 3 and 4 of the algorithm descripti
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.7\textwidth]{images/clahe}
-\caption{Desription of CLAHE. Taken from Pizer, Zuiderfeld et al, 1987 \cite{pizer1987adaptive}  Note the  smoothen intensity CDF function (lower part of the figure) after reassigning some pixels with pixel values above the clipping value.}
+\caption[Visualizatoin of CLAHE algorithm]{Desription of CLAHE algorithm. Taken from Pizer, Zuiderfeld et al, 1987 \cite{pizer1987adaptive}  Note the  smoothen intensity CDF function (lower part of the figure) after reassigning some pixels with pixel values above the clipping value.}
 \label{fig:clahe}
 \end{figure}
 
@@ -1093,7 +1093,7 @@ Figure \ref{fig:clahe} visualizes the step 2, 3 and 4 of the algorithm descripti
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{images/clahe_before_after}
-\caption{The upper left corner of the in-focus brightfield chanenl of the image position 43 at time $t=0$: before (left) and after (right) the application of CLAHE on the image. Scale bar on the left figure is $100 \mu M$ long.}
+\caption[Example of application of CLAHE algorithm]{The upper left corner of the in-focus brightfield chanenl of the image position 43 at time $t=0$: before (left) and after (right) the application of CLAHE on the image. Scale bar on the left figure is $100 \mu M$ long.}
 \label{fig:clahe_before_after}
 \end{figure}
 
@@ -1137,13 +1137,13 @@ This method can be improved by iteratively repeating the calculation of $\langle
 \begin{algorithm}[H]
  \KwData{$M_t$}
  \KwResult{$M^m_t$}
- $k$ \;
+ \Parameter{$k$}
  \For{\forcond}{
  	calculates $\langle M \rangle$ from $M_t$ \;
  	$M^m_t = M_t - \langle M \rangle$ \;
  	$M_t = M^m_t$ \; 
  }
-
+ \KwOut{$M_t$}
 \caption{The k-substraction by pixel-mean intensity algorithm}
 \label{algorithm:k_mean_substraction}
 \end{algorithm}
@@ -1194,7 +1194,7 @@ The operator is then applied on two dimensional matrix of a grayscale image. To 
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{images/log_operator_example}
-\caption{Example of applying the LoG operator on a 2D circle. The minimum will be achieved if the diameter of the LoG operator is roughly equal to the diameter of the cell. This however does not to be the case. In case of non-perfect blob or blob with different diameter, local minimum can still be detected by the cell recognition algorithm \cite{tinevez2017trackmate}.}
+\caption[Example of application of the LoG operator]{Example of applying the LoG operator on a 2D circle. The minimum will be achieved if the diameter of the LoG operator is roughly equal to the diameter of the cell. This however does not to be the case. In case of non-perfect blob or blob with different diameter, local minimum can still be detected by the cell recognition algorithm \cite{tinevez2017trackmate}.}
 \label{fig:log_example}
 \end{figure}
 
@@ -1255,7 +1255,7 @@ c(v_k, v_l) =
 where $\mathbb{f}$ refers to each feature penalty defined for the optimization and $W_{\mathbb{f}}$, $f_{\mathbb{f}1}$ and $f_{\mathbb{f}2}$ refer to the feature penalty factor, the value of feature $\mathbb{f}$ of $v_k$ and the value of feature feature $\mathbb{f}$ of $v_l$ respectively. Generally, only blob related features are used in the algorithm, e.g. total blob intensity, average blob intensity and minimum/maximum blob intensity. Note that:
 
 \begin{itemize}
-\item If the distance is larger than the pre-defined maximum distance, then the link is forbidden. A blocking cost ($\infty$) is assigned between two blobs.
+\item If the distance is larger than the pre-defined maximum distance $d_{max}$, then the link is forbidden. A blocking cost ($\infty$) is assigned between two blobs.
 \item If no penalty feature is introduced then the cost is simply the squared distance of two blobs.
 \end{itemize}
 
@@ -1275,6 +1275,8 @@ The optimization over the matrix is then solved with the Munkers \& Kuhn algorit
 
 The interpretation of the cost functions is following: without any penalty, the optimization problem favors the solution which minimizes the sum of squared distance between two blobs. This is in line with previously mentioned assumption of the Brownian motion of cells. By adding feature penalties, we aim at favoring linking blobs that are more similar to each other. In brute single particle linking problems, spots are generally all the same, and they only differ by the coordinate. However, there is a variety of problems for which these feature penalties can add robustness to the tracking process. In our case for example, the cells might pose several features that change over time depending on the treatment and cell-dependent characteristics (the phenomenon we further investigate using machine learning methods, see Subsections \ref{subsection:svm} and \ref{subsection:rf} and Section \ref{section:ml_results}).
 
+%TODO decide whether Random Forest should be added
+
 Upon the linking of blobs into track segments, more refinement is then done to achieve globally optimal cell tracks configuration. To do this, three events are considered in our model:
 
 \begin{itemize}
@@ -1287,102 +1289,82 @@ The matrix is created in similar fashion to the cost matrix in the first step, w
 The optimal solution for the problem is again found using the Munkers \& Kuhn algorithm \cite{munkres1957algorithms}.
 
 \subsection{Shift correction}
+\label{subsection:shift_correction}
 
 %TODO continue correction from here
 %TODO improve subsection
 %TODO : RESTRUCTURE THE CHAPTER
 
-Now, consider a case in which images are shifted in a time-lapsed movie. TODO: explain mechanism. No rotation of camera is assumed, hence there are only two degree of freedoms (vertical and horizontal). Thus, a shift can be defined as a vector movement $\vec{v}$ of all points $x_{i,j} \in M_{t_i}$ in the time-lapse from time $t_i$ to $t_{i+1}$. Given two degrees of freedom and discreteness of the problem due to pixel representation, the task is reduced to finding difference in x- and y-axis ($\delta_x$ and $\delta_y$), so that the difference of transformed pixels at $t_i$ and $t_{i+1}$ are minimized, i.e.:
+Shift correction is done to correct the slice alignment within stacks. As mentioned in Subsection \ref{subsection:exp_setup}, the images were captured discretely at the frequency of $\frac{1}{15 min}$ and $\frac{1}{30 min}$ depending on the channel. During this time, the setup might move albeit very slightly causing very small shift. The bulk of the shift, however, happened during the introduction of the  drug treatment. At this time, the drug is introduced to the medium using a pipette. The liquid released pushes the wafer somewhat causing noticable shift in camera's field of view (see Table \ref{table:inferred_shift} of Appendix \ref{chapter:appendix_tables} for the inferred shift in every image position).
+
+Now, consider the case in which the images are shifted in a time-lapsed movie during the introduction of drug treatment. No rotation of camera is assumed, hence there are only two degree of freedoms (vertical and horizontal). Thus, a shift can be defined as a vector movement $\vec{v}$ of all points $x_{i,j} \in M_t$ in the time-lapse from time $t$ to $t + 1$. Given two degrees of freedom and discreteness of the problem due to pixel representation, the task is reduced to finding difference in x- and y-axis ($\delta_x$ and $\delta_y$), so that the difference of transformed pixels at $t$ and $t_{i+1}$ are minimized, i.e.:
 
 $$
-argmin_{\delta_x, \delta_y} \{d(M_{t_i}, M_{t_{i+1}}^{\delta_x, \delta_y} + (\delta_x, \delta_y)^T)\}
+arg\,min_{\delta_x, \delta_y} \{d(M_{t}, M_{t + 1}^{\delta_x, \delta_y}\}
 $$
 
-Where $M_{t_{i+1}}^{\delta_x, \delta_y}$ is the entries of matrix $M_{t_{i+1}}$ after applying the shift $\vec{v} := (\delta_x, \delta_y)^T$, i.e.
+Where $M_{t + 1}^{\delta_x, \delta_y}$ is the entries of matrix $M_{t + 1}$ after applying the shift $\vec{v} := (\delta_x, \delta_y)^T$, i.e.
 
-$$M_{t_{i+1}, \, x, \, y}^{\delta_x, \delta_y} = M_{t_{i+1}, \, x - \delta_x, \, y - \delta_y}$$
+$$M_{t + 1, \, x, \, y}^{\delta_x, \delta_y} = M_{t + 1, \, x - \delta_x, \, y - \delta_y}$$
 
-For the distance function $d$, the in all channels absolute difference function is used, which is defined as:
+and the distance function $d$ is defined as all-channel all-pixel sum of differences between two image:
 
 $$
-d(M_i, M_j) = \sum_{c \, \in \, \{R, B, G\}} \sum_{x} \sum_{y} \vert M_{i, c, x, y} - M_{j, c, x, y} \vert
+d_{RGB}(M_i, M_j) = \sum_{c \, \in \, \{R, B, G\}} \sum_{x} \sum_{y} \vert M_{i, x, y, c} - M_{j, x, y, c} \vert
 $$
 
+Since some pixels are lost from the field of view during a shift, only a subset of subsequent images is used to determine the shift, preferably those around the center point. This will allow the largest search space possible, since the distance to all four margins of the image is maximized at the center point. The search for the optimal $(\delta_x, \delta_y)$ pair is implemented as a grid search along the x- and y-axis. An example of the search grid is shown in Figure \ref{fig:searchgrid}. Algorithm \ref{algorithm:shift_inference_rgb} shows the pseudocode of shift inference algorithm for RGB images.
 
-Since some pixels are lost from the field of view during a shift, only a subset of subsequent images is used to determine the shift, preferably those around the center point. This will allow the largest search space possible, since the distance to all four margins of the image is maximized at the center point. The search for the optimal $(\delta_x, \delta_y)$ pair is implemented as a grid search along the x- and y-axis. An example of the search grid is shown in Figure \ref{fig:searchgrid}.\\
+\vspace{10mm}
+
+\begin{algorithm}[H]
+ \KwData{$M_t$, $M_{t + 1}$}
+ \KwResult{$M^m_t$}
+ \Parameter{$d, l$}
+ $D$ distance matrix for various shifting configurations \;
+ $c := (c_x, x_y)$ coordinate of center pixel of $M_t$ \;
+ $M'_t  := M_{t}[c_x - l:c_x +l][c_y - l:c_y +l]$ sub-image of $M_t$ centered around $(c_x, x_y)$\;
+ \For{$i=-d$ \KwTo $d$}{
+ 	\For{$j=-d$ \KwTo $d$}{
+ 		$c' := (c_y - i, c_y - j)$ \;
+ 		$M'_{t + 1} := M_{t + 1}[c'_x - l:c'_x +l][c'_y - l:c'_y +l]$\;
+ 		$D[i,j] := d_{RGB}(M'_t, M'_{t + 1})$
+ 	}
+ }
+ \KwOut{$arg\,min_{i, j} \{D\}$}
+ \vline
+\caption{Shift inference algorithm for RGB images}
+\label{algorithm:shift_inference_rgb}
+\end{algorithm}
+
+\vspace{10mm}
+
+Since the time-lapsed data consists mainly of grayscale image, the RGB encoding could be the directly transformed to grayscale encoding (see Equation \ref{equation:rgb_to_gray_def} of Subsection \ref{subsection:image_encoding}). Using the transformed method also speeds up the calculation process since the distance function only computes the difference of grayscale channel's values:
+
+$$
+d_G(G_i, G_j) =  \sum_{x} \sum_{y} \vert G_{i, x, y} - G_{j, x, y}\vert
+$$
+
+For this case, the shift inference algorithm can simply be modified by replacing $d_{RGB}$ with $d_G$.
+
+Due to lost pixels around the margin of before and after images, only the overlapping part of both slides are included after the correction. Thus, for an inferred shift of $(\delta_x, \delta_y)$, the new dimension of the images is then $(m - \delta_x) \times (n - \delta_y)$. This change would then propagation to the other time-lapse images to maintain consistency of the images.
+
+Ideally, the shift correction should be done for each time point to reduce the track dropout rate caused by image shifts. This is however computationally very expensive. Moreover, inferring the shift for every recording time is not really necessary since the biggest shift, as mentioned before, only happens right before and after the treatment. The difference diference between consecutive images of the image position 26 can be seen in \ref{fig:pixdiff}. Here we can see that the major spike of difference is only observed upon the introduction of the drug treatment.
+
+As described in Subsection \ref{subsection:cell_tracking}, the tracking algorithm allows certain amount of tolerance represented as maximum distance $d_{max}$. In this regard, the frame shifts happening not during the drug treatment introduction are way within the tolerance of our tracking algorithm. As shown in (TODO: add droput rate figure), the dropouts caused by frame shifts in the other time points are basically noisy dropout caused by random noises in the time-lapse movie being tracked as cells \cite{jaqaman2008robust}.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.6\textwidth]{images/search_grid}
-\caption{Search grid shift for Position 26. The search was conducted for shift between the last time point before and the first time point after the drugs treatment. The minimum is marked with thick black dot, which is returned after every grid-search call as inferred shift. In the position, the shift was inferred to be 8 pixels upwards and 5 pixels leftwards. Note the repeating pattern of relatively favorable configurations after approximately 50 horizontal and 100 vertical pixels caused by lattice nature of the micro-trenches.}
+\caption[Example of search grid from the shift inference algorithm]{Search grid shift for the image position 26. The search was conducted for shift between the last time point before and the first time point after the drug treatment. The minimum is marked with thick black dot, which is returned after every grid-search call as inferred shift. In the position, the shift was inferred to be 8 pixels upwards and 5 pixels leftwards. Note the repeating pattern of relatively favorable configurations after approximately 50 horizontal and 100 vertical pixels caused by lattice nature of the micro-trenches.}
 \label{fig:searchgrid}
 \end{figure}
-
-Since the time-lapsed data consists mainly of grayscale image, the RGB encoding could be the directly transformed to grayscale encoding. Using the transformed method also speeds up the calculation process since the distance function only computes the difference of grayscale channel's values:
-
-$$
-d(M, N) =  \sum_{x} \sum_{y} \vert M_{c, x, y}^{gray} - N_{x, y}^{gray}\vert
-$$
-
-Due to lost pixels around the margin of before and after images, only the overlapping part of both slides are included after the correction. Thus, for an inferred shift of $(\delta_x, \delta_y)$, the new dimension of the images is then $(m - \delta_x) \times (n - \delta_y)$. This change would then propagation to the other time-lapse images to maintain consistency of the images.\\
-
-Ideally, the shift correction should be done for each position to reduce the track dropout rate caused by image shifts. This is however computationally very expensive and, as seen in Figure \ref{fig:pixdiff}, not really necessary since the biggest shift indeed only happens right before and after the treatment, as it was expected during the experiment setting. As seen in Subsection \ref{subsection:cell_tracking}, the tracking allows certain amount of tolerance. In this regard, the other frame shifts are way within the tolerance of our tracking algorithm. As shown in Figure YY (TODO: add droput rate), the dropouts caused by frame shifts in the other time points are basically noisy dropout caused by random noise in time-lapse movie being tracked as cells \cite{jaqaman2008robust}.
-
-The algorithm for shift inference is available in Appendix \ref{appendix:algo}.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.8\textwidth]{images/pixdiff}
-\caption{Pixel difference between consecutive frames at the image position 26. In most cases, the pixel difference between the frames is mainly caused by moving cells. The diference during the treatment, on the other hand, is caused by physical shift of the frame. While moving cells mostly caused minimum noise-like pixel difference, the physical shift of field of view distorts the physical alignment and evokes immense pixel difference.}
+\caption[Slice-wise sum of pixel difference in a stack]{Pixel difference between consecutive frames in the image position 26. In most cases, the pixel difference between the frames is mainly caused by moving cells. The diference during the treatment, on the other hand, is caused by physical shift of the frame. While moving cells mostly caused minimum noise-like pixel difference, the physical shift of field of view distorts the physical alignment and evokes immense pixel difference.}
 \label{fig:pixdiff}
-\end{figure}
-
-\subsection{Cell death signal determination}
-\label{subsection:cell_death_signal_determination}
-
-%TODO move to Chapter 3
-%TODO add graphical representation of cell death determination (like the one made for Eli)
-
-As mentioned in Subsection \ref{subsection:comp_cell_death_determination}, two cell death signals are deployed in this experiment: PI and Caspase 3/7. Recall that, as mentioned Subsection \ref{subsection:cell_treatments}, two kinds of images were captured during the experiment: brightfield and fluorescent images. There are in turn two channel of fluorescent images captured: red and green.
-
-The fluorescent channels can thus be exploited to detect cell deaths. As mentioned in Subsection \ref{subsection:treatment}, the deployment of cancer treatment regimes interfere with mitotic activities of the cells leading to programmed cell death. This in turn is indicated by the activation of PI and Caspase 3/7 paths. The bright emission is thereafter visible after a while in the location of cells. Figure \ref{fig:onset_samples} depicts example emission for one image position in green (Figure \ref{fig:caspase_onset_sample})and red (Figure \ref{fig:pi_onset_sample}) florescent channels.
-
-Knowing at at one point the interference in cell mitotic process induces emission of PI or Caspase fluorescent signals (see $t_{PMP}$ in Figure \ref{fig:cell_death_determination_example} and the figure itself in general), finding the cell death time is reduced to simply finding the time point in which the blob of the cell in fluorescent channels is detected. Take for example the Figure \ref{fig:caspase_onset_sample}. Here we see that on the upper right side of the image there are at least two blobs visible in the naked eye. We can thus do similar pre-processing step as that of brightfield images followed by image detection to detect at which time the onset happened (see Figure \ref{fig:pipeline2}).
-
-As described in 
-
-%TODO continue
-
-\begin{figure}[H]
-
-\centering
-
-\begin{subfigure}{0.5\textwidth}
-  \centering
-  \includegraphics[width=\textwidth]{images/caspase_onset_sample}
-  \caption{}
-  \label{fig:caspase_onset_sample}
-\end{subfigure}%
-~
-\begin{subfigure}{0.5\textwidth}
-  \centering
-  \includegraphics[width=\textwidth]{images/pi_onset_sample}
-  \caption{}
-  \label{fig:pi_onset_sample}
-\end{subfigure}%
-
-\caption{Example of images captured in (a) green and (b) red fluorescent channels. Upon programmed cell death, the bright emission is detected in corresponding channels coming from the activation of PI and Caspase 3/7 expression paths.}
-
-\label{fig:onset_samples}
-\end{figure}
-
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=\textwidth]{images/cell_death_detection}
-\caption{Illustration of annotation of of PI death signal emission as cell death time ($t_{PMP}$). (a) shows how the total emission intensity will look like if it's being tracked (image taken for one related experiment of Radler's lab). (b) The hypothetical progression of total intensity of \textit{the cell on the left} upon treatment with some approximate time points representing various cell phases marked with $\mathbf{t_1}$, $\mathbf{t_2}$, $\mathbf{t_3}$ and $\mathbf{t_4}$. Initially, the left cell behaves normally upon treatment (c/$\mathbf{t_1}$). Only upon reaching the mitotic phase, the addition of Vincristine/Daunorubicin disrupts the process. Failure of entering the next phase sets the cell onto programmed cell death (d/$\mathbf{t_2}$). As the programmed cell death process advances, the PI emission became stronger (e/$\mathbf{t_3}$). At this point, the cel recognition will recognize the cell death signal as cell and thus represents cell death annotation. After a while, the emission will keep going on after a while (f/$\mathbf{t_3}$). We are, however, only interested with the onset time ($t_{PMP}$) to determine the cell death time. Note especially the difference of onset time between the left and right cells. At $\mathbf{t_2}$, the left cell has begun programmed cell death process while the right cell has not. This difference in time-to-death between sisters is one of the focuses of the project.
-}
-\label{fig:cell_death_determination_example}
 \end{figure}
 
 \subsection{Support vector machine (SVM)}
@@ -1391,13 +1373,13 @@ As described in
 In machine learning, an SVM is a construct which, given training set $\mathbf{S} \subset \mathbf{D}$ with,
 
 $$
-\mathbf{S} = \{\mathbf{x_1}, \cdots, \mathbf{x}_{\|\mathbb{S}\|}\}
+\mathbf{S} = \{\mathbf{x_1}, \cdots, \mathbf{x}_{ \vert \mathbf{S} \vert }\}
 $$
 
 and corresponding target class,
 
 $$
-\mathbf{T} = \{y_1, \cdots, y_{\|\mathbb{S}\|}\}
+\mathbf{T} = \{y_1, \cdots, y_{\vert \mathbf{S} \vert}\}
 $$
 
 finds following things,
@@ -1432,7 +1414,7 @@ For two-classes classification, the classes are conventionally annotated as $-1$
 \label{equation:svm_class_1}
 \end{equation}
 
-the analogous applies to the class $c = 1$,
+The analogous applies to the class $c = 1$,
 
 \begin{equation}
 \mathbf{w} \cdot \mathbf{x} - b > 1
@@ -1441,8 +1423,8 @@ the analogous applies to the class $c = 1$,
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.4\textwidth]{images/svm}
-\caption{Illustration of support vector machine in 2D. For black class there is one hyperplane-definining point (marked with grey margin) while for white class there are two (marked with bold black margin). The support vector $\mathbf{w}$ is maximized for each class.}
+\includegraphics[width=0.5\textwidth]{images/svm}
+\caption[Illustration of SVM in 2D]{Illustration of support vector machine in 2D. For black class there is one hyperplane-definining point (marked with grey margin) while for white class there are two (marked with bold black margin). The support vector $\mathbf{w}$ is maximized for each class.}
 \label{fig:svm}
 \end{figure}
 
@@ -1473,7 +1455,7 @@ A relaxation of above explained problem is known as soft margin SVM or $\xi$-SVM
 The problem is thus reduced to minimizing following term,
 
 \begin{equation}
-\left[\frac{1}{n} \sum_{i=1}^{\|\mathbf{S}\|} \max\left(0, 1 - y_i(\mathbf{w} \cdot \mathbf{x_i} - b)\right) \right] + \lambda\| w \|^2
+\left[\frac{1}{n} \sum_{i=1}^{\vert \mathbf{S} \vert} \max\left(0, 1 - y_i(\mathbf{w} \cdot \mathbf{x_i} - b)\right) \right] + \lambda\| w \|^2
 \label{eq:soft_margin_svm_term}
 \end{equation}
 
@@ -1492,7 +1474,7 @@ This can be written as $y_i(\mathbf{w} \cdot \mathbf{x}_i - b) \geq 1 - \zeta_i$
 \begin{aligned}
 & \underset{\mathbf{
 w}}{\text{minimize}}
-& & \frac{1}{\| \mathbf{S} \|} \sum_{i=1}^{\| \mathbf{S} \|} \zeta_i + \lambda \| \mathbf{w} \|^2 \\
+& & \frac{1}{\vert \mathbf{S} \vert} \sum_{i=1}^{\vert \mathbf{S} \vert} \zeta_i + \lambda \| \mathbf{w} \|^2 \\
 & \text{subject to}
 & & y_i (\mathbf{w} \cdot \mathbf{x}_i - b) \leq 1 - \zeta_i \\
 & \text{and} && \zeta_i \geq 0 \text{ for all } i.
@@ -1539,7 +1521,26 @@ Adding regularization will control against overfitted model by penalizing higher
 
 \subsubsection*{Regressive SVM}
 
-%TODO fill subsubsection
+SVM can be extended to enable regression. The method, initially proposed by Smola, Vapnik et al \cite{drucker1997support} and commonly known as Support Vector Regression (SVR), modifies the optimization problem of standard SVM to:
+
+\begin{equation*}
+\begin{aligned}
+& \underset{\mathbf{
+w}}{\text{minimize}}
+& & \frac{1}{2} \| \mathbf{w} \| \\
+& \text{subject to}
+& & y_i - \langle \mathbf{w} , \mathbf{x}_i \rangle - \mathbf{b} \leq \epsilon \\
+& \text{and} && \langle \mathbf{w} , \mathbf{x}_i\rangle + \mathbf{b} - \mathbf{y}_i \leq \epsilon \\
+\end{aligned}
+\end{equation*}
+
+where $\mathbf{b}$ and $\langle \bullet , \bullet \rangle$ refer to the intercept of a linear model and  the inner product operator. Note the term
+
+$$
+\langle \mathbf{w} , \mathbf{x}_i \rangle + \mathbb{b} + \sigma
+$$
+
+being the term for conventional linear model with intercept $\mathbf{b}$  and error term $\sigma$.
 
 %\subsection{Random Forests (RF)}
 %\label{subsection:rf}
@@ -1564,7 +1565,7 @@ The covariance of two random variables is in turn defined as
 \label{eq:cov}
 \end{equation}
 
-Combining Equations \ref{eq:rho} and \ref{eq:cov} and using definition of mean ($\mu_X = E[X]$) and standard deviation ($\sigma^2_X = E[(X - E[X])^2]$) we can derive the formula of $\rho_{X,Y}$ to:
+with $E[X]$ denoting expected value of a random variable $X$. Combining Equations \ref{eq:rho} and \ref{eq:cov} and using definition of mean ($\mu_X = E[X]$) and standard deviation ($\sigma^2_X = E[(X - E[X])^2]$) we can derive the formula of $\rho_{X,Y}$ to:
 
 \begin{equation}
 \rho_{X, Y} = \frac{E[XY] - E[X]E[Y]}{\sqrt{E[X^2] - [E[X]]^2} \sqrt{E[Y^2] - [E[Y]]^2}}
@@ -1585,7 +1586,55 @@ p = P(Z \leq t^* \mid Z \sim T)
 
 \subsection{F-Test}
 
+In statistics, F-Test is statistical test in which the statistic $F_{X,Y} $ is assumed to be F-distributed under null Hypothesis, i.e. $F_{X,Y} \sim F(n_1, n_2) \mid  H_0$ \cite{fahrmeir2016statistik}. The distribution arise from the ratio of the $\chi$-squared variance of two normally distributed random variables, i.e. for two random variables $U \sim \chi^2(n_1)$  and $V \sim \chi^2(n_1)$, the ratio
+
+\begin{equation}
+F = \frac{U / n_1}{V / n_2}
+\end{equation}
+
+is then F-distributed. The symbols $n_1$ and $n_2$ denote the degree of freedom of $U$ and $V$. Conducting an F-test is thus reduced to checking whether, given two distributions $X$ and $Y$, the F statistic of two distributions is F distributed. To do that, we first compute the F statistic  of both distributions, 
+
+\begin{equation}
+F_{X,Y} = \frac{\mathbf{var}(X)}{\mathbf{var}(Y)}
+\end{equation}
+
+with $\mathbf{var}$ denoting the variance of the distribution $\mathbf{var}(X) = E[(X - \mu)^2]$
+The degree of freedom of both distributions is defined as,
+
+\begin{align}
+  n_1 &= \vert X \vert - 1 \label{eq:ftest_dof_x} \\
+  n_2 &= \vert Y \vert - 1\label{eq:ftest_dof_y}
+\end{align}
+
+The cumulative density function (cdf) $F_{cdf}$ of the F-distribution is given by
+
+\begin{equation}
+F_{cdf}(x; n_1, n_2)= \mathbf{I}_{\frac{n_1 x}{n_1 x + n_2}}\left (\tfrac{n_1}{2}, \tfrac{n_2}{2} \right)
+\end{equation}
+
+where $\mathbf{I}_x$ is the regularized beta function
+
+\begin{equation}
+\mathbf{I}_x(a,b) = \frac{\mathbf{B}(x;\,a,b)}{\mathbf{B}(a,b)}
+\end{equation}
+
+and $\mathbf{B}$ is the beta function
+
+\begin{equation}
+B(x;\,a,b) = \int_0^x t^{a-1}\,(1-t)^{b-1}\,dt.
+\end{equation}
+
+Using the  standard definition of one-sided right tail p-value we can derive for the p-value of the F statistic as following:
+
+\begin{align}
+  p_F &= Pr(Z \geq F_{X,Y} \mid H_0) \nonumber \\
+  p_F &= 1 - F_{cdf}(F_{X,Y}; \, n_1, n_2)\label{eq:ftest_dof_y}
+\end{align}
+
+for $Z \sim F(n_1, n_2)$.
+
 %TODO fill subsection
+
 
 \chapter{Analytic Pipeline}
 
@@ -1600,22 +1649,6 @@ To assess single cell characteristics (like its lifetime, time-to-death, divisio
 
 Figure \ref{fig:pipeline1}a shows how the image is sequentially processed from out-of-focus image to cell trees information.
 
-\section{Single cell tracking in the brightfield channel}
-
-To identify and track single cells from movie start, each out-of-focus brightfield image is processed in the following way (see Figure \ref{fig:pipeline1}a for pipeline visualization): 
-
-\begin{enumerate}
-\item First, a Gaussian blur (Zuiderveld, 1994 \cite{zuiderveld1994contrast} and also Subsection \ref{subsection:gaussian_blur} of Data Methods chapter) with a large radius of 50 pixel is applied to each brightfield image (Figure \ref{fig:pipeline1}b) to estimate its individual background and identify e.g. gradients at the edges of the imaged area (Figure \ref{fig:pipeline1}c). Afterwards, we correct the original image by dividing through this background image (Figure \ref{fig:pipeline1}d)
-
-\item Then, we normalize the local contrast of each image in one image position (Kittler and Illingworth, 1986 \cite{kittler1986minimum} and Subsection \ref{subsection:clahe}) to separate foreground from background (Figure \ref{fig:pipeline1}e)..
-
-\item To reduce noise from micro-trench margins in the foreground (Figure \ref{fig:pipeline1}e and Subsection \ref{subsection:substraction_by_mean}), we calculate the pixel-wise intensity average from all timepoints of one position (Figure \ref{fig:pipeline1}f) and subtract this from each image to generate a binary image with mainly cells in the foreground (Figure \ref{fig:pipeline1}g). This creates a mask of the cells..
-
-\item Therein, single cells are recognized using the Laplacian of Gaussian detector in the Fiji TrackMate plugin \cite{tinevez2017trackmate} (Figure \ref{fig:pipeline1}h and Subsection \ref{subsection:cell_recognition}) with a blob diameter of 15 inches and a downsampling factor of 2. See Subsection \ref{subsection:cell_recognition} of Data and Methods chapter for more details on the method.
-
-\item The detected cells are concatenated to tracks (Figure \ref{fig:pipeline1}i and Subsection \ref{subsection:cell_tracking}) and cellular trees using the Linear Assignment Problem (LAP) tracker\cite{jaqaman2008robust} in TrackMate with a maximal frame-to-frame linking distance of 25 inches, a maximal track segment gap closing distance of 35 inches, a maximal track segment gap closing of 4 frames, and a maximal track segment splitting distance of 25 inches.
-\end{enumerate}
-
 \section{Assignment of cells to individual micro-trenches}
 
 
@@ -1624,6 +1657,7 @@ To identify and track single cells from movie start, each out-of-focus brightfie
 
 %TODO proofread
 %TODO modify section and subsection
+%TODO combine with subsubsection and make coherent
 
 First, note that the following method is only semi- automatically done. The first step (brightness and contrast correction) is done manually in \textit{Fiji} while the Robust Automatic Threshold Selection (RATS) and the holes filling are done automatically, also in \textit{Fiji}.
 
@@ -1647,7 +1681,7 @@ Before us, there are several methods that exploit this kind of phenomenon. Cheng
   \caption{}
   \label{fig:pos41_contrast}
 \end{subfigure}%
-\caption{(a) The highlighted area around the 500-th column of the first slice of the image position 41. The range starts from the 450-th until the 550-th column. (b) The intensity of the red-marked area in (a), the region around micro-trench margin is indicated by the sudden drop of intensity. Note also the slow drift of the intensity as the pixel goes south (right side of the plot). This phenomenon is called \textit{intensity gradient} (see Subsection \ref{subsection:gaussian_blur} for more.}
+\caption[Example of intensity values along the vertical axis in an out-of-focus image]{(a) The highlighted area around the 500-th column of the first slice of the image position 41. The range starts from the 450-th until the 550-th column. (b) The intensity of the red-marked area in (a), the region around micro-trench margin is indicated by the sudden drop of intensity. Note also the slow drift of the intensity as the pixel goes south (right side of the plot). This phenomenon is called \textit{intensity gradient} (see Subsection \ref{subsection:gaussian_blur} for more.}
 \label{fig:pos41_brightness}
 \end{figure}
 
@@ -1681,6 +1715,8 @@ Subfigures \ref{fig:orig_pic} and \ref{fig:brcon_adj} show images of micro-trenc
 \subsection{The remaining of the pipeline}
 
 %TODO put micro-trench part here
+%TODO merge with subsection and make coherent
+%TODO add graphical representation of cell death determination (like the one made for Eli)
 
 To assign individual micro-trenches to tracked single cells and emerging clones, we generate masks for each micro-trench (see Subsection \ref{subsection:micro_trench_masking}):
 
@@ -1694,7 +1730,25 @@ To assign individual micro-trenches to tracked single cells and emerging clones,
 \item Each mask (appearing as a black rod-like form) is assigned an unique identity, which is then used as an identifier for tracks in both the brightfield and the fluorescent channel for filtering of cells and clones.
 \end{enumerate}
 
-\section{Single cell tracking in the fluorescent channel}
+
+\section{Single cell tracking in the brightfield channel}
+
+To identify and track single cells from movie start, each out-of-focus brightfield image is processed in the following way (see Figure \ref{fig:pipeline1}a for pipeline visualization): 
+
+\begin{enumerate}
+\item First, a Gaussian blur (Zuiderveld, 1994 \cite{zuiderveld1994contrast} and also Subsection \ref{subsection:gaussian_blur} of Data Methods chapter) with a large radius of 50 pixel is applied to each brightfield image (Figure \ref{fig:pipeline1}b) to estimate its individual background and identify e.g. gradients at the edges of the imaged area (Figure \ref{fig:pipeline1}c). Afterwards, we correct the original image by dividing through this background image (Figure \ref{fig:pipeline1}d)
+
+\item Then, we normalize the local contrast of each image in one image position (Kittler and Illingworth, 1986 \cite{kittler1986minimum} and Subsection \ref{subsection:clahe}) to separate foreground from background (Figure \ref{fig:pipeline1}e)..
+
+\item To reduce noise from micro-trench margins in the foreground (Figure \ref{fig:pipeline1}e and Subsection \ref{subsection:substraction_by_mean}), we calculate the pixel-wise intensity average from all timepoints of one position (Figure \ref{fig:pipeline1}f) and subtract this from each image to generate a binary image with mainly cells in the foreground (Figure \ref{fig:pipeline1}g). This creates a mask of the cells..
+
+\item Therein, single cells are recognized using the Laplacian of Gaussian detector in the Fiji TrackMate plugin \cite{tinevez2017trackmate} (Figure \ref{fig:pipeline1}h and Subsection \ref{subsection:cell_recognition}) with a blob diameter of 15 inches and a downsampling factor of 2. See Subsection \ref{subsection:cell_recognition} of Data and Methods chapter for more details on the method.
+
+\item The detected cells are concatenated to tracks (Figure \ref{fig:pipeline1}i and Subsection \ref{subsection:cell_tracking}) and cellular trees using the Linear Assignment Problem (LAP) tracker\cite{jaqaman2008robust} in TrackMate with a maximal frame-to-frame linking distance of 25 inches, a maximal track segment gap closing distance of 35 inches, a maximal track segment gap closing of 4 frames, and a maximal track segment splitting distance of 25 inches.
+\end{enumerate}
+
+
+\section{Single cell tracking in the fluorescent channel and cell death signal determination}
 
 Caspase and PI are imaged in the red (PI) and green (Caspase) fluorescent channel and used as indicator of cell death. Dying cells stop moving, become small and unstructured, and loose a distinctive bright signal in the brightfield channel, which makes them hard to track. We thus track dying cells in the fluorescent channels and concatenate the tracks with earlier tracks in the brightfield to determine time-to-death. To track cells in the fluorescent channel, we apply the following pipeline (see Figure \ref{fig:pipeline2}a):
 
@@ -1708,6 +1762,53 @@ Caspase and PI are imaged in the red (PI) and green (Caspase) fluorescent channe
 \item Eventually, death time of a cell is indicated by the onset of fluorescence track being recognized in red or green channel, depending on treatment:or Vincristine treatment and control, the cell death is based on tracks in red (PI) channel while the cell death in Daunorubicin treatment is based on green (Caspase) channel (Subsection \ref{subsection:cell_death_signal_determination}).
 \end{enumerate}
 
+\subsection{Cell death signal determination}
+\label{subsection:cell_death_signal_determination}
+
+%TODO add graphical representation of cell death determination (like the one made for Eli)
+
+As mentioned in Subsection \ref{subsection:comp_cell_death_determination}, two cell death signals are deployed in this experiment: PI and Caspase 3/7. Recall that, as mentioned Subsection \ref{subsection:exp_setup}, two kinds of images were captured during the experiment: brightfield and fluorescent images. There are in turn two channel of fluorescent images captured: red and green.
+
+The fluorescent channels can thus be exploited to detect cell deaths. As mentioned in Subsection \ref{subsection:treatment}, the deployment of cancer treatment regimes interfere with mitotic activities of the cells leading to programmed cell death. This in turn is indicated by the activation of PI and Caspase 3/7 paths. The bright emission is thereafter visible after a while in the location of cells. Figure \ref{fig:onset_samples} depicts example emission for one image position in green (Figure \ref{fig:caspase_onset_sample})and red (Figure \ref{fig:pi_onset_sample}) florescent channels.
+
+Knowing at at one point the interference in cell mitotic process induces emission of PI or Caspase fluorescent signals (see $t_{PMP}$ in Figure \ref{fig:cell_death_determination_example} and the figure itself in general), finding the cell death time is reduced to simply finding the time point in which the blob of the cell in fluorescent channels is detected. Take for example the Figure \ref{fig:caspase_onset_sample}. Here we see that on the upper right side of the image there are at least two blobs visible in the naked eye. We can thus do similar pre-processing step as that of brightfield images followed by image detection to detect at which time the onset happened (see Figure \ref{fig:pipeline2}).
+
+As described in 
+
+%TODO continue
+
+\begin{figure}[H]
+
+\centering
+
+\begin{subfigure}{0.5\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{images/caspase_onset_sample}
+  \caption{}
+  \label{fig:caspase_onset_sample}
+\end{subfigure}%
+~
+\begin{subfigure}{0.5\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{images/pi_onset_sample}
+  \caption{}
+  \label{fig:pi_onset_sample}
+\end{subfigure}%
+
+\caption[Example of images from green and red fluorescent channels]{Example of images captured in (a) green and (b) red fluorescent channels. Upon programmed cell death, the bright emission is detected in corresponding channels coming from the activation of PI and Caspase 3/7 expression paths.}
+
+\label{fig:onset_samples}
+\end{figure}
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{images/cell_death_detection}
+\caption[Illustration of annotation of PI death signal]{Illustration of annotation of of PI death signal emission as cell death time ($t_{PMP}$). (a) shows how the total emission intensity will look like if it's being tracked (image taken for one related experiment of Radler's lab). (b) The hypothetical progression of total intensity of \textit{the cell on the left} upon treatment with some approximate time points representing various cell phases marked with $\mathbf{t_1}$, $\mathbf{t_2}$, $\mathbf{t_3}$ and $\mathbf{t_4}$. Initially, the left cell behaves normally upon treatment (c/$\mathbf{t_1}$). Only upon reaching the mitotic phase, the addition of Vincristine/Daunorubicin disrupts the process. Failure of entering the next phase sets the cell onto programmed cell death (d/$\mathbf{t_2}$). As the programmed cell death process advances, the PI emission became stronger (e/$\mathbf{t_3}$). At this point, the cel recognition will recognize the cell death signal as cell and thus represents cell death annotation. After a while, the emission will keep going on after a while (f/$\mathbf{t_3}$). We are, however, only interested with the onset time ($t_{PMP}$) to determine the cell death time. Note especially the difference of onset time between the left and right cells. At $\mathbf{t_2}$, the left cell has begun programmed cell death process while the right cell has not. This difference in time-to-death between sisters is one of the focuses of the project.
+}
+\label{fig:cell_death_determination_example}
+\end{figure}
+
 \section{Pipeline visualization}
 
 The image processing pipelines for both brightfield and florescence channels can be seen in following figures:
@@ -1719,7 +1820,7 @@ The image processing pipelines for both brightfield and florescence channels can
    \centering
     %\includegraphics[width=1.0\textwidth]{Image.eps}
     \includegraphics[height=0.95\textheight]{images/pipeline/01.pdf}
-    \caption{Brightfield channel pipeline}
+    \caption[Brightfield channel pipeline]{Brightfield channel pipeline}
 \end{figure}
 \label{fig:pipeline1}
 \end{landscape}
@@ -1729,7 +1830,7 @@ The image processing pipelines for both brightfield and florescence channels can
    \centering
     %\includegraphics[width=0.5\textwidth]{Image.eps}
     \includegraphics[height=\textheight]{images/pipeline/02.pdf}
-    \caption{Fluoroscence channel pipeline}
+    \caption[Fluoroscence channel pipeline]{Fluoroscence channel pipeline}
 \end{figure}
 \label{fig:pipeline2}
 \end{landscape}
@@ -1737,7 +1838,7 @@ The image processing pipelines for both brightfield and florescence channels can
 \begin{figure}[H]
    \centering
     \includegraphics[height=0.5\textwidth]{images/pipeline/03.pdf}
-    \caption{Combination of both brightfield and fluoroscent data creating cell death-corrected cell tracks data. The deat}
+    \caption[Combination of tracking data with cell death information creating cell death signal-corrected tracks data]{Combination of tracking data with cell death information creating cell death signal-corrected tracks data.}
     \label{fig:pipeline3}
 \end{figure}
 
@@ -1838,6 +1939,160 @@ Introduced by Oliver Hilsenbeck in his master's thesis in 2014 \cite{hilsenbeck2
 %% APPENDICES %%
 
 \begin{appendices}
+\newpage
+
+\chapter{Tables}
+\label{chapter:appendix_tables}
+
+\section{Inferred shift in wells}
+
+\begin{table}[H]
+\centering
+\begin{tabular}[t]{ c | c | c }
+Position & $\delta_x$ & $\delta_y$
+\\
+\hline
+01 & -2 & -4
+\\
+02 & -3 & -4
+\\
+03 & -3 & -4
+\\
+04 & -3 & -4
+\\
+05 & -3 & -3
+\\
+06 & -3 & -4
+\\
+07 & -3 & -4
+\\
+08 & -4 & -3
+\\
+09 & -4 & -4
+\\
+10 & -4 & -4
+\\
+11 & -4 & -4
+\\
+12 & -4 & -3
+\\
+13 & -4 & -3
+\\
+14 & -5 & -3
+\\
+15 & -5 & -3
+\\
+16 & -6 & -5
+\\
+17 & -6 & -5
+\\
+18 & -6 & -5
+\\
+19 & -6 & -5
+\\
+20 & -6 & -4
+\\
+21 & -7 & -5
+\end{tabular}
+~
+\begin{tabular}[t]{ c | c | c }
+Position & $\delta_x$ & $\delta_y$
+\\
+\hline
+22 & -7 & -4
+\\
+23 & -7 & -4
+\\
+24 & -9 & -4
+\\
+25 & -9 & -5
+\\
+26 & -8 & -5
+\\
+27 & -8 & -4
+\\
+28 & -8 & -4
+\\
+29 & -8 & -4
+\\
+30 & -8 & -4
+\\
+31 & -8 & -4
+\\
+32 & -8 & -3
+\\
+33 & -9 & -3
+\\
+34 & -8 & -3
+\\
+35 & -8 & -3
+\\
+36 & -9 & -2
+\\
+37 & -9 & -3
+\\
+38 & -9 & -2
+\\
+39 & -8 & -2
+\\
+40 & -7 & -3
+\\
+41 & -7 & -3
+\\
+42 & -7 & -3
+\end{tabular}
+~
+\begin{tabular}[t]{ c | c | c }
+%\hline
+Position & $\delta_x$ & $\delta_y$
+\\
+\hline
+43 & -7 & -3
+\\
+44 & -7 & -3
+\\
+45 & -7 & -3
+\\
+46 & -7 & -3
+\\
+47 & -7 & -2
+\\
+48 & -4 & -2
+\\
+49 & -4 & -2
+\\
+50 & -4 & -2
+\\
+51 & -4 & -2
+\\
+52 & -4 & -2
+\\
+53 & -5 & -2
+\\
+54 & -5 & -2
+\\
+55 & -4 & -1
+\\
+56 & -2 & -2
+\\
+57 & -3 & -3
+\\
+58 & -3 & -3
+\\
+59 & -3 & -2
+\\
+60 & -3 & -2
+\\
+61 & -3 & -3
+\\
+62 & -3 & -2
+\\
+63 & -4 & -2
+\end{tabular}
+\caption{The inferred shift (in pixels) for each image position in unsynchronized experiment. The shifts are inferred using the shift correction algorithm explained in Subsection \ref{subsection:shift_correction}.}
+\label{table:inferred_shift}
+\end{table}
+
 
 \chapter{Experiment Protocols}
 
@@ -1855,78 +2110,9 @@ Introduced by Oliver Hilsenbeck in his master's thesis in 2014 \cite{hilsenbeck2
 \section{Images acquisition}
 \label{appendix:imageacquisition}
 
-%TODO add example picure setting
+%Imaging was performed under an inverted Nikon Ti Eclipse microscope with a motorized stage (Tango XY Stage Controller, M\"arzh\"auser Wetzlar GmbH \& Co. KG, Germany), a CFI Plan Fluor DL 10X objective, a pco.edge 4.2 Camera (PCO AG, Kelheim, Germany) and a Lumencor Sprectra LED fluorescence lamp. For detection of the Caspase-3/7 and the PI marker, the following filters were used respectively, 474/27 nm, 554/23 (excitation) and 515/35 nm, 595/35 nm (emission). Brightfield out of focus (-20 $\mu$m) images were taken every 10 minutes and in-focus  brightfield and fluorescence images every 30 minutes for 48 hours. Vincristine or Daunorubicin were added after 20 hours from the beginning of the imaging. During the recording samples were kept at a constant temperature of 37\degree C and CO2 using an Okolab heating and CO\textsubscript{2} 2 box (OKOLAB S.R.L., NA, Italy). For the synchronized population, the double thymidine block protocol was followed. Briefly, MOLM-13s cells at the exponentially growing phase were incubated in blocking medium (culture medium supplemented with 2 mM Thymidine (CAS 50-89-5, Calbiochem\textsuperscript{\textregistered}, Germany)) for 24 hours. Cells were then released and incubated in culture medium for 8 hours and finally were incubated in blocking medium for 12 hours. After 2 hours, the synchronized population was seeded in the slide bearing the micro-trenches together with the markers and drugs at the same conditions as the unsynchronized population, and imaged for 24 hours.
 
-Imaging was performed under an inverted Nikon Ti Eclipse microscope with a motorized stage (Tango XY Stage Controller, M\"arzh\"auser Wetzlar GmbH \& Co. KG, Germany), a CFI Plan Fluor DL 10X objective, a pco.edge 4.2 Camera (PCO AG, Kelheim, Germany) and a Lumencor Sprectra LED fluorescence lamp. For detection of the Caspase-3/7 and the PI marker, the following filters were used respectively, 474/27 nm, 554/23 (excitation) and 515/35 nm, 595/35 nm (emission). Brightfield out of focus (-20 $\mu$m) images were taken every 10 minutes and in-focus  brightfield and fluorescence images every 30 minutes for 48 hours. Vincristine or Daunorubicin were added after 20 hours from the beginning of the imaging. During the recording samples were kept at a constant temperature of 37\degree C and CO2 using an Okolab heating and CO\textsubscript{2} 2 box (OKOLAB S.R.L., NA, Italy). For the synchronized population, the double thymidine block protocol was followed. Briefly, MOLM-13s cells at the exponentially growing phase were incubated in blocking medium (culture medium supplemented with 2 mM Thymidine (CAS 50-89-5, Calbiochem\textsuperscript{\textregistered}, Germany)) for 24 hours. Cells were then released and incubated in culture medium for 8 hours and finally were incubated in blocking medium for 12 hours. After 2 hours, the synchronized population was seeded in the slide bearing the micro-trenches together with the markers and drugs at the same conditions as the unsynchronized population, and imaged for 24 hours.
-
-\chapter{Algorithms}
-\label{appendix:algo}
-
-The algorithms are, unless specified written in pseudo-code.
-
-\section*{Shift inference} 
-
-%TODO move algorithm to method chapter
-
-Following is the algorithm to infer shift between slice written in Python:
-
-\begin{verbatim}
-def infer_shift(last_slide, first_slide, search_space=(200, 200)):
-    
-  if (search_space[0] % 2 != 0) or (search_space[1] % 2 != 0):
-    print("Search spaces have to be even!")
-    return None
-  else:
-    
-    ## calculate absolute difference for various shifts
-    x1 = search_space[0]
-    x2 = search_space[0]
-    y1 = search_space[1]
-    y2 = search_space[1]
-    mid = f1.shape[0] // 2, f1.shape[1] // 2
-        
-    ## results storage        
-    absdiffs = np.zeros((search_space[0] + 1, search_space[1] + 1))
-
-    ## last slide before treatment
-    f1sub = f1[(mid[0] - x1):(mid[0] + x2), (mid[1] - y1):(mid[1] + y2)]
-    
-    ## search space 
-    xdiff1 = -int(search_space[0] / 2)
-    xdiff2 = int(search_space[0] / 2) + 1
-    ydiff1 = -int(search_space[1] / 2)
-    ydiff2 = int(search_space[1] / 2) + 1
-    
-    for xdiff in range(xdiff1, xdiff2):
-      for ydiff in range(ydiff1, ydiff2):
-      
-        ## calculate absolute difference for shift
-        f2sub = f2[(mid[0] - x1 + xdiff):(mid[0] + x2 + xdiff), 
-                   (mid[1] - y1 + ydiff):(mid[1] + y2 + ydiff)]
-        x = xdiff + int(search_space[0] / 2)
-        y = ydiff + int(search_space[1] / 2)
-        absdiff_xy = np.sum(cv2.absdiff(f1sub, f2sub).ravel())
-        absdiffs[x][y] = absdiff_xy
-        
-        
-    ## calculate shift based on calibration data
-    x = np.argmin(absdiffs) // absdiffs.shape[0]
-    y = np.argmin(absdiffs) % absdiffs.shape[0]
-    
-    """
-    True shift is the opposite of coordinate encoded
-    in absdiff
-    
-    Let X2 the second image and X1 the first image.
-    If the sub-image of first slide of X2 centered
-    at (c1 + s1, c2 + s2) fits the most with the sub-image
-    of the last slide of X1 centered at (c1, c2)
-    then the images shift by (-s1, -s2) upon treatment
-    """
-    diff = -(x - search_space[0] / 2), -(y - search_space[1] / 2)
-
-    return diff
-\end{verbatim}
+\section{Placeholder}
 
 \end{appendices}
 
