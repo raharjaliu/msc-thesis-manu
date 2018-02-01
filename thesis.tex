@@ -950,17 +950,10 @@ T_R = \frac{g_{x,y} \cdot M_{t, x, y}}{g_{x, y}}
 
 This threshold is used to filter pixels within a quadrant. Pixels with gradient value smaller than $T_R$ of a quadrant are then filtered out. If $T_R$ is very low that no point in a quadrant is filtered out, the $T_R$ of the parent is taken instead. This step is iterated until a parent square with at least one filtered pixel is reached. Visually, the refining step is equal to filtering out the area of an image in which the pixels are mostly noise. In the initial global filtering process, many noisy pixels might not be filtered since they happen to have gradients larger than $\lambda \sigma$. Using this bottom-up approach these pixels will be eventually filtered out.
 
-Subfigures \ref{fig:brcon_adj} and \ref{fig:rats} show the input and output of  RATS. The noise partaining in a micro-trench is removed upon application of gradient-based filtering. We can thus say that,
-
-\begin{itemize}
-\item the first part of RATS ($\mathbb{g}$-filtering by $\lambda \sigma$) is designed to move global level noise  which in this case means white noises coming from non-perfect reflection of light from the well.
-\item the second part of RATS (recursive $\mathbb{g}$-filtering by $T_r$)is designed to remove local noise cause by local distortion due to location-specific artifacts (direction of incoming light not perfectly perpendicular with regard to micro-trench's base etc).
-\end{itemize}
-
 \subsection{Holes filling}
-%TODO move parts to Chapter 3
+\label{subsection:holes_filling}
 
-After brightness and contrast adjustment and RATS, the image now mostly contains the margin of the micro-trenches. We can then fill these holes to create micro-trench masks. The step consists of doing two processes:
+Filling micro-trench holes to create the contour is done in two steps:
 
 \begin{enumerate}
 \item Recognition of the outer part of micro-trench contours, followed by
@@ -978,43 +971,36 @@ Following image explains the definition of contours and their hierarchy:
 
 There are several well known algorithms for hierarchical contours recognition. In our case, the algorithm of Suzuki and Abe \cite{suzuki1985topological} is used. The algorithm works by walking along the border between two regions of different color. The border walking process is done hierarchically creating tree-like dependency structure of contours. We then take the outermost (hierarchically the highest) contours which are then filled. The filling in turn is simply done by assigning neutral value in every pixel located inside every outermost contour.
 
-Subfigures \ref{fig:rats} and \ref{fig:fill_holes} show the input and output of the hole filing algorithm.
+%\begin{figure}[H]
+%\centering
+%\begin{subfigure}{\textwidth}
+%  \centering
+%  \includegraphics[width=0.28\textwidth]{images/trench_detect_1}
+%  \caption{}
+%  \label{fig:orig_pic}
+%\end{subfigure}%
+%\begin{subfigure}{\textwidth}
+%  \centering
+%  \includegraphics[width=0.28\textwidth]{images/trench_detect_2}
+%  \caption{}
+%  \label{fig:brcon_adj}
+%\end{subfigure}%
+%\begin{subfigure}{\textwidth}
+%  \centering
+%  \includegraphics[width=0.28\textwidth]{images/trench_detect_3}
+%  \caption{}
+%  \label{fig:rats}
+%\end{subfigure}%
+%\begin{subfigure}{\textwidth}
+%  \centering
+%  \includegraphics[width=0.28\textwidth]{images/trench_detect_4}
+%  \caption{}
+%  \label{fig:fill_holes}
+%\end{subfigure}%
 
-\begin{figure}[H]
-\centering
-
-\begin{subfigure}{\textwidth}
-  \centering
-  \includegraphics[width=0.28\textwidth]{images/trench_detect_1}
-  \caption{}
-  \label{fig:orig_pic}
-\end{subfigure}%
-
-\begin{subfigure}{\textwidth}
-  \centering
-  \includegraphics[width=0.28\textwidth]{images/trench_detect_2}
-  \caption{}
-  \label{fig:brcon_adj}
-\end{subfigure}%
-
-\begin{subfigure}{\textwidth}
-  \centering
-  \includegraphics[width=0.28\textwidth]{images/trench_detect_3}
-  \caption{}
-  \label{fig:rats}
-\end{subfigure}%
-
-\begin{subfigure}{\textwidth}
-  \centering
-  \includegraphics[width=0.28\textwidth]{images/trench_detect_4}
-  \caption{}
-  \label{fig:fill_holes}
-\end{subfigure}%
-
-\caption[Micro-trenches masking process]{The upper left corner of the image position 41's in-focus-image recording at time $t=0$: (a) The original in-focus image of the upper left corner of  the image position 41. (b) The view of the same area as (a) after applying brightness and contrast adustment. (c) The view of the same area after applying RATS on image in (b) showing the contour of micro-trenches in the area. (d) The contours filled with neutral color (black). Note that some micro-trenches are not filled as they are open and thus topologically not the outernmost contours. Scale bar on the uppermost figure is $100 \mu M$ long.}
-
-\label{fig:trench_masking}
-\end{figure}
+%\caption[Micro-trenches masking process]{The upper left corner of the image position 41's in-focus-image recording at time $t=0$: (a) The original in-focus image of the upper left corner of  the image position 41. (b) The view of the same area as (a) after applying brightness and contrast adustment. (c) The view of the same area after applying RATS on image in (b) showing the contour of micro-trenches in the area. (d) The contours filled with neutral color (black). Note that some micro-trenches are not filled as they are open and thus topologically not the outernmost contours. Scale bar on the uppermost figure is $100 \mu M$ long.}
+%\label{fig:trench_masking}
+%\end{figure}
 
 \subsection{Gaussian blur}
 \label{subsection:gaussian_blur}
@@ -1041,7 +1027,7 @@ I^G(x, y) = n \cdot \frac{1}{{2\pi \sigma^2}} e^{-\frac{(x - i)^2 + (y - j)^2}{2
 
 The idea of transforming an image with one selected center point is however not very practical as the pixels far away from image will have intensity of almost zero. We can however, use the fact fact that the intensity of pixels around the center point fall exponentially the further the pixels are away to introduce a dependency of each pixel on its surrounding environment. This will introduce a blur due to pull-down effect of the neighboring pixels. Hence the name \textbf{Gaussian blurring}.
 
-Mathematically, we can express the Gaussian blurring process as convolving the pixels around a pixel $(x, y)$ and take the average of the convolved image as the new intensity value in $(x, y)$. Using the continuous Gaussian intensity transformation defined in Equation \ref{equation:gauss_intens_trans}, the Gaussian convolution  function is defined as following:
+Mathematically, we can express the Gaussian blurring process as convolving the pixels around a pixel $(x, y)$ and take the average of the convoluted image as the new intensity value in $(x, y)$. Using the continuous Gaussian intensity transformation defined in Equation \ref{equation:gauss_intens_trans}, the Gaussian convolution  function is defined as following:
 
 $$
 I^{conv_G}(x, y) = \frac{\sum_{x - \lfloor d/2 \rfloor < i < x + \lfloor d/2 \rfloor} \sum_{x - \lfloor d/2 \rfloor < j < x + \lfloor d/2 \rfloor} I^G(i, j)}{(\lfloor d/2 \rfloor)^2}
@@ -1100,32 +1086,36 @@ Figure \ref{fig:clahe} visualizes the step 2, 3 and 4 of the algorithm descripti
 
 To substract an RGB image at time $M_t$ by its pixel-wise mean intensity $\langle M \rangle$, the average intensity for each pixel across all time points is made for a pixel. For a stack with $n$ images, we can simply define the pixel-wise mean of the R channel for pixel $(x, y)$ as following:
 
-$$
+\begin{equation}
 \langle M \rangle_{x, y, R} := \frac{\sum_{1 \leq t \leq n} M_{t, x, y, R}}{n}
-$$
+\label{eq:mean_calc_rgb}
+\end{equation}
 
 The same applies to $\langle M \rangle_{x, y, G}$ and $\langle M \rangle_{x, y, B}$. For a grayscale stack we define analogously:
 
-$$
+\begin{equation}
 \langle G \rangle_{x, y} := \frac{\sum_{1 \leq t \leq n} G_{t, x, y, i}}{n}
-$$
+\label{eq:mean_calc_gs}
+\end{equation}
 
 The pixel-wise substracted value of R channel is thus defined as point-wise operation for each pixel,
 
 \begin{equation}
 M^m_{t, x, y, R} := M_{t, x, y, R} - \langle M \rangle_{x, y, R}
+\label{eq:mean_corr_rgb}
 \end{equation}
 
 The same applies to $\langle M \rangle_{x, y, G}$ and $\langle M \rangle_{x, y, B}$. The transformed RGB value is thus defined as
 
-$$
-M^m_{t, x, y} := [M^m_{t, x, y, 1}; M^m_{t, x, y, 2}; M^m_{t, x, y, 3}]
-$$
+\begin{equation}
+M^m_{t, x, y} := [M^m_{t, x, y, 1}; M^m_{t, x, y, 2}; M^m_{t, x, y, 3}
+\end{equation}
 
 As for a grayscale image we define following:
 
 \begin{equation}
 G^m_{t, x, y} := G_{t, x, y} - \langle G \rangle_{x, y}
+\label{eq:mean_corr_gs}
 \end{equation}
 
 In the context of the single-cell enclosure on a wafer, this means that in the parts of images in which only dynamic movement of cells are observed, the pixel-wise mean intensity value of dynamic parts will be very low. Subtracting every pixel the area from every time point with the average will barely affect the original intensity value. On the other hand, applying the method on areas with static objects such as micro-trench wall and its surrounding reduces each pixel of the area with exactly the same intensity value as it barely changes during the experiment. This will nullify the static parts to large extent.
@@ -1289,10 +1279,6 @@ The optimal solution for the problem is again found using the Munkers \& Kuhn al
 \subsection{Shift correction}
 \label{subsection:shift_correction}
 
-%TODO continue correction from here
-%TODO improve subsection
-%TODO : RESTRUCTURE THE CHAPTER
-
 Shift correction is done to correct the slice alignment within stacks. As mentioned in Subsection \ref{subsection:exp_setup}, the images were captured discretely at the frequency of $\frac{1}{10 min}$ and $\frac{1}{30 min}$ depending on the channel. During this time, the setup might move albeit very slightly causing very small shift. The bulk of the shift, however, happened during the introduction of the  drug treatment. At this time, the drug is introduced to the medium using a pipette. The liquid released pushes the wafer somewhat causing noticable shift in camera's field of view (see Table \ref{table:inferred_shift} of Appendix \ref{chapter:appendix_tables} for the inferred shift in every image position).
 
 Now, consider the case in which the images are shifted in a time-lapsed movie during the introduction of drug treatment. No rotation of camera is assumed, hence there are only two degree of freedoms (vertical and horizontal). Thus, a shift can be defined as a vector movement $\vec{v}$ of all points $x_{i,j} \in M_t$ in the time-lapse from time $t$ to $t + 1$. Given two degrees of freedom and discreteness of the problem due to pixel representation, the task is reduced to finding difference in x- and y-axis ($\delta_x$ and $\delta_y$), so that the difference of transformed pixels at $t$ and $t_{i+1}$ are minimized, i.e.:
@@ -1320,7 +1306,7 @@ Since some pixels are lost from the field of view during a shift, only a subset 
  \KwResult{$M^m_t$}
  \Parameter{$d, l$}
  $D$ distance matrix for various shifting configurations \;
- $c := (c_x, x_y)$ coordinate of center pixel of $M_t$ \;
+ $c := (c_x, c_y)$ coordinate of center pixel of $M_t$ \;
  $M'_t  := M_{t}[c_x - l:c_x +l][c_y - l:c_y +l]$ sub-image of $M_t$ centered around $(c_x, x_y)$\;
  \For{$i=-d$ \KwTo $d$}{
  	\For{$j=-d$ \KwTo $d$}{
@@ -1368,7 +1354,7 @@ As described in Subsection \ref{subsection:cell_tracking}, the tracking algorith
 \subsection{Support vector machine (SVM)}
 \label{subsection:svm}
 
-In machine learning, an SVM is a construct which, given training set $\mathbf{S} \subset \mathbf{D}$ with,
+In machine learning, an SVM is a construct which, given the training set $\mathbf{S} \subset \mathbf{D}$ with,
 
 $$
 \mathbf{S} = \{\mathbf{x_1}, \cdots, \mathbf{x}_{ \vert \mathbf{S} \vert }\}
@@ -1387,7 +1373,7 @@ finds following things,
 \item support vectors.
 \end{itemize}
 
-A hyperplane is defined as set of points $\mathbf{x}$ in $\mathbf{S}$ satisfying following criteria,
+A hyperplane is defined as a set of points $\mathbf{x}$ in $\mathbf{S}$ satisfying following criteria,
 
 \begin{equation}
 \mathbf{w} \cdot \mathbf{x} - b = 0
@@ -1422,7 +1408,7 @@ The analogous applies to the class $c = 1$,
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.5\textwidth]{images/svm}
-\caption[Illustration of SVM in 2D]{Illustration of support vector machine in 2D. For black class there is one hyperplane-definining point (marked with grey margin) while for white class there are two (marked with bold black margin). The support vector $\mathbf{w}$ is maximized for each class.}
+\caption[Illustration of SVM in 2D]{Illustration of a support vector machine in 2D. For black class there is one hyperplane-definining point (marked with grey margin) while for white class there are two (marked with bold black margin). The support vector $\mathbf{w}$ is maximized for each class.}
 \label{fig:svm}
 \end{figure}
 
@@ -1442,8 +1428,8 @@ w}}{\text{minimize}}
 This hard-margin only converges only when the data are linearly separable in mapped space (also known as \textbf{feature space}). This is especially bad since many problems are not linearly separable in their original space. There are two fundamentals way of relaxing this problem to enable classification using SVM:
 
 \begin{itemize}
-\item Relaxation of the definition of SVM by allowing data points to be misclassified.
-\item Blowing up the input space into sufficiently high dimensional features using kernel trick.
+\item Relaxation of the definition of the SVM by allowing data points to be misclassified.
+\item Blowing up the input space into sufficiently high dimensional features using the kernel trick.
 \end{itemize}
 
 \subsubsection*{Relaxation of SVM}
@@ -1481,7 +1467,7 @@ w}}{\text{minimize}}
 
 \subsubsection*{Kernel method}
 
-As mentioned before, the optimization problem posed Subsection \ref{eq:svm_hard_margin} converges only in the case of linear separability of training data. While this mostly is not the case, Vapnik and Cortes \cite{cortes1995support} proposed the so-called \textbf{kernel trick}. It utilizes a kernel function $\Phi$ which maps the training set into high dimensional space representation. Essentially, a kernel function $\Phi: \mathbb{R} \times \mathbb{R} \rightarrow \mathbb{R}^+$ is a symmetric and non-negative function following the criteria by Mercer \cite{mercer1909functions} defining it as, among others, general measure of similarity between two vectors.
+As mentioned before, the optimization problem posed in Subsection \ref{eq:svm_hard_margin} converges only in the case of linear separability of training data. While this mostly is not the case, Vapnik and Cortes \cite{cortes1995support} proposed the so-called \textbf{kernel trick}. It utilizes a kernel function $\Phi$ which maps the training set into high dimensional space representation. Essentially, a kernel function $\Phi: \mathbb{R} \times \mathbb{R} \rightarrow \mathbb{R}^+$ is a symmetric and non-negative function following the criteria by Mercer \cite{mercer1909functions} defining it as, among others, general measure of similarity between two vectors.
 
 In our case, we focus on two very well-known examples of kernel function, \textbf{the polynomial kernel function of order n}, defined as,
 
@@ -1497,13 +1483,13 @@ and the \textbf{radial basis function (RBF)}, defined as,
 \label{eq:svm_rbf}
 \end{equation}
 
-In both examples we can observe the assumed dimensionality of target feature space. A polynomial kernel function of order n maps the training data to $n$-dimensional feature  space. Thus, blowing up the training data into higher dimensional requires the explicit assignment of a very high $n$ value. The  radial basis function on the other hand does not assume any dimensionality (or rather, it assumes \textit{unbounded} dimensionality) as the Gaussian function used only assumes the input vectors $\mathbf{x}_i$ and $\mathbf{x}_j$ to be of the same dimensionality. 
+In both examples we can observe the assumed dimensionality of target feature space. A polynomial kernel function of order n maps the training data to $n$-dimensional feature  space. Thus, blowing up the training data into higher dimensional requires the explicit assignment of a very high $n$ value. The  radial basis function on the other hand does not assume any dimensionality (or rather, it assumes unbounded dimensionality) as the Gaussian function used only assumes the input vectors $\mathbf{x}_i$ and $\mathbf{x}_j$ to be of the same dimensionality. 
 
 While assuming very high/unbounded dimensionality seems convenient at the start, this is not very straightforward, since:
 
 \begin{itemize}
-\item Given a non-powerful kernel function $\Phi$ that only maps the input into bounded number of dimension, the optimization problem won't converge.
-\item Given a powerful kernel function $\Phi$ capable of blowing up the dimension to very high dimensions (see the part about kernel function later on) the kernel might settle for unnecessarily sparse dimensional reducing the generalizability of the problem.
+\item Given a non-powerful kernel function $\Phi$ that only maps the input into bounded number of dimension, the optimization problem may not converge if there is no representation that is mapable  using the kernel function.
+\item Given a powerful kernel function $\Phi$ capable of blowing up the dimension to very high dimensions kernel might settle for an unnecessarily sparse dimensional reducing the generalizability of the problem.
 \end{itemize}
 
 \subsubsection*{Regularization}
@@ -1631,9 +1617,6 @@ Using the  standard definition of one-sided right tail p-value we can derive for
 
 for $Z \sim F(n_1, n_2)$.
 
-%TODO fill subsection
-
-
 \chapter{Analytic Pipeline}
 
 %TODO adjust figure references
@@ -1648,19 +1631,10 @@ To assess single cell characteristics (like its lifetime, time-to-death, divisio
 
 Figure \ref{fig:pipeline1}a shows how the image is sequentially processed from out-of-focus image to cell trees information.
 
-\section{Assignment of cells to individual micro-trenches}
-
-
-\subsection{Micro-trench masking}
+\section{Micro-trench masking}
 \label{subsection:micro_trench_masking}
 
-%TODO proofread
-%TODO modify section and subsection
-%TODO combine with subsubsection and make coherent
-
-First, note that the following method is only semi- automatically done. The first step (brightness and contrast correction) is done manually in \textit{Fiji} while the Robust Automatic Threshold Selection (RATS) and the holes filling are done automatically, also in \textit{Fiji}.
-
-Several techniques could be applied to highlight certain area in the image. In Subsection \ref{subsection:cv_advances}, several advances in computer vision methods are described. While more general advances in the field of machine learning is chronicled in Subsection \ref{subsection:ml_advances}. While the collection of advanced methods for region and image detection abound \cite{krahenbuhl2011efficient, long2015fully, ronneberger2015u}, some simple interpretable methods could be used best to detect and mask the micro-trenches. In particular,  we can see that the area around a micro-trench exposes strong intensity gradient (see Figure \ref{fig:pos41_brightness}): the area around the margin of a micro-trench is much darker than the other parts of the well. This can be explained by the fact that the light is reflected less around the wall area and thus the intensity decreases. Moreover, the light beam coming out of the laser is not perfectly perpendicular to the well and thus the non-perpendicular reflection is not reflected back to the camera sensor.
+Several techniques could be applied to highlight certain areas in the image. In Subsection \ref{subsection:cv_advances}, several advances in computer vision methods are described. Furthermore, general advances in the field of machine learning is chronicled in Subsection \ref{subsection:ml_advances}. While the collection of advanced methods for region and image detection abound \cite{krahenbuhl2011efficient, long2015fully, ronneberger2015u}, some simple interpretable methods could be used best to detect and mask the micro-trenches. In particular,  we can see that the area around a micro-trench exposes strong intensity gradient (see Figure \ref{fig:pos41_brightness}): the area around the margin of a micro-trench is much darker than the other parts of the well. This can be explained by the fact that the light is reflected less around the wall area and thus the intensity decreases. Additionally, the light beam coming out of the laser is not perfectly perpendicular to the well and thus the non-perpendicular reflection is not reflected back to the camera sensor.
 
 Before us, there are several methods that exploit this kind of phenomenon. Cheng et al \cite{cheng2015global} for example shows it is possible to recognized salient objects in image by using contrast and brightness adjustment. Our method on the other hand, goes further by doing robustness improvement by doing noise cancellation step (See \ref{subsubsection:rats}).
 
@@ -1686,7 +1660,7 @@ Before us, there are several methods that exploit this kind of phenomenon. Cheng
 
 We could thus exploit this knowledge by designing micro-trench masking algorithm as follows:
 
-\subsubsection*{Brightness and contrast adjustment of in-focus image}
+\subsection{Brightness and contrast adjustment of in-focus image}
 \label{subsubsection:brightness_contrast_adjustment}
 
 First, we adjust the brightness and contrast so that the area far away from the margin is encoded as maximum intensity, while the area around the margin is encoded as minimum intensity. One simple and robust way to do this is to reduce the intensity of each position with the maximum intensity value of the region around the margin.
@@ -1709,85 +1683,194 @@ creating transformed intensity $I^t$.
 
 Note that this is still not a perfect transformation, as there are some pixels in $\mathfrak{S}$ with intensity lower than the minimum intensity of pixels in $\mathfrak{M}$. Besides doing this manually, we also improve this by refining the transformed intensity $I^t$ further with the next step: Robust Automatic Threshold Selection.
 
-Subfigures \ref{fig:orig_pic} and \ref{fig:brcon_adj} show images of micro-trenches before and after brightness and contrast adjustment. As mentioned, some parts inside the micro-trench still have pixels  that were not transformed to complete white color (maximum intensity). This can however be removed by global and local noise correction through Robust Automatic Threshold Selection (RATS, see next).
+Subfigures \ref{fig:pipeline1}j and \ref{fig:pipeline1}k show images of micro-trenches before and after brightness and contrast adjustment in the image processing pipeline.  The step is done manually for each image position using the \textbf{Bright/Contrast Adjustment} function in Fiji.
 
-\subsection{The remaining of the pipeline}
+\subsection{RATS denoising}
+\label{subsubsection:brightness_contrast_adjustment}
 
-%TODO put micro-trench part here
-%TODO merge with subsection and make coherent
-%TODO add graphical representation of cell death determination (like the one made for Eli)
+After brightness and contrast adjustment, some parts inside the micro-trench still have pixels  that were not transformed to complete white color (maximum intensity). This can be removed by the global and local noise correction through Robust Automatic Threshold Selection (RATS, see Subsection \ref{subsubsection:rats}). The algorithm is applied on each adjusted brightfield image, which creates a binary image of the micro-trench margins.
 
-To assign individual micro-trenches to tracked single cells and emerging clones, we generate masks for each micro-trench (see Subsection \ref{subsection:micro_trench_masking}):
+Subfigures \ref{fig:pipeline1}k and \ref{fig:pipeline1}l show the input and output of  RATS in the image processing pipeline. The noise partaining in a micro-trench is removed upon application of gradient-based filtering. We can thus say that,
 
-\begin{enumerate}
-\item First, we adjust brightness and contrast manually for one image position so that only the margin of the micro-trenches are visible (Figure \ref{fig:pipeline1}k).
+\begin{itemize}
+\item the first part of RATS ($\mathbb{g}$-filtering by $\lambda \sigma$) is designed to move global level noise  which in this case means white noises coming from non-perfect reflection of light from the well.
+\item the second part of RATS (recursive $\mathbb{g}$-filtering by $T_r$)is designed to remove local noise cause by local distortion due to location-specific artifacts (direction of incoming light not perfectly perpendicular with regard to micro-trench's base etc).
+\end{itemize}
 
-\item Then, Robust Automatic Threshold Selection (RATS) is applied on each adjusted brightfield image, which creates a binary image of the micro-trench margins (Figure \ref{fig:pipeline1}l and Subsection )
+The step is done automatically using the \textbf{Robust Automatic Threshold Selection (RATS)} plugin in Fiji with following parameters:
 
-\item These margins are then filled to create micro-trench masks using fill holes command in Fiji (Figure \ref{fig:pipeline1}m)
+\begin{table}[H]
+\centering
+\begin{tabular}[t]{ l | c }
+Parameter & Value \\
+\hline
+\texttt{noise\_threshold} & 25 \\
+\texttt{lambda\_factor} & 3 \\
+\texttt{min\_leaf\_size\_pixels} & 408 \\
+\end{tabular}
+\end{table}
 
-\item Each mask (appearing as a black rod-like form) is assigned an unique identity, which is then used as an identifier for tracks in both the brightfield and the fluorescent channel for filtering of cells and clones.
-\end{enumerate}
+\subsection{Micro-trench mask filling}
 
+After applying brightness and contrast adjustment and RATS, the image now contains only the margin of micro-trenches. We can then fill these holes to create micro-trench masks. Subsection \ref{subsection:holes_filling} desribes the holes filling algorihm. The step is done automatically using the \textbf{Fill Holes} function in Fiji. Subfigures \ref{fig:pipeline1}l and \ref{fig:pipeline1}m show the input and output of the holes filing algorithm in the image processing pipeline. Upon holes filling, Each mask (appearing as a black rod-like form) is assigned a unique identity, which is then used as an identifier for tracks in both the brightfield and the fluorescent channel for filtering of cells and clones (see Sections \ref{section:pipeline_brightfield} and \ref{section:pipeline_fluoroscent}).
 
 \section{Single cell tracking in the brightfield channel}
+\label{section:pipeline_brightfield}
 
 To identify and track single cells from movie start, each out-of-focus brightfield image is processed in the following way (see Figure \ref{fig:pipeline1}a for pipeline visualization): 
 
-\begin{enumerate}
-\item First, a Gaussian blur (Zuiderveld, 1994 \cite{zuiderveld1994contrast} and also Subsection \ref{subsection:gaussian_blur} of Data Methods chapter) with a large radius of 50 pixel is applied to each brightfield image (Figure \ref{fig:pipeline1}b) to estimate its individual background and identify e.g. gradients at the edges of the imaged area (Figure \ref{fig:pipeline1}c). Afterwards, we correct the original image by dividing through this background image (Figure \ref{fig:pipeline1}d)
+\subsection{Gaussian blurring}
 
-\item Then, we normalize the local contrast of each image in one image position (Kittler and Illingworth, 1986 \cite{kittler1986minimum} and Subsection \ref{subsection:clahe}) to separate foreground from background (Figure \ref{fig:pipeline1}e)..
+First, a Gaussian blur  with a large radius of 50 pixel is applied to each brightfield image. The algorithm is explained in Subsection \ref{subsection:gaussian_blur}. Equation \ref{equation:conv_gaussian_cont} of Subsection \ref{subsection:gaussian_blur} is used to convolve every pixel in an image. The method results in the estimation of the image's background and global gradient. We now control the input image against the background and gradient by dividing every pixel of the original image by the pixel in the same position in the convoluted image (see Equation \ref{equation:gauss_blur_correction} of Subsection \ref{subsection:gaussian_blur}).
 
-\item To reduce noise from micro-trench margins in the foreground (Figure \ref{fig:pipeline1}e and Subsection \ref{subsection:substraction_by_mean}), we calculate the pixel-wise intensity average from all timepoints of one position (Figure \ref{fig:pipeline1}f) and subtract this from each image to generate a binary image with mainly cells in the foreground (Figure \ref{fig:pipeline1}g). This creates a mask of the cells..
+This step frees the out-of-focus image from global background and gradient which may have been arisen during image acquisition process caused by non-homogeneous lightning and unsycnhronized lightning for example. This step is done using \textbf{Gaussian blur} filter implementation in Fiji with $\sigma = 50$ as parameter.
 
-\item Therein, single cells are recognized using the Laplacian of Gaussian detector in the Fiji TrackMate plugin \cite{tinevez2017trackmate} (Figure \ref{fig:pipeline1}h and Subsection \ref{subsection:cell_recognition}) with a blob diameter of 15 inches and a downsampling factor of 2. See Subsection \ref{subsection:cell_recognition} of Data and Methods chapter for more details on the method.
+Subfigures \ref{fig:pipeline1}b, \ref{fig:pipeline1}c and \ref{fig:pipeline1}d depict the input of the algorithm, computed background and output of the algorithm in the image processing pipeline.
 
-\item The detected cells are concatenated to tracks (Figure \ref{fig:pipeline1}i and Subsection \ref{subsection:cell_tracking}) and cellular trees using the Linear Assignment Problem (LAP) tracker\cite{jaqaman2008robust} in TrackMate with a maximal frame-to-frame linking distance of 25 inches, a maximal track segment gap closing distance of 35 inches, a maximal track segment gap closing of 4 frames, and a maximal track segment splitting distance of 25 inches.
-\end{enumerate}
+\subsection{Local contrast normalization}
 
+After removing global background and gradient, we normalize the local contrast of each image(Zuiderveld, 1994  \cite{zuiderveld1994contrast}). Subsection \ref{subsection:clahe} explains the details of  the algorithm. This separates foreground from background. Upon running the algorithms the cells will be visible as negative while other parts of the image (micro-trench, noises etc) disappear. Figures \ref{fig:pipeline1}d and \ref{fig:pipeline1}e depict the input and output of the algorithm in the image processing pipeline. This step is done using \textbf{Normalize Local Contrast} function in Fiji with following parameters:
+
+\begin{table}[H]
+\centering
+\begin{tabular}[t]{ l | c }
+Parameter & Value \\
+\hline
+\texttt{block\_radius\_x} & 100 \\
+\texttt{block\_radius\_y} & 100 \\
+\texttt{standard\_deviation} & 1 \\
+\end{tabular}
+\end{table}
+
+\subsection{Mean intensity correction}
+\label{subsection:mean_intensity_correction}
+
+To reduce noise from micro-trench margins in the foreground, we calculate the pixel-wise intensity average from all slices in one image position and subtract this from each image to generate a binary image with mainly cells in the foreground. The details of this step is explained in Subsection \ref{subsection:substraction_by_mean}. Equatoin  This creates a mask of the cells.  Equation \ref{eq:mean_calc_gs} is used to calculate the mean while the correction is done using Equation \ref{eq:mean_corr_gs}.
+
+Subfigures \ref{fig:pipeline1}e, \ref{fig:pipeline1}f and \ref{fig:pipeline1}g depict the input of the algorithm, computed pixel-wise mean intensity and output of the algorithm in the image processing pipeline.
+
+\subsection{Cells recognition}
+
+After the image pre-processing, the image now consists of only the negative of the cells (see Subfigure \ref{fig:pipeline1}g). Subsection \ref{subsection:cell_recognition} explains the Laplacian of Gaussian (LoG) detector in depth. The cells are recognized using the \textbf{Downsampled LoG Detector} in the Fiji TrackMate plugin \cite{tinevez2017trackmate} with following parameters:
+
+\begin{table}[H]
+\centering
+\begin{tabular}[t]{ l | c }
+Parameter & Value \\
+\hline
+\texttt{pixel\_width} & 0.647 \\
+\texttt{pixel\_height} & 0.647 \\
+\texttt{voxel\_depth\_pixel} & 1.000 \\
+\texttt{downsample\_factor} & 2 \\
+\texttt{blob\_diameter\_pixel} & 15 \\
+\texttt{threshold} & 0 \\
+\end{tabular}
+\end{table}
+
+Subfigure \ref{fig:pipeline1}h shows the recognized cells from input image shown in Subfigure \ref{fig:pipeline1}g.
+
+\subsection{Cells tracking}
+
+Upon detection, the cells are assigned to tracks and concatenated to cellular trees. The details of the method used, the Linear Assignment Problem (LAP) Tracker \cite{jaqaman2008robust}, is elaborated in Subsection \ref{subsection:cell_tracking}. The tracking is done using the \textbf{LAP Tracker} in the Fiji TrackMate plugin \cite{tinevez2017trackmate} with following parameters:
+
+\begin{table}[H]
+\centering
+\begin{tabular}[t]{ l | c }
+Parameter & Value \\
+\hline
+\texttt{pixel\_width} & 0.647 \\
+\texttt{pixel\_height} & 0.647 \\
+\texttt{voxel\_depth\_pixel} & 1.000 \\
+\texttt{time\_interval\_second} & 600\\
+\texttt{frame\_to\_frame\_linking\_pixel} & 25 \\
+\texttt{track\_segment\_gap\_closing\_pixel} & 25 \\
+\texttt{track\_segment\_gap\_closing\_max\_frame} & 6 \\
+\texttt{track\_segment\_splitting\_pixel} & 25 \\
+\end{tabular}
+\end{table}
+
+
+Figure \ref{fig:pipeline1}i shows the tracked trajectory of the cells from Figure \ref{fig:pipeline1}h.
+
+%\section{Single cell tracking in the brightfield channel (old pipeline)}
+
+%\begin{enumerate}
+%\item First, a Gaussian blur (Zuiderveld, 1994 \cite{zuiderveld1994contrast} and also Subsection \ref{subsection:gaussian_blur} of Data Methods chapter) with a large radius of 50 pixel is applied to each brightfield image (Figure \ref{fig:pipeline1}b) to estimate its individual background and identify e.g. gradients at the edges of the imaged area (Figure \ref{fig:pipeline1}c). Afterwards, we correct the original image by dividing through this background image (Figure \ref{fig:pipeline1}d)
+%\item Then, we normalize the local contrast of each image in one image position (Kittler and Illingworth, 1986 \cite{kittler1986minimum} and Subsection \ref{subsection:clahe}) to separate foreground from background (Figure \ref{fig:pipeline1}e).
+%\item To reduce noise from micro-trench margins in the foreground (Figure \ref{fig:pipeline1}e and Subsection \ref{subsection:substraction_by_mean}), we calculate the pixel-wise intensity average from all timepoints of one position (Figure \ref{fig:pipeline1}f) and subtract this from each image to generate a binary image with mainly cells in the foreground (Figure \ref{fig:pipeline1}g). This creates a mask of the cells..
+%\item Therein, single cells are recognized using the Laplacian of Gaussian detector in the Fiji TrackMate plugin \cite{tinevez2017trackmate} (Figure \ref{fig:pipeline1}h and Subsection \ref{subsection:cell_recognition}) with a blob diameter of 15 inches and a downsampling factor of 2. See Subsection \ref{subsection:cell_recognition} of Data and Methods chapter for more details on the method.
+%\item The detected cells are concatenated to tracks (Figure \ref{fig:pipeline1}i and Subsection \ref{subsection:cell_tracking}) and cellular trees using the Linear Assignment Problem (LAP) tracker\cite{jaqaman2008robust} in TrackMate with a maximal frame-to-frame linking distance of 25 inches, a maximal track segment gap closing distance of 35 inches, a maximal track segment gap closing of 4 frames, and a maximal track segment splitting distance of 25 inches.
+%\end{enumerate}
 
 \section{Single cell tracking in the fluorescent channel and cell death signal determination}
+\label{section:pipeline_fluoroscent}
 
-Caspase and PI are imaged in the red (PI) and green (Caspase) fluorescent channel and used as indicator of cell death. Dying cells stop moving, become small and unstructured, and loose a distinctive bright signal in the brightfield channel, which makes them hard to track. We thus track dying cells in the fluorescent channels and concatenate the tracks with earlier tracks in the brightfield to determine time-to-death. To track cells in the fluorescent channel, we apply the following pipeline (see Figure \ref{fig:pipeline2}a):
-
-\begin{enumerate}
-\item We first adjust brightness and contrast manually (Figures \ref{fig:pipeline2}a and \ref{fig:pipeline2}b and Subsection \ref{subsubsection:brightness_contrast_adjustment}) in the similar fashion to the step taken to create micro-trench mask.
-
-\item The image then undergoes mean correction of static noises by subtracting each image with average intensity over all imagess (Figures \ref{fig:pipeline2}c and \ref{fig:pipeline2}d and Subsection \ref{subsection:substraction_by_mean}).
-
-\item Subsequently, the detection and tracking part of image computing pipeline is identical to brightfield images' (Figure \ref{fig:pipeline1} and Subsections \ref{subsection:cell_recognition} and \ref{subsection:cell_tracking})
-
-\item Eventually, death time of a cell is indicated by the onset of fluorescence track being recognized in red or green channel, depending on treatment:or Vincristine treatment and control, the cell death is based on tracks in red (PI) channel while the cell death in Daunorubicin treatment is based on green (Caspase) channel (Subsection \ref{subsection:cell_death_signal_determination}).
-\end{enumerate}
-
-\subsection{Cell death signal determination}
-\label{subsection:cell_death_signal_determination}
-
+%TODO proofread
+%TODO expand and make chapter coherent
 %TODO add graphical representation of cell death determination (like the one made for Eli)
 
-As mentioned in Subsection \ref{subsection:comp_cell_death_determination}, two cell death signals are deployed in this experiment: PI and Caspase 3/7. Recall that, as mentioned Subsection \ref{subsection:exp_setup}, two kinds of images were captured during the experiment: brightfield and fluorescent images. There are in turn two channel of fluorescent images captured: red and green.
+The main issue of fully tracking the cells using only brightfield images is the fact that the reliability of the tracking decreases as the cells are put under stress. Dying cells stop moving, become small and unstructured, and loose a distinctive bright signal in the brightfield channel, which makes them hard to track. The longer the experiment proceeds after treatment, the more likely that the cells will be lost from the tracking algorithm due to aforementioned factors.
 
-The fluorescent channels can thus be exploited to detect cell deaths. As mentioned in Subsection \ref{subsection:treatment}, the deployment of cancer treatment regimes interfere with mitotic activities of the cells leading to programmed cell death. This in turn is indicated by the activation of PI and Caspase 3/7 paths. The bright emission is thereafter visible after a while in the location of cells. Figure \ref{fig:onset_samples} depicts example emission for one image position in green (Figure \ref{fig:caspase_onset_sample})and red (Figure \ref{fig:pi_onset_sample}) florescent channels.
+We thus track dying cells in the fluorescent channels and concatenate the tracks with earlier tracks in the brightfield to determine time-to-death. Unlike in brightfield images, dying cells start emitting light under fluorescent light beam as they begin dying. This continues as the programmed cell death advances and the emitted light becomes even brighter (the progression of the emission follows roughly the step function, see Figure \ref{fig:cell_death_determination_example}).
 
-Knowing at at one point the interference in cell mitotic process induces emission of PI or Caspase fluorescent signals (see $t_{PMP}$ in Figure \ref{fig:cell_death_determination_example} and the figure itself in general), finding the cell death time is reduced to simply finding the time point in which the blob of the cell in fluorescent channels is detected. Take for example the Figure \ref{fig:caspase_onset_sample}. Here we see that on the upper right side of the image there are at least two blobs visible in the naked eye. We can thus do similar pre-processing step as that of brightfield images followed by image detection to detect at which time the onset happened (see Figure \ref{fig:pipeline2}).
+Knowing at at one point the disruption by the drug treatments induces cell death and thus emission of PI or Caspase fluorescent signals (see $t_{PMP}$ in Figure \ref{fig:cell_death_determination_example}), finding the cell death time is reduced to simply finding the time point in which the blob of the cell in fluorescent channels is detected. Take for example the Figure \ref{fig:caspase_onset_sample}. Here we see that on the upper right side of the image there are at least two blobs visible in the naked eye. We can thus do similar pre-processing step as that of brightfield images followed by image detection to detect at which time the onset happened (see Figure \ref{fig:pipeline2}).
 
-As described in 
+\subsection{Brightness and contrast adjustment}
 
-%TODO continue
+This step follows closely similar method used in micro-trench masking in Subsection \ref{subsubsection:brightness_contrast_adjustment}. The brightness and contrast are adjusted to remove the artefacts on the wafer. Subfigures \ref{fig:pipeline2}b and \ref{fig:pipeline2}c show the input and output of the brightness and contrast adjustment step.
+
+\subsection{Mean intensity correction}
+
+Again, the method follows closely the same method described in Subsection \ref{subsection:mean_intensity_correction}. The resulting image can be seen in Subfigure \ref{fig:pipeline2}d.
+
+\subsection{Cells recognition and tracking}
+
+After the pre-processing steps, the images undergo the detection and tracking steps in the similar fashion as the brightfield images. Following parameters are used to detect the cells:
+
+\begin{table}[H]
+\centering
+\begin{tabular}[t]{ l | c }
+Parameter & Value \\
+\hline
+\texttt{pixel\_width} & 0.647 \\
+\texttt{pixel\_height} & 0.647 \\
+\texttt{voxel\_depth\_pixel} & 1.000 \\
+\texttt{downsample\_factor} & 2 \\
+\texttt{blob\_diameter\_pixel} & 30 \\
+\texttt{threshold} & 0 \\
+\end{tabular}
+\end{table}
+
+The assumed diameter is larger since the emission spreads around the cell and thus makes the cell negative larger than the cell body itself. Following parameters are used to track the cells:
+
+\begin{table}[H]
+\centering
+\begin{tabular}[t]{ l | c }
+Parameter & Value \\
+\hline
+\texttt{pixel\_width} & 0.647 \\
+\texttt{pixel\_height} & 0.647 \\
+\texttt{voxel\_depth\_pixel} & 1.000 \\
+\texttt{time\_interval\_second} & 1800\\
+\texttt{frame\_to\_frame\_linking\_pixel} & 35 \\
+\texttt{track\_segment\_gap\_closing\_pixel} & 35 \\
+\texttt{track\_segment\_gap\_closing\_max\_frame} & 2 \\
+\texttt{track\_segment\_splitting\_pixel} & 35 \\
+\end{tabular}
+\end{table}
 
 \begin{figure}[H]
 
 \centering
 
-\begin{subfigure}{0.5\textwidth}
+\begin{subfigure}{0.3\textwidth}
   \centering
   \includegraphics[width=\textwidth]{images/caspase_onset_sample}
   \caption{}
   \label{fig:caspase_onset_sample}
 \end{subfigure}%
 ~
-\begin{subfigure}{0.5\textwidth}
+\begin{subfigure}{0.3\textwidth}
   \centering
   \includegraphics[width=\textwidth]{images/pi_onset_sample}
   \caption{}
@@ -1799,6 +1882,10 @@ As described in
 \label{fig:onset_samples}
 \end{figure}
 
+\subsection{Cell death determination}
+
+
+
 
 \begin{figure}[H]
 \centering
@@ -1807,6 +1894,18 @@ As described in
 }
 \label{fig:cell_death_determination_example}
 \end{figure}
+
+%\section{Single cell tracking in the fluorescent channel (old)}
+
+%Caspase and PI are imaged in the red (PI) and green (Caspase) fluorescent channel and used as indicator of cell death. Dying cells stop moving, become small and unstructured, and loose a distinctive bright signal in the brightfield channel, which makes them hard to track. We thus track dying cells in the fluorescent channels and concatenate the tracks with earlier tracks in the brightfield to determine time-to-death. To track cells in the fluorescent channel, we apply the following pipeline (see Figure \ref{fig:pipeline2}a):
+
+%\begin{enumerate}
+%\item We first adjust brightness and contrast manually (Figures \ref{fig:pipeline2}a and \ref{fig:pipeline2}b and Subsection \ref{subsubsection:brightness_contrast_adjustment}) in the similar fashion to the step taken to create micro-trench mask.
+%\item The image then undergoes mean correction of static noises by subtracting each image with average intensity over all imagess (Figures \ref{fig:pipeline2}c and \ref{fig:pipeline2}d and Subsection \ref{subsection:substraction_by_mean}).
+%\item Subsequently, the detection and tracking part of image computing pipeline is identical to brightfield images' (Figure \ref{fig:pipeline1} and Subsections \ref{subsection:cell_recognition} and \ref{subsection:cell_tracking})
+%\item Eventually, death time of a cell is indicated by the onset of fluorescence track being recognized in red or green channel, depending on treatment:or Vincristine treatment and control, the cell death is based on tracks in red (PI) channel while the cell death in Daunorubicin treatment is based on green (Caspase) channel (Subsection \ref{subsection:cell_death_signal_determination}).
+%\subsection{Cell death signal determination}
+%\label{subsection:cell_death_signal_determination}
 
 \section{Pipeline visualization}
 
@@ -1819,7 +1918,7 @@ The image processing pipelines for both brightfield and florescence channels can
    \centering
     %\includegraphics[width=1.0\textwidth]{Image.eps}
     \includegraphics[height=0.95\textheight]{images/pipeline/01.pdf}
-    \caption[Brightfield channel pipeline]{Brightfield channel pipeline}
+    \caption[Brightfield channel pipeline]{Brightfield channel pipeline. (j) The original out-of-focus image of the upper left corner of  the image position 41. (k) The view of the same area as (l) after applying brightness and contrast adustment. (m) The view of the same area after applying RATS on image in (n) showing the contour of micro-trenches in the area. (d) The contours filled with neutral color (black). Note that some micro-trenches are not filled as they are open and thus topologically not the outernmost contours. Scale bar on the uppermost figure is $100 \mu M$ long}
 \end{figure}
 \label{fig:pipeline1}
 \end{landscape}
