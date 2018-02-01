@@ -261,6 +261,17 @@ thesis overview
 4~8 pages
 \end{verbatim}
 
+%TODO organize this part
+
+Generally, following questions are to be investigated in the experiment:
+
+\begin{itemize}
+\item We would like to investigate the dynamics of the AML-M5a MOLM-13 cell line's response towards chemotherapeutic treatment regimes in various drugs' concentration levels (for both Vincristine and Daunorubicin).
+\item We also would like to look into the effect of cell cycle on the the AML-M5a MOLM-13 cell line's response to drugs. Specifically, following questions needs to be answered: does the response of cancer cells depends on cell cycle?
+\end{itemize}
+
+To answer aforementioned questions, we designed the experiments as follow.
+
 \section{Variability of cell-to-cell response towards cancer treatment}
 
 %TODO : modify to local use
@@ -332,7 +343,7 @@ The second method is using cell size. During apopotosis, the cells would shrink.
 %TODO modify
 
 
-Some other cell lines were examined as potential probe cell line in this experiment. One of them is Jurkat Cell, a model cell commonly used to study T Cell Leukimia, T cell signalling mechanism and the expression of various HIV-related chemokines \cite{schneider1977characterization}. The cell line was a considered since it is well-studied \cite{johnson2007genome, schena1996parallel}. This is especially true if we consider apoptotic mechanism of the cell line, a problem this project and other related projects by our  and partner labs are trying to investigate. There are several seminal publications about the dynamics of apoptotic mechanism of Jurkat cells we could well compare our results to \cite{gottlieb1996apoptosis}. Samali \textit{et al} \cite{samali1999presence} even studies the dynamics of caspase expression in Jurkat cells, a topic dealt a lot in this project as the chapters progress (see for example Subsection \ref{subsection:treatment}) while Kasai \textit{et al} considers the aspect of spindle checkpoint in the context of apopototic cell death \cite{kasai2002prevalent}. However, we figured out early on that the cell motility of the Jurkat cell line was increased dramatically (a phenomenon observed by others before us \cite{barnhart2004cd95}) upon the introduction of chemotherapeutic treatment -- the increase dramatic enough that the cells managed to escape the micro-trench it initially landed in.
+Some other cell lines were examined as potential probe cell line in this experiment. One of them is Jurkat Cell, a model cell commonly used to study T Cell Leukimia, T cell signalling mechanism and the expression of various HIV-related chemokines \cite{schneider1977characterization}. The cell line was a considered since it is well-studied \cite{johnson2007genome, schena1996parallel}. This is especially true if we consider apoptotic mechanism of the cell line, a problem this project and other related projects by our  and partner labs are trying to investigate. There are several seminal publications about the dynamics of apoptotic mechanism of Jurkat cells we could well compare our results to \cite{gottlieb1996apoptosis}. Samali \textit{et al} \cite{samali1999presence} even studies the dynamics of Caspase expression in Jurkat cells, a topic dealt a lot in this project as the chapters progress (see for example Subsection \ref{subsection:treatment}) while Kasai \textit{et al} considers the aspect of spindle checkpoint in the context of apopototic cell death \cite{kasai2002prevalent}. However, we figured out early on that the cell motility of the Jurkat cell line was increased dramatically (a phenomenon observed by others before us \cite{barnhart2004cd95}) upon the introduction of chemotherapeutic treatment -- the increase dramatic enough that the cells managed to escape the micro-trench it initially landed in.
 
 \section{The structure of the thesis}
 
@@ -350,20 +361,16 @@ Chapter \ref{chapter:data_and_method} contains %TODO continue
 
 \label{chapter:data_and_method}
 
-As mentioned in previous parts of this thesis: this project consists of three part -- the problem statement regarding the dynamics of cancerous single-cells under pressure of treatment, the microfluidic system which enables the single-cell protocol and the software implementation used to process and analyze the time-lapse data coming out of the experiment. 
+As mentioned in previous parts of this thesis: this project consists of three part -- the problem statement regarding the dynamics of cancerous single-cells under pressure of treatment, the microfluidics which enables the single-cell protocol and the software implementation used to process and analyze the time-lapse data coming out of the experiment.
 
-This chapter considers two aspects of the project: the experimental setting and the theoretical aspects behind the data analysis pipeline. In the first half of the chapter, we deal mostly with the experimental background and the underlying questions of single cell dynamics of cancer cell under stress with focus on chemotherapeutic pressure. In this part, the highlight of the experiment, the microfluidic system for cell containment is elucidated. In conjunction with the system, some biomedical and biochemical aspects of the experiment are also mentioned. This includes the drug, the auxiliary chemicals used in the experiment and the cell lines probed.
-
-The second part deals mostly with the quantitative methods and algorithms used to process data into meaningful observations. This part is opened with definitions used in the methods section. Afterwards, every method developed/used in the pipeline is brought forward with accompanying rationale and literature research.
+This chapter considers two aspects of the project: the experimental setting and the theoretical aspects behind the data analysis pipeline. In the first half of the chapter, we deal mostly with the experimental background and the underlying questions of single cell dynamics of cancer cell under stress with focus on chemotherapeutic pressure. In this part, the highlight of the experiment, the microfluidic system for cell containment is elucidated. In conjunction with the system, some biomedical and biochemical aspects of the experiment are also mentioned. This includes the drug, the auxiliary chemicals used in the experiment and the cell lines probed. The second part deals mostly with the quantitative methods and algorithms used to process data into meaningful observations. This part is opened with definitions used in the methods section.
 
 \section{Experimental setting and data}
-
-%TODO review section
 
 \subsection{Cell culture}
 \label{subsection:cell_culture}
 
-To enable cross reference and comparability of experiment results, a model cell line is used: the acute monocytic leukimia (AML) cell line \textbf{AML-M5a MOLM-13}. The line used in our experiment was derived from the cell line initially described by Matsuo et al in 1997 \cite{matsuo1997two}. In the paper, the authors developed the line from the peripheral blood of a relapse patient with AML of subtype FAB M5a, which is characterized by predominantly monoblastic leukemia cells visible in pap smear \cite{arber20162016}. Due to extensive research done on the cell line and the well-explained mechanism of the cell line dynamics and response towards cancer medication, the cell line is an ideal candidate for \textit{in vitro} study of monocytic differentiation, leukemogenesis and treatment dynamics \cite{matsuo1997two, kelly2002ct53518, yokota1997internal}.
+To enable cross reference and comparability of experiment results, a model cell line is used: the acute monocytic leukimia (AML) cell line \textbf{AML-M5a MOLM-13}. The line used in our experiment was derived from the cell line initially described by Matsuo et al in 1997 \cite{matsuo1997two}. In the paper, the authors developed the line from the peripheral blood of a relapse patient with AML of subtype FAB M5a, which is characterized by predominantly monoblastic leukemia cells visible in pap smear \cite{arber20162016}. Due to extensive research done on the cell line and the well-explained mechanism of the cell line dynamics and response towards cancer medications, the cell line is an ideal candidate for \textit{in vitro} study of monocytic differentiation, leukemogenesis and treatment dynamics \cite{matsuo1997two, kelly2002ct53518, yokota1997internal}.
 
 For our experiment, the AML-M5a MOLM-13 cell line was cultured in Gibco\textsuperscript{\textregistered} RPMI 1640 GlutaMAX medium, produced by Life Technologies \cite{gibcocellculture2017}. The medium is popular choice in human cell biology for both experiments and biological syntheses using human cells and their derivatives \cite{blight2000efficient, shimizu2002fabrication}. It is pre-supplemented with stable form of L-glutamine to prevent ammonia buildup, a common and serious problem in cell culture due to its cell toxicity\cite{satter1974effect}. The medium is further supplemented with Gibco\textsuperscript{\textregistered} Fetal Bovine Serum (FBS), also offered by Life Technologies \cite{gibcofbs2017}, as supplement for the AML-M5a MOLM-13 cell culture.
 
@@ -378,21 +385,21 @@ In order to track non-adherent cells in a label-free manner over several generat
 First, the SU-8 (MicroChem Corp, USA) wafer was fabricated in a cleanroom facility using a ProtoLaser LDI system (LPKF Laser \& Electronika, Naklo, Slovenia), with a 375 nm wavelength laser and 1 μm spot diameter.
 Polydimethylsiloxane (PDMS) prepolymer solution is mixed with the crosslinker in a 10:1 ratio (w/w) (Sylgard 184, Dow Corning, USA) and then degassed under vacuum. PDMS is then purred on the SU-8 wafer, degassed and cured in 50 \degree C. The resulting PDMS stamp is peeled off the wafer and cut into appropriate shapes. The PDMS pieces, with 25 1/4 pillars in height, are activated with argon plasma and then immediately placed upside down on a silanized with TMSPMA (3-(Trimethoxysilyl)propyl methacrylate, Sigma-Aldrich) glass coverslip. A solution of PEG-DA (Mn=258) containing 2\% v/v of the 2-hydroxy-2methylpropiophenone (both from Sigma-Aldrich, Germany) is freshly prepared and then a drop is deposited at the edge of the PDMS stamp. The PDMS stamp is filled by capillary force induced flow. PEG-DA is then polymerized in an UV-ozone cleaning system (UVOH 150 LAB, FHR, Ottendorf, Germany). Next, the PDMS stamps are peeled off and the resulting micro-trenches of cross-linked PEG-DA are dried in an oven (Binder GmbH, Tuttlingen, Germany) overnight at 50 \degree C. Finally, the slides are sonicated with 70\% ethanol and distilled water before a sticky slide is attached on top (8-well sticky slide, ibidi GmbH, Munich, Germany).
 
-The design of the micro-trench and the schematic representative of cell tracking are seen in Figure \ref{fig:microtrench_design}. After the manufacturing process the structure can be divided into two main parts:
+The design of the micro-trench and the schematic representative of cell tracking are seen in Figure \ref{fig:microtrench_design}. After the manufacturing process the structure is divided into two main parts:
 
 \begin{itemize}
-\item The \textbf{micro-trenches} are The smallest structure of the setting, measuring about 120 microns by 30 microns. The base of the trench is made of Polyethylene (glycol) Diacrylate (PEGDA), an inert substance commonly found as construction material in microfluidic system \cite{sekhavati2015marker}. Each well contains about 2400 micro-trenches contained in one containment box.
+\item The micro-trenches are The smallest structure of the setting, measuring about 120 microns by 30 microns. The base of the trench is made of Polyethylene (glycol) Diacrylate (PEGDA), an inert substance commonly found as construction material in microfluidic system \cite{sekhavati2015marker}. Each well contains about 2400 micro-trenches contained in one containment box.
 
-\item The \textbf{sticky slide} contain 8 wells where the wafer containing micro-trenches is located. The sticky slide chosen for containing the wafers holding the micro-trenches is ibidi\textsuperscript{\textregistered} sticky-Slide 8 Well (see Figure \ref{fig:ibidi}). In the project, each cell treatment is isolated in one containment box. This ensure the separations of different chemicals used in each treatment.
+\item The sticky slide contain 8 wells where the wafer containing micro-trenches is located. The sticky slide chosen for containing the wafers holding the micro-trenches is ibidi\textsuperscript{\textregistered} sticky-Slide 8 Well (see Figure \ref{fig:ibidi}). In the project, each cell treatment is isolated in one containment box. This ensure the separations of different chemicals used in each treatment.
 
 \end{itemize}
 
-Due to limitation in image capturing coverage area, each well is further divided into eight image positions. Each image position represents an area in which the camera captures the full image of. In each well there are 7 to 8 image positions and in one experiment with eight wells, there are 63 image positions in total. Tables  \ref{table:unsyn_treatments} and \ref{table:syn_treatments} show the list of all image positions in the experiment and their drugs concentration.
+Due to limitations in the image capturing coverage area, each well is further divided into eight image positions. Each image position represents an area the camera captures the full image of. In each well there are 7 to 8 image positions and in one experiment with eight wells there are 63 image positions in total. Tables  \ref{table:unsyn_treatments} and \ref{table:syn_treatments} show the list of all image positions in the experiment and their drugs concentration.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.6\textwidth]{images/sticky-slide-8-well-marked}
-\caption[ibidi\textsuperscript{\textregistered} sticky-Slide 8 Well]{ibidi\textsuperscript{\textregistered} sticky-Slide 8 Well. The base SU-8 wafer is located in each of the containment box \textbf{(A)}. The SU-8 wafer is then fabricated in the surface of each containment box using nano photolitographic printing. The microfluidic system is then poured and stamped on top the wafer. Note that each containment box is upside-open. The cap (\textbf{(B)} is used to prevent the ingress of foreign materials into the medium. \textit{Image taken and modified from ibidi GmbH's website}.}
+\caption[ibidi\textsuperscript{\textregistered} sticky-Slide 8 Well]{ibidi\textsuperscript{\textregistered} sticky-Slide 8 Well. The base SU-8 wafer is located in each of the containment box \textbf{(A)}. The SU-8 wafer is then fabricated in the surface of each containment box using nano photolitographic printing. The microfluidic system is then poured and stamped on top of the wafer. Note that each containment box is upside-open. The cap (\textbf{(B)} is used to prevent the ingress of foreign materials into the medium. \textit{Image taken and modified from ibidi GmbH's website}.}
 \label{fig:ibidi}
 \end{figure}
 
@@ -415,11 +422,11 @@ Due to limitation in image capturing coverage area, each well is further divided
 
 As mentioned in previous chapters, the objective of the project partains mostly the dynamics of single cancer cell under treatment. After mentioning the cell lines of interest (Chapter \ref{subsection:cell_culture}) and the microfluidic setup used to contain cancer cells in single-cell setting (Chapter \ref{subsection:microfluid_env}), we arrived at the last aspect of the experimental seting: the chemical treatment used on the cells.
 
-For cell cultures mentioned in chapter Subsection \ref{subsection:cell_culture}, two treatment regimes are developed : Vincristine and Daunorubicin -- both chemotherapeutic compounds well known for treating various kinds of cancer \cite{drugs2018defdaunorubicin, ravina2011evolution, tsuruo1981overcoming, gewirtz1999critical}.
+For cell cultures mentioned in the previous subsection, two drug treatment regimes are developed: Vincristine and Daunorubicin -- both chemotherapeutic compounds well known for treating various kinds of cancer \cite{drugs2018defdaunorubicin, ravina2011evolution, tsuruo1981overcoming, gewirtz1999critical}.
 
 \subsubsection*{Vincristine}
 
-Vincristine is initially isolated from Madagascar pairwinkle \textit{Catharanthus roseus} (basionym \textit{Vinca roseus}, hence the name) \cite{nci2018defvincristine}. It is mainly known as Tubulin polymerase inhibitor \cite{tsuruo1982increased}, a subclass of mitotic inhibitor family of drugs \cite{jordan1998tubulin}. Mechanistically, it prevent Tubulin polymerization in two ways. First, it binds elongating Tubulin polymer and reduces the affinity of the elongating polymer \cite{lobert1996interaction} towards the monomers that are supposed to conjoin the polymer thereby extending it. Meanwhile, further elongation by the polymers are also prevented via allosteric inhibition (inhibition caused by spatial occupancy of inhibiting agent) of polymerating Tubulin via Vincristine. The allosteric competitor is hence commonly known as vinca alkaloid binding domain and commonly seen in other tubulin polymerization inhibitor compounds \cite{tsuruo1982increased}. It has also been shown that Vincristine also depolymerizes stable microtubuli in rat axonal part of rats' neuronal cells \cite{jordan1998tubulin}. Thus, the effect of Vincristine is most emphasized during the time of high Tubulin synthesis: during the separation of chromosomes in Metaphase by means of tearing them with the simultaneous pulling and pushing mechanism of Tubulin poly- and depolymerization \cite{owellen1972binding}. In the context of chemotherapy, Vincristine is often as combination in CHOP (cyclophosphamide, doxorubicin, vincristine, and prednisone) regime \cite{hiddemann2005frontline} against non-Hodgkin's lymphoma; MOPP \cite{brandriff1994chromosomal}, COPP \cite{pfreundschuh1987lomustine} and BEACOPP \cite{diehl1998beacopp} regimes against Hodgkin's lymphoma; and Stanford V regimes against acute lymphoblastic leukimia \cite{bartlett1995brief}. It is also used to certain degree as immunosuppresant due to its mitotic inhibiting characteristics \cite{ahn1974vincristine}.
+Vincristine, a vinca alcaloid, is initially isolated from the Madagascar pairwinkle \textit{Catharanthus roseus} (basionym \textit{Vinca roseus}, hence the name) \cite{nci2018defvincristine}. It is mainly known as Tubulin polymerase inhibitor \cite{tsuruo1982increased}, a subclass of the mitotic inhibitor family of drugs \cite{jordan1998tubulin}. Mechanistically, it prevents Tubulin polymerization in two ways. First, it binds elongating Tubulin polymer and reduces the affinity of the elongating polymer \cite{lobert1996interaction} towards Tubulin monomers threfore preventing the monomers to bind on the elongating polymer. Meanwhile, further elongation by the polymers is also prevented via allosteric inhibition. It has also been shown that Vincristine depolymerizes stable microtubuli in the axonal part of rats' neuron cells \cite{jordan1998tubulin}. Due to these mechanistic actions, the effect of Vincristine is most emphasized during the time of high Tubulin synthesis, e.g. during the separation of chromosomes in the Metaphase by means of tearing them with the simultaneous pulling and pushing mechanism of Tubulin poly- and depolymerization \cite{owellen1972binding}. In the context of chemotherapy, Vincristine is often used as combination in CHOP (cyclophosphamide, doxorubicin, vincristine, and prednisone) regime \cite{hiddemann2005frontline} against non-Hodgkin's lymphoma; MOPP \cite{brandriff1994chromosomal}, COPP \cite{pfreundschuh1987lomustine} and BEACOPP \cite{diehl1998beacopp} regimes against Hodgkin's lymphoma; and Stanford V regimes against acute lymphoblastic leukimia \cite{bartlett1995brief}. It is also used to certain degree as immunosuppresant due to its mitotic inhibiting characteristics \cite{ahn1974vincristine}.
 
 \begin{figure}[H]
 \centering
@@ -436,27 +443,27 @@ Vincristine is initially isolated from Madagascar pairwinkle \textit{Catharanthu
   \caption{}
   \label{fig:vinchristine_mechanism}
 \end{subfigure}
-\caption[The structure and mechanism of Vincristine]{(a) Molecular structure of Vincristine. (b) Visualization of Vincristine's mechanism of action. During normal metaphase, microtubuli elongate from centrosome towards equator and bind fully replicated chromosomes. The microtubuli then pull chromosome pair apart during anaphase. Vincristine and other vinca alkaloids prevent this from happening by competitive inhibition, allosteric inhibition and active depolymerization of extending microtubuli. Unsuccessful exit metaphase forces the cell to undergo programmed cell death.}
+\caption[The structure and mechanism of Vincristine]{(a) The molecular structure of Vincristine. (b) Visualization of Vincristine's mechanism of action. During normal metaphase, microtubuli elongate from centrosome towards cell equator while pulling apart fully replicated chromosomes. Vincristine and other vinca alkaloids prevent this from happening by competitive inhibition, allosteric inhibition and active depolymerization of extending microtubuli. Unsuccessful exit from the metaphase forces the cell to undergo programmed cell death.}
 \label{fig:vincs}
 \end{figure}
 
 \subsubsection*{Daunorubicin}
 
-Daunorubicin is initially isolated from bacterium \textit{Streptomyces peucetius} \cite{otten1990cloning, lin2011chiral}. It is part of anthracycline class of drug \cite{gewirtz1999critical} extracted mainly from \textit{Streptomyces} bacteria. Some well-known members of this class are Doxorubicin \cite{nci2018defdoxorubicin}, Epirubicin \cite{nci2018defepirubicin} and Idarubicin \cite{nci2018defidarubicin}. Together, they are among the most effective cancer drugs ever deployed and are used towards more kinds of cancer than other group of chemotherapeutic agents \cite{weiss1992anthracyclines, minotti2004anthracyclines, peng2005cardiotoxicology}. Like many chemotherapeutic agents including Vincristine, anthracyclines attack cancerous tissues and cells by preventing their division \cite{drugs2018defdaunorubicin}. Unlike vinca alkaloids however, anthracyclines prevent the division by disrupting another mechanistic part of cell division: the DNA polymerization \cite{gewirtz1999critical}. There are four ways anthracyclines disrupt DNA polymerization:
+Daunorubicin is initially isolated from bacterium \textit{Streptomyces peucetius} \cite{otten1990cloning, lin2011chiral}. It is part of the anthracycline class of drug \cite{gewirtz1999critical} extracted mainly from \textit{Streptomyces} bacteria. Some well-known members of this class are Doxorubicin \cite{nci2018defdoxorubicin}, Epirubicin \cite{nci2018defepirubicin} and Idarubicin \cite{nci2018defidarubicin}. Together, they are among the most effective cancer drugs ever deployed and are used towards more kinds of cancer than other group of chemotherapeutic agents \cite{weiss1992anthracyclines, minotti2004anthracyclines, peng2005cardiotoxicology}. Like many chemotherapeutic agents including Vincristine, anthracyclines attack cancerous tissues and cells by preventing their division \cite{drugs2018defdaunorubicin}. Unlike vinca alkaloids however, anthracyclines prevent the division by disrupting another mechanistic part of cell division: the DNA polymerization \cite{gewirtz1999critical}. There are four ways anthracyclines disrupt DNA polymerization:
 
 \begin{itemize}
-\item Anthracyclines intercallate with base pairs involved in polymerization thus preventing strands extension \cite{takimoto2008principles}.
+\item Anthracyclines intercallate with base pairs involved in DNA polymerization thus preventing the extension of DNA strands \cite{takimoto2008principles}.
 
-\item Anthracyclines covelatently inhibit of type II topoisomerase which is responsible for RNA and DNA supercoil relaxation \cite{wang2002cellular}. Inhibition of type II topoisomerase causes supercoiled RNA and DNA to be inaccessible for initiation of duplication thus breaking the DNA \cite{tewey1984adriamycin}.
+\item Anthracyclines covelatently inhibit type II topoisomerase which is responsible for RNA and DNA supercoil relaxation \cite{wang2002cellular}. Inhibition of type II topoisomerase causes supercoiled RNA and DNA to be inaccessible for initiation of duplication thus breaking the DNA \cite{tewey1984adriamycin}.
 
-\item Anthracyclines induce oxidative stress on cancer cell organelles by generating free oxygen radicals. These radicals in turn damage DNA, proteins and cell membranes and initiate caspase induced apoptosis \cite{vsimuunek2009anthracycline, halliwell1994free}.
+\item Anthracyclines induce oxidative stress on cancer cell organelles by generating free oxygen radicals. These radicals in turn damage DNA, proteins and cell membranes and initiate Caspase induced apoptosis \cite{vsimuunek2009anthracycline, halliwell1994free}.
 
-\item Anthracyclines disrupt epigenetic, transcriptomic and DNA upstream regulations by removing histones from DNA strands \cite{pang2013drug}. This also exposes DNA strands to degradation factor such as DNA methylase \cite{vaissiere2008epigenetic} and oxidative damage \cite{ljungman1992efficient}
+\item Anthracyclines disrupt epigenetic, transcriptomic and DNA upstream regulations by removing histones from DNA strands \cite{pang2013drug}. This also exposes DNA strands to degradation factors such as DNA methylase \cite{vaissiere2008epigenetic} and oxidative damage \cite{ljungman1992efficient}
 
-\item In presence of formaldehyde, anthracyclines cross-links with DNA covalently, creating cytotoxin that will disrupt DNA from functioning properly \cite{wang1991formaldehyde}.
+\item In the presence of formaldehyde, anthracyclines cross-link with the DNA covalently, creating cytotoxin that will disrupt DNA from functioning properly \cite{wang1991formaldehyde}.
 \end{itemize}
 
-In normal chemotherapeutic regime, both Vincristine and Daunorubicin are prescribed intravenously to the patients \cite{skeel2011handbook}. Needless to say, both drugs will disrupt both cancerous and healthy cells. The effect is however mostly felt in actively dividing cells and organs such as blood cells  and hair follicles due to chemotherapeutic agents' mostly disruptive effect during cell division as mentioned above \cite{skeel2011handbook, mayo2018chemotherapy}.
+In normal chemotherapeutic regimes, both Vincristine and Daunorubicin are prescribed intravenously to patients \cite{skeel2011handbook}. Needless to say, both drugs will disrupt both cancerous and healthy cells. The effect is however mostly felt in actively dividing cells and organs such as blood cells and hair follicles due to chemotherapeutic agents' highly disruptive effect during cell division as mentioned above \cite{skeel2011handbook, mayo2018chemotherapy}.
 
 \begin{figure}[H]
 \begin{subfigure}{.55\textwidth}
@@ -479,7 +486,7 @@ In normal chemotherapeutic regime, both Vincristine and Daunorubicin are prescri
   \caption{}
   \label{fig:dauno_mechanism}
 \end{subfigure}
-\caption[The structure and mechanism of Daunorubicin]{(a) Molecular structure of Daunorubicin. (b) Two anthracyclines intercalating with DNA double helix. (c) Schematic diagram of Daunorubicin's mechanism of action. From left to right: daunorubicin induce reactive oxygen species (ROS) which damage the DNA. Daunorubicin interfers with DNA by (1) covalently crosslinking with DNA mediated by formaldehyde and (2) intercalating DNA double helix. Daunorubicin also inhibits Topoisomerase II which prevents DNA supercoil's relaxation. Not shown in image: daunorubicin removes histone (shown in yellow in image) which disrupt epigenetic regulations. Modified from (Yang et al, 2014 \cite{yang2014doxorubicin})}
+\caption[The structure and mechanism of Daunorubicin]{(a) The molecular structure of Daunorubicin. (b) Two anthracyclines intercalating with DNA double helix. (c) Schematic diagram of Daunorubicin's mechanism of action. From left to right: daunorubicin induces reactive oxygen species (ROS) which damage the DNA. Daunorubicin interfers with the DNA by (1) covalently crosslinking with the DNA mediated by formaldehyde and (2) intercalating DNA double helix. Daunorubicin also inhibits Topoisomerase II which prevents DNA supercoil's relaxation. Not shown in image: daunorubicin removes histone (shown in yellow in image) disrupting epigenetic regulations. Modified from (Yang et al, 2014 \cite{yang2014doxorubicin})}
 \end{figure}
 
 \subsection{Cell death signal}
@@ -489,7 +496,7 @@ As mentioned in Subsection \ref{subsection:treatment}, the introduction of cance
 
 \subsubsection*{Caspase 3/7}
 
-Caspase 3 and 7 are both known as executioner Caspases in programmed cell death pathways \cite{alberts2017molecular}.  The reagent consists of a four amino acid peptide (DEVD) conjugated to a nucleic acid binding dye. This cell-permeable substrate is intrinsically non-fluorescent, because the DEVD peptide inhibits the ability of the dye to bind to DNA. After activation of caspase-3 or caspase-7 in apoptotic cells, the DEVD peptide is cleaved, enabling the dye to bind to DNA and produce a bright, fluorogenic response.  It has excitation/emission maxima of 502/530 nm (see Figure \ref{fig:caspase_spectra}). For the project CellEvent Caspase3/7 vial from ThermoFisher Scientific is used  \cite{thermofisher2018casp}.
+Caspase 3 and 7 are both known as executioner Caspases in programmed cell death pathways \cite{alberts2017molecular}. For the project CellEvent Caspase3/7 vial from ThermoFisher Scientific is used  \cite{thermofisher2018casp}. Besides Caspase 3/7, the treatment consists also of a four amino acid peptide (DEVD) conjugated to a nucleic acid binding dye. This cell-permeable substrate is intrinsically non-fluorescent, because the DEVD peptide inhibits the ability of the dye to bind to DNA. After activation of Caspase 3 or Caspase 7 in apoptotic cells, the DEVD peptide is cleaved, enabling the dye to bind to DNA and produce a bright, fluorogenic response.  It has excitation/emission maxima of 502/530 nm (see Figure \ref{fig:caspase_spectra}).
 
 \begin{figure}[H]
 
@@ -518,7 +525,7 @@ Caspase 3 and 7 are both known as executioner Caspases in programmed cell death 
   \label{fig:caspase_spectra}
 \end{subfigure}%
 
-\caption[The structure and mechanism of Caspase 3/7]{a) Molecular structure of Caspase 3 heterodimer b) Molecular structure of Caspase 7 homodimer. The p17 (light blue) and p12 (pink) subunites are show. c) The excitation (blue) and emission (red) spectra of Caspase3/7 vial by ThermoFisher Scientific. Notice the emission peaking around the 525-535 nm range in green channel. Image taken from ThermoFisher Scientific product specification page \cite{thermofisher2018casp}.}
+\caption[The structure and mechanism of Caspase 3/7]{(a) The molecular structure of Caspase 3 heterodimer (b) The molecular structure of Caspase 7 homodimer. The p17 (light blue) and p12 (pink) subunites are shown. (c) The excitation (blue) and emission (red) spectra of Caspase3/7 vial used in the experiment. Notice the emission peaking around the 525-535 nm range in green channel. Image taken from ThermoFisher Scientific product specification page \cite{thermofisher2018casp}.}
 
 \label{fig:caspase_stain}
 \end{figure}
@@ -544,7 +551,7 @@ PI is membrane impermeable and generally excluded from viable cells. Therefore i
   \label{fig:pi_spectra}
 \end{subfigure}%
 
-\caption[The structure and mechanism of Propium Iodide (PI)]{a) Molecular structure of Propium Iodide (PI) b) The excitation (blue) and emission (red) spectra of PI. Notice the peaking around the 630-650 nm range in red channel. Image taken from ThermoFisher Scientific product specification page \cite{thermofisher2018pi}.}
+\caption[The structure and mechanism of Propium Iodide (PI)]{a) The molecular structure of Propium Iodide (PI) (b) The excitation (blue) and emission (red) spectra of PI. Notice the peaking around the 630-650 nm range in red channel. Image taken from ThermoFisher Scientific product specification page \cite{thermofisher2018pi}.}
 
 \label{fig:pi_stain}
 \end{figure}
@@ -552,16 +559,7 @@ PI is membrane impermeable and generally excluded from viable cells. Therefore i
 \subsection{Experiment setup and image capturing}
 \label{subsection:exp_setup}
 
-%TODO move to intro/review/results
-
-Generally, following questions are to be investigated in the experiment:
-
-\begin{itemize}
-\item We would like to investigate the dynamics of the AML-M5a MOLM-13 cell line's response towards chemotherapeutic treatment regimes in various drugs' concentration levels (for both Vincristine and Daunorubicin).
-\item We also would like to look into the effect of cell cycle on the the AML-M5a MOLM-13 cell line's response to drugs. Specifically, following questions needs to be answered: does the response of cancer cells depends on cell cycle?
-\end{itemize}
-
-To answer aforementioned questions, we designed the experiments as follow. First, two experiments are done:
+In this project, two experiments are done:
 
 \subsubsection{Unsynchronized experiment.}
 
@@ -713,9 +711,9 @@ This however does not reflect human perception of light, as human eyes' spectral
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.5\textwidth]{images/spectral_sensitivity}
+\includegraphics[width=0.5\textwidth]{images/spectral_sensitivity_human.pdf}
 \label{fig:spectral_sensitivity}
-\caption[Spectral sensitivity of human]{Spectral sensitivity of human (a), honeybee (b), pigeon (c) and home fly (d). Note that the sensitivity distribution is maximum normalized (i.e. each value in a curve is relative only to the maximum value of the curve). Each species has its own set of cone cells, as can be seen in the variation of the number of curves for each species. D refers to double cone, while SVF refers to short visual fiber and LVF to long visual fiber. The y's and p's indicate the yellow/pale sensitivity of house fly's long visual fiber. Figure taken from (Osorio and Vorbyev, 2005 \cite{osorio2005photoreceptor}).}
+\caption[Spectral sensitivity of human]{Spectral sensitivity of human. Note that the sensitivity distribution is maximum normalized. Each curve shows the relative sensitivity of each type of human cone cells (S, M and L types). The curve color represents the dominating absorbed color range of each cell type.}
 \end{figure}
 
 There are some conversions published on transforming RGB value to human intensity perception based on the measured spectral sensitivity \cite{anderson1996proposal, itu2007studio, itu2015parameter}. Among the most commonly used is the \textit{BT.601} standard from International Telecommunication Union (ITU). It recommends the following luminosity weight for RGB to grayscale conversion \cite{itu2007studio}:
@@ -1295,7 +1293,7 @@ The optimal solution for the problem is again found using the Munkers \& Kuhn al
 %TODO improve subsection
 %TODO : RESTRUCTURE THE CHAPTER
 
-Shift correction is done to correct the slice alignment within stacks. As mentioned in Subsection \ref{subsection:exp_setup}, the images were captured discretely at the frequency of $\frac{1}{15 min}$ and $\frac{1}{30 min}$ depending on the channel. During this time, the setup might move albeit very slightly causing very small shift. The bulk of the shift, however, happened during the introduction of the  drug treatment. At this time, the drug is introduced to the medium using a pipette. The liquid released pushes the wafer somewhat causing noticable shift in camera's field of view (see Table \ref{table:inferred_shift} of Appendix \ref{chapter:appendix_tables} for the inferred shift in every image position).
+Shift correction is done to correct the slice alignment within stacks. As mentioned in Subsection \ref{subsection:exp_setup}, the images were captured discretely at the frequency of $\frac{1}{10 min}$ and $\frac{1}{30 min}$ depending on the channel. During this time, the setup might move albeit very slightly causing very small shift. The bulk of the shift, however, happened during the introduction of the  drug treatment. At this time, the drug is introduced to the medium using a pipette. The liquid released pushes the wafer somewhat causing noticable shift in camera's field of view (see Table \ref{table:inferred_shift} of Appendix \ref{chapter:appendix_tables} for the inferred shift in every image position).
 
 Now, consider the case in which the images are shifted in a time-lapsed movie during the introduction of drug treatment. No rotation of camera is assumed, hence there are only two degree of freedoms (vertical and horizontal). Thus, a shift can be defined as a vector movement $\vec{v}$ of all points $x_{i,j} \in M_t$ in the time-lapse from time $t$ to $t + 1$. Given two degrees of freedom and discreteness of the problem due to pixel representation, the task is reduced to finding difference in x- and y-axis ($\delta_x$ and $\delta_y$), so that the difference of transformed pixels at $t$ and $t_{i+1}$ are minimized, i.e.:
 
@@ -1363,7 +1361,7 @@ As described in Subsection \ref{subsection:cell_tracking}, the tracking algorith
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.8\textwidth]{images/pixdiff}
-\caption[Slice-wise sum of pixel difference in a stack]{Pixel difference between consecutive frames in the image position 26. In most cases, the pixel difference between the frames is mainly caused by moving cells. The diference during the treatment, on the other hand, is caused by physical shift of the frame. While moving cells mostly caused minimum noise-like pixel difference, the physical shift of field of view distorts the physical alignment and evokes immense pixel difference.}
+\caption[Slice-wise sum of pixel difference in a stack]{Pixel difference between consecutive frames in the image position 26. In most cases, the pixel difference between the frames is mainly caused by moving cells. The difference during the introduction of the drug treatment (red dashed line), on the other hand, is caused by physical shift of the frame. While moving cells mostly caused minimum noise-like pixel difference, the physical shift of field of view distorts the physical alignment and evokes immense pixel difference.}
 \label{fig:pixdiff}
 \end{figure}
 
@@ -1537,10 +1535,10 @@ w}}{\text{minimize}}
 where $\mathbf{b}$ and $\langle \bullet , \bullet \rangle$ refer to the intercept of a linear model and  the inner product operator. Note the term
 
 $$
-\langle \mathbf{w} , \mathbf{x}_i \rangle + \mathbb{b} + \sigma
+\mathbf{y} = \langle \mathbf{w} , \mathbf{x}_i \rangle + \mathbf{b} + \sigma
 $$
 
-being the term for conventional linear model with intercept $\mathbf{b}$  and error term $\sigma$.
+being the term for standard linear model with intercept $\mathbf{b}$  and error term $\sigma$.
 
 %\subsection{Random Forests (RF)}
 %\label{subsection:rf}
@@ -1642,6 +1640,7 @@ for $Z \sim F(n_1, n_2)$.
 %TODO expand chapter
 
 In this chapter the image and data analytic pipeline is presented. Each pipeline of image processing analysis is elaborated with reference to publications and the definitions from Chapter \ref{chapter:data_and_method}.
+Every method developed/used in the pipeline is brought forward and explained with references to scientific literature and the definitions brought forward in Chapter \ref{chapter:data_and_method}.
 
 \section{Image computing}
 
