@@ -208,8 +208,10 @@ $\mathbb{G}_{x, y}$ & Sobel gradient of pixel $M_{t, x, y}$\\
 $\mathbb{g}_{x, y}$ & Quadratic Sobel gradient of pixel $M_{t, x, y}$\\
 $G(x)$ & One dimensional Gaussian function\\
 $G(x, y)$ & Two dimensional Gaussian function\\
-$I_t(x, y)$ & Intensity function for pixel $(x, y)$ of RGB image taken at time t\\
-$J_t(x, y)$ & Brightness and contrast transforming function for pixel $(x, y)$ of grayscale image taken at time t\\
+$I_t(x, y)$ & Intensity function for pixel $(x, y)$ of RGB image taken at time t $M_t$\\
+$I^{conv_G}_t(x, y)$ & Gaussian blurred intensity function for pixel $(x, y)$ of $M_t$\\
+$J_t(x, y)$ & Brightness and contrast transforming function for pixel $(x, y)$ of \\
+& grayscale image taken at time t\\
 $M$ & A stack of images \\
 $M_t$ & An RGB image captured at time t \\
 $M_{t, x, y}$ & Pixel at $(x, y)$ in $M_t$ \\
@@ -398,21 +400,21 @@ Due to limitations in the image capturing coverage area, each well is further di
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.6\textwidth]{images/sticky-slide-8-well-marked}
-\caption[ibidi\textsuperscript{\textregistered} sticky-Slide 8 Well]{ibidi\textsuperscript{\textregistered} sticky-Slide 8 Well. The base SU-8 wafer is located in each of the containment box \textbf{(A)}. The SU-8 wafer is then fabricated in the surface of each containment box using nano photolitographic printing. The microfluidic system is then poured and stamped on top of the wafer. Note that each containment box is upside-open. The cap (\textbf{(B)} is used to prevent the ingress of foreign materials into the medium. \textit{Image taken and modified from ibidi GmbH's website}.}
+\includegraphics[width=\textwidth]{images/sticky-slide-8-well-marked}
+\caption[ibidi\textsuperscript{\textregistered} sticky-Slide 8 Well]{ibidi\textsuperscript{\textregistered} sticky-Slide 8 Well. The base SU-8 wafer is located in each of the containment box \textbf{(A)}: the SU-8 wafer is then fabricated in the surface of each containment box using nano photolitographic printing. The microfluidic system is then poured and stamped on top of the wafer. Note that each containment box is upside-open. \textbf{(B)}: the cap is used to prevent the ingress of foreign materials into the medium. \textit{Image taken and modified from ibidi GmbH's website}.}
 \label{fig:ibidi}
 \end{figure}
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=1\textwidth]{images/trenches-sekhavati}
+\includegraphics[width=.9\textwidth]{images/trenches-sekhavati}
 \caption[The structure of micro-trenches]{The structure of micro-trenches: \textbf{(A)} 3D model of micro-trench on surface with cells inside. \textbf{(B)} The schematic representation of a time-lapse in a trench. First, a singly-placed cell is tracked in a micro-trench. At time $t_0$, the cell divides into two daughter cells. The two cells will be kept tracked until at one point each of the daughter cells will divide at the same time at time $t_{div}$. Note the simplification of the sample. First, not every cell is singly-placed inside a trench. Indeed, not every trench is occupied by cells. Second, not every cell divides. Third, not every cell line observed has three generations in it. And finally, not every children's division times are at the same time. Indeed, this special case almost never happens in real life. \textbf{(C)} The sample view into the environment with cells occupying some micro-trenches. Here, the micro-trenches have dimension of 120 $\mu m$ long and 30 $\mu m$ wide. Note also the pointish characteristic of the cells taken in out-of-focus fashion. This improves the performance of the tracking algorithms. \textit{Figure taken from (Sekhavati, 2015) \cite{sekhavati2015dynamic}}.}
 \label{fig:microtrench_design}
 \end{figure}
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.6\textwidth]{images/microtrench_in}
+\includegraphics[width=0.55\textwidth]{images/microtrench_in}
 \caption[The typical view of micro-trench setting]{The typical view of micro-trench setting. Some trenches contain no cell at all \textbf{(A)}. Several trenches contain exactly one cell \textbf{(B)}. A few more trenches contain two cells \textbf{(C)} while in rare cases the trench may contain more than two cells \textbf{(D)}.}
 \label{fig:microtrench_sample}
 \end{figure}
@@ -707,8 +709,6 @@ $$
 
 This however does not reflect human perception of light, as human eyes' spectral sensitivity is not uniform across the color spectrum \cite{wyszecki1982color}. Indeed, as Osorio and Vorobyev shows in 2005, each species has its own specific spectral sensitivity distribution \cite{osorio2005photoreceptor}, as can be seen in following figure:
 
-%TODO find better picture
-
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.5\textwidth]{images/spectral_sensitivity_human.pdf}
@@ -849,8 +849,6 @@ Geometrically, brightness describes the level of visibleness of a pixel. Adjusti
 \subsection{Robust automatic threshold selection (RATS)}
 \label{subsubsection:rats}
 
-%TODO move parts to Chapter 3
-
 Robust Automated Threshold Selection (RATS), based on description by Wilkinson and Schut\cite{wilkinson1998digital}, computes a threshold map for an image based on two criteria: pixel values, and pixel gradients \cite{fiji2017rats}.
 
 The gradient is computed using the so-called Sobel kernel \cite{sobel1990isotropic} a commonly used in computer vision for edge detection as it particularly emphasizes edges in an image upon transformation. It is a discrete differential operator which computes an approximation of the gradient of the intensity function $J$.
@@ -971,6 +969,7 @@ Following image explains the definition of contours and their hierarchy:
 
 There are several well known algorithms for hierarchical contours recognition. In our case, the algorithm of Suzuki and Abe \cite{suzuki1985topological} is used. The algorithm works by walking along the border between two regions of different color. The border walking process is done hierarchically creating tree-like dependency structure of contours. We then take the outermost (hierarchically the highest) contours which are then filled. The filling in turn is simply done by assigning neutral value in every pixel located inside every outermost contour.
 
+%TODO add similar image to analytic pipeline
 %\begin{figure}[H]
 %\centering
 %\begin{subfigure}{\textwidth}
@@ -1043,7 +1042,7 @@ I^{conv_G}(x, y) = \frac{\sum_{(i, j) \in C}  I^G(i, j)}{\| C \|}
 for $C := \{(i, j)  \text{  where } d_{L_2}((x, y), (i, j)) \leq d\}$. It can be seen from the equation that increasing the radius $d$ increases the pull-down effect on the pixel and hence increases the smoothness of in the image. We exploit this property to create regional gradient which will be used to normalize an image by its background gradient. By dividing the value of each pixel by the convoluted value of it we can correct the image by its global background noise. The Gaussian blur-corrected intensity $I^{conv_G}$ is thus defined as
 
 \begin{equation}
-I^{c_G}(x, y) = \frac{I(x, y)}{I^{c_G}(x, y)} 
+I^{c_G}(x, y) = \frac{I(x, y)}{I^{conv_G}(x, y)} 
 \label{equation:gauss_blur_correction}
 \end{equation}
 
@@ -1619,9 +1618,6 @@ for $Z \sim F(n_1, n_2)$.
 
 \chapter{Analytic Pipeline}
 
-%TODO adjust figure references
-%TODO expand chapter
-
 In this chapter the image and data analytic pipeline is presented. Each pipeline of image processing analysis is elaborated with reference to publications and the definitions from Chapter \ref{chapter:data_and_method}.
 Every method developed/used in the pipeline is brought forward and explained with references to scientific literature and the definitions brought forward in Chapter \ref{chapter:data_and_method}.
 
@@ -1771,7 +1767,7 @@ Subfigure \ref{fig:pipeline1}h shows the recognized cells from input image shown
 
 \subsection{Cells tracking}
 
-Upon detection, the cells are assigned to tracks and concatenated to cellular trees. The details of the method used, the Linear Assignment Problem (LAP) Tracker \cite{jaqaman2008robust}, is elaborated in Subsection \ref{subsection:cell_tracking}. The tracking is done using the \textbf{LAP Tracker} in the Fiji TrackMate plugin \cite{tinevez2017trackmate} with following parameters:
+Upon detection, the cells are assigned to tracks and concatenated to cell trees. The details of the method used, the Linear Assignment Problem (LAP) Tracker \cite{jaqaman2008robust}, is elaborated in Subsection \ref{subsection:cell_tracking}. The tracking is done using the \textbf{LAP Tracker} in the Fiji TrackMate plugin \cite{tinevez2017trackmate} with following parameters:
 
 \begin{table}[H]
 \centering
@@ -1785,6 +1781,7 @@ Parameter & Value \\
 \texttt{frame\_to\_frame\_linking\_pixel} & 25 \\
 \texttt{track\_segment\_gap\_closing\_pixel} & 25 \\
 \texttt{track\_segment\_gap\_closing\_max\_frame} & 6 \\
+\texttt{track\_segment\_splitting} & \texttt{True} \\
 \texttt{track\_segment\_splitting\_pixel} & 25 \\
 \end{tabular}
 \end{table}
@@ -1804,10 +1801,6 @@ Figure \ref{fig:pipeline1}i shows the tracked trajectory of the cells from Figur
 
 \section{Single cell tracking in the fluorescent channel and cell death signal determination}
 \label{section:pipeline_fluoroscent}
-
-%TODO proofread
-%TODO expand and make chapter coherent
-%TODO add graphical representation of cell death determination (like the one made for Eli)
 
 The main issue of fully tracking the cells using only brightfield images is the fact that the reliability of the tracking decreases as the cells are put under stress. Dying cells stop moving, become small and unstructured, and loose a distinctive bright signal in the brightfield channel, which makes them hard to track. The longer the experiment proceeds after treatment, the more likely that the cells will be lost from the tracking algorithm due to aforementioned factors.
 
@@ -1855,9 +1848,12 @@ Parameter & Value \\
 \texttt{frame\_to\_frame\_linking\_pixel} & 35 \\
 \texttt{track\_segment\_gap\_closing\_pixel} & 35 \\
 \texttt{track\_segment\_gap\_closing\_max\_frame} & 2 \\
-\texttt{track\_segment\_splitting\_pixel} & 35 \\
+\texttt{track\_segment\_splitting} & \texttt{False} \\
+\texttt{track\_segment\_splitting\_pixel} & 25 \\
 \end{tabular}
 \end{table}
+
+Note that track splitting is disabled in the fluorescent tracking. The reason behind this is simply because the fluorescent signal is indicative of the cell death caused by the failure to undergo mitosis.
 
 \begin{figure}[H]
 
@@ -1884,13 +1880,69 @@ Parameter & Value \\
 
 \subsection{Cell death determination}
 
+Since each micro-trench is uniquely identified in this pipeline, assigning location of a cell tree with a micro-trench it is placed is the matter of finding which contour contains the starting coordinate of a cell track. We can thus combine the tracking information from both brightfield and fluorescent images to create cell death signal-corrected tracking data. Figure \ref{fig:cell_death_def} shows how it is done. First, we have one bright field cell track associated with one micro-trench. The next step would be to find out whether there is one fluorescent cell track associated with the micro-trench. Had there any, the death time of the cell is then updated to the start of fluorescent the cell track. However, since not every micro-trench is associated with one cell track (see Figure \ref{fig:microtrench_sample} for typical view of a well and Figure (TODO  Ch. 4) for the occupancy distribution of the micro-trenches), several considerations have to be made. Following is the table of possible occupancy scenario and what to do with the data (BF: brigtfield, FS: fluorescent) in unsynchronized experiment:
 
+\begin{table}[H]
+\centering
+\begin{tabular}{ c | c | c | l  }
+Trees\textsubscript{BF} & Children\textsubscript{BF} & Trees\textsubscript{FS} & Remark \\
+\hline
+0 & 0 & NA & Do nothing, not relevant for analysis\\
+1 & 1 & NA & Do nothing, cell not dividing \\
+1 & 2 & 0  & Do nothing, cell not dying \\
+1 & 2 & 1  & Correct TTD; dead cell analyzed for TTD \\
+1 & 2 & 2  & Correct TTDs; dead cells analyzed for TTD and SC \\
+1 & 2+ & NA & Do nothing, some clones divided $> 1$ times\\
+2+ & NA & NA  & Do nothing, too many cells \\
+\end{tabular}
+\caption[Scenario for time-to-death (TTD) and sister death time correlation (SC) analysis of unsynchronized experiment]{Scenario for time-to-death (TTD) and sister death time correlation (SC) analysis  of unsynchronized. Trees: number of cell tracks; Children: number of leaves. BF: brightfield; FS: fluorescent. Note that the cell tracks do not branch in FS.}
+\label{table:scenario_unsynchronized}
+\end{table}
 
+The scenario for synchronized experiment is described in following table:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{ c | c | l  }
+Trees\textsubscript{BF} & Trees\textsubscript{FS} & Remark \\
+\hline
+0 & NA & Do nothing, not relevant for analysis\\
+1 & NA & Do nothing, cell not dividing \\
+2 & 1 & Correct TTD; dead cell analyzed for TTD \\
+2 & 2 & Correct TTDs; dead cells analyzed for TTD and SC \\
+3+ & NA & Do nothing, too many cells \\
+\end{tabular}
+\caption[Scenario for time-to-death (TTD) and sister death time correlation (SC) analysis of unsynchronized experiment]{Scenario for TTD and SC analysis of synchronized experiment. Note that the number of cell track is equal to the number of leave in BF in synchronized experiment.}
+\label{table:scenario_unsynchronized}
+\end{table}
+
+\begin{figure}[H]
+
+\centering
+
+\begin{subfigure}{\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{images/cell_death_def_unsyn.pdf}
+  \caption{}
+  \label{fig:cell_death_def_unsyn}
+\end{subfigure}%
+
+\begin{subfigure}{.75\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{images/cell_death_def_syn_2.pdf}
+  \caption{}
+  \label{fig:cell_death_def_syn_2}
+\end{subfigure}%
+
+\caption[Definition of terms in time-to-death analysis and sister death correlation analysis]{Schematic overview of cell tracking in unsynchronized and synchronized experiments. (a) Various definitions used in unsynchronized experiment. (b) Various definitions used in synchronized experiments. Note that in case micro-trench with two tracks in fluorescent channel the assignment of the fluorescent to brightfield track does not affect time-to-death and sister-correlation analysis due to symmetric definition of time-to-death and time in cell cycle (i.e. the correlation of time-to-death between sister cells and time in cycle to time-to-death do not change no matter how the tracks assignment is done).}
+
+\label{fig:cell_death_def}
+\end{figure}
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{images/cell_death_detection}
-\caption[Illustration of annotation of PI death signal]{Illustration of annotation of of PI death signal emission as cell death time ($t_{PMP}$). (a) shows how the total emission intensity will look like if it's being tracked (image taken for one related experiment of Radler's lab). (b) The hypothetical progression of total intensity of \textit{the cell on the left} upon treatment with some approximate time points representing various cell phases marked with $\mathbf{t_1}$, $\mathbf{t_2}$, $\mathbf{t_3}$ and $\mathbf{t_4}$. Initially, the left cell behaves normally upon treatment (c/$\mathbf{t_1}$). Only upon reaching the mitotic phase, the addition of Vincristine/Daunorubicin disrupts the process. Failure of entering the next phase sets the cell onto programmed cell death (d/$\mathbf{t_2}$). As the programmed cell death process advances, the PI emission became stronger (e/$\mathbf{t_3}$). At this point, the cel recognition will recognize the cell death signal as cell and thus represents cell death annotation. After a while, the emission will keep going on after a while (f/$\mathbf{t_3}$). We are, however, only interested with the onset time ($t_{PMP}$) to determine the cell death time. Note especially the difference of onset time between the left and right cells. At $\mathbf{t_2}$, the left cell has begun programmed cell death process while the right cell has not. This difference in time-to-death between sisters is one of the focuses of the project.
+\caption[Illustration of annotation of PI death signal]{Illustration of the annotation of of PI death signal emission as the cell death time ($t_{PMP}$). (a) How the total emission intensity will look like if it's being tracked (image taken for one related experiment of Radler's lab). (b) The hypothetical progression of total intensity of \textit{the cell on the left} upon treatment with some approximate time points representing various cell phases marked with $\mathbf{t_1}$, $\mathbf{t_2}$, $\mathbf{t_3}$ and $\mathbf{t_4}$. Initially, the left cell behaves normally upon treatment (c/$\mathbf{t_1}$). Only upon reaching the mitotic phase, the addition of Vincristine/Daunorubicin disrupts the process. Failure of entering the next phase sets the cell onto programmed cell death (d/$\mathbf{t_2}$). As the programmed cell death process advances, the PI emission became stronger (e/$\mathbf{t_3}$). At this point, the cel recognition will recognize the cell death signal as cell and thus represents cell death annotation. After a while, the emission will keep going on after a while (f/$\mathbf{t_3}$). We are, however, only interested with the onset time ($t_{PMP}$) to determine the cell death time and correct the track data (see Figure \ref{fig:cell_death_def}). Note especially the difference of onset time between the left and right cells. At $\mathbf{t_2}$, the left cell has begun programmed cell death process while the right cell has not. This difference in time-to-death between sisters is one of the focuses of the project.
 }
 \label{fig:cell_death_determination_example}
 \end{figure}
@@ -1912,13 +1964,15 @@ Parameter & Value \\
 The image processing pipelines for both brightfield and florescence channels can be seen in following figures:
 
 %TODO separate huge images into smaller images
+%TODO add following explanation:
+%Brightfield channel pipeline. (j) The original out-of-focus image of the upper left corner of  the image position 41. (k) The view of the same area as (l) after applying brightness and contrast adustment. (m) The view of the same area after applying RATS on image in (n) showing the contour of micro-trenches in the area. (d) The contours filled with neutral color (black). Note that some micro-trenches are not filled as they are open and thus topologically not the outernmost contours. Scale bar on the uppermost figure is $100 \mu M$ long
 
 \begin{landscape}
 \begin{figure}[H]
    \centering
     %\includegraphics[width=1.0\textwidth]{Image.eps}
     \includegraphics[height=0.95\textheight]{images/pipeline/01.pdf}
-    \caption[Brightfield channel pipeline]{Brightfield channel pipeline. (j) The original out-of-focus image of the upper left corner of  the image position 41. (k) The view of the same area as (l) after applying brightness and contrast adustment. (m) The view of the same area after applying RATS on image in (n) showing the contour of micro-trenches in the area. (d) The contours filled with neutral color (black). Note that some micro-trenches are not filled as they are open and thus topologically not the outernmost contours. Scale bar on the uppermost figure is $100 \mu M$ long}
+    \caption[Brightfield channel pipeline]{}
 \end{figure}
 \label{fig:pipeline1}
 \end{landscape}
@@ -1958,6 +2012,8 @@ In this chapter the findings of the project are presented. The application of th
 \item Variability of time-to-death by time-in-cycle.
 \item Machine learning models of cell death.
 \end{itemize}
+
+\section{Occupancy of micro-trench}
 
 \section{Distribution of cell cycle duration times}
 
