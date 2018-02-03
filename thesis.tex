@@ -24,7 +24,10 @@
 \usepackage{lscape}
 \usepackage{graphicx}
 \usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{subcaption}
 \geometry{a4paper,left=2.5cm,right=2.5cm, top=2.5cm, bottom=3cm}
+
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
 \SetKwInOut{Parameter}{Parameters}
 
@@ -1996,7 +1999,7 @@ The image processing pipelines for both brightfield and florescence channels can
    \centering
     %\includegraphics[width=1.0\textwidth]{Image.eps}
     \includegraphics[height=0.95\textheight]{images/pipeline/01.pdf}
-    \caption[Brightfield channel pipeline]{}
+    \caption[Brightfield channel pipeline]{Brightfield channel pipeline}
 \end{figure}
 \label{fig:pipeline1}
 \end{landscape}
@@ -2006,7 +2009,7 @@ The image processing pipelines for both brightfield and florescence channels can
    \centering
     %\includegraphics[width=0.5\textwidth]{Image.eps}
     \includegraphics[height=\textheight]{images/pipeline/02.pdf}
-    \caption[Fluoroscence channel pipeline]{Fluoroscence channel pipeline}
+    \caption[Fluoroscence channel pipeline]{Fluorescence channel pipeline}
 \end{figure}
 \label{fig:pipeline2}
 \end{landscape}
@@ -2121,23 +2124,130 @@ The distribution of occupancy is checked to confirm this. For an image position,
 
 On the down side, however, knowing the process is Poisson, increasing the number of singly-placed cells beyond this distribution is hard due to the nature of the process explained in the assumptions list. Manually placing each cancer cell takes a lot of time and may not work at all. Scaling experiment thus, for now, translates directly to increasing the number of micro-trench to increase the number of singly-placed cancer cells.
 
-\section{Distribution of cell cycle duration times}
+The complete occupancy statistics for every valid image positions in the unsynchronized and synchronized experiments can be seen in Table and \ref{table:occupancy_statistics_syn} \ref{table:occupancy_statistics_syn} in Appendix \ref{chapter:appendix_tables}.
+
+\section{Distribution of cell cycle duration (CCD) times}
 \label{section:cycle:cycle_duration}
 
-%TODO adjust and add
-%TODO explain results and discussion
+To conduct CCD analysis, cell lines fulfilling criteria in Table \ref{table:cell_reqs_ccd} are used. For each cell tree, we determine the first division time point $t_0$, the second division of the first daughter cell at time $t_1$, and the division second daughter cell at $t_2$. Figure \ref{fig:ccd_schema} also shows an exemplary image series of one trench filled with initially one cell which gives rise to four cells within the first 45 hours. 
 
-Daughter cells contained in the micro-trenches and being separately trackable (Figure 2a) allow to accurately determine the cell cycle length (Figure 2b) and the time difference in division time points between sister cells (Figure 2c). For each cell, we determine the first division time point t0, the second division of the first daughter cell at time t1, and the division second daughter cell at t2. Figure 2a also shows an exemplary image series of one trench filled with initially one cell which gives rise to four cells within the first 30 hours. In our experiments 320 MOLM-13 cells were observed for 40 hours to detect a minimum of two divisions. The cell cycle duration distribution with a mean of $19.7 \pm 2.6$ (mean $\pm$ std) hours is well described by both a lognormal distribution (red dotted line, Figure 2b) and a gamma distribution (dashed blue line, Figure 2b). Figure 2c shows the distribution of the difference between the cell cycle duration times for sister cells. In this case, 160 pairs of daughter cells were analyzed. The dashed blue line is a gamma distribution fit with a mean value of 2 h. In the inset a correlation plot of the cell cycle duration times for sister cells (black dots) and for randomly paired cells (red dots) is presented. Daughter cells divide in a highly correlated manner with a Pearson correlation of r=0.85, while random paired cells show a much smaller correlation (r=0.25).
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth]{images/divs/cell_graphics.pdf}
+\caption{Schematic representation of the individual time spans, $T_{div}$ , from one cell division event to the next. The timepoints are all in \texttt{hours:minutes}}
+\label{fig:ccd_schema}
+\end{figure}
 
-The observed lognormal cell cycle duration distribution is well documented in literature, with both the size of mammalian cells as well as cell doubling times following a lognormal distribution [26, 27]. The underlying mechanism of cell division timing is an active field of research. It is however assumed that the so-called added model accepted in bacteria [28] is also valid in somatic cells. In general size regulation can arise from various types of coupling between cell size, cell growth and cell cycle progression [29]. It has also been proposed, based on a coupled mathematical model of mammalian cell cycle and circadian clock, that the circadian clock triggers critical size control in the mammalian cell cycle and that it is more readily observed in cell lines that contain circadian rhythms [30]. In this context it is important that the adder mechanism also predicts exponential time correlation between sister cells as observed in our experiments [28]. 
+In unsynchronized and synchronized experiments, 58 and 13 sisters of singly-placed AML-M5a MOLM-13 cells were observed for 45 and 24 hours to detect a minimum of two divisions. Some distributional statistics are gathered for each experiment. The data were also fitted with gamma (dashed blue line, see Subfigures \ref{fig:ccd_unsyn} and \ref{fig:ccd_syn}) and lognormal (red line, see Subfigures \ref{fig:ccd_unsyn} and \ref{fig:ccd_syn}) distributions.  Following table lists down the findings for unsynchronized experiment:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{ c | c }
+Category & Value \\
+\hline
+Size & 116 cells (25 sisters pairs) \\
+Mean $T_{div}$ & 20.903 hours \\
+Median $T_{div}$ & 20.458 hours \\
+Standard dev. of $T_{div}$ & 4.981 hours \\
+\hline
+Gamma -- shape & 5.688 \\
+Gamma -- shift & 8.490 \\
+Gamma -- scale & 2.182 \\
+\hline Lognorm -- shape & 0.200 \\
+Lognorm --  shift & -4.177 \\
+Lognorm --  scale & 24.596 \\
+\end{tabular}
+\caption[Results of CCD analysis in unsynchronized experiment]{Results of CCD analysis in unsynchronized experiment.}
+\label{table:ccd_res_unsyn}
+\end{table}
+
+Following table lists down the findings for synchronized experiment
+
+\begin{table}[H]
+\centering
+\begin{tabular}{ c | c }
+Category & Value \\
+\hline
+Size & 26 cells (13 sisters pairs) \\
+Mean $T_{div}$ & 20.753 hours \\
+Median $T_{div}$ & 21.125 hours \\
+Standard dev. of $T_{div}$ & 1.324 hours \\
+\hline
+Gamma -- shape & 345.341 \\
+Gamma -- shift & -4.265 \\
+Gamma -- scale & 0.072 \\
+\hline Lognorm -- shape & 0.003 \\
+Lognorm --  shift & -426.146 \\
+Lognorm --  scale & 446.897 \\
+\end{tabular}
+\caption[Results of CCD analysis in synchronized experiment]{Results of CCD analysis in synchronized experiment.}
+\label{table:ccd_res_unsyn}
+\end{table}
+
+The difference in size is attributable to the fact that unlike in unsynchronized experiment, the image capturing only last for 24 hours in synchronized experiment. Thus, assuming the cells are in various phase when the recording start, only cells that have just divided at the start of the recording will ever divide twice (see the distribution of cell-cycle time). In a sense, the size difference confirms our finding regarding the duration of the cell cycle. The numbers are also in line with  previously done experiment on the cell cycle  duration of the AML-M5a MOLM-13 cell line \cite{sekhavati2015dynamic}.
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}{.65\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{images/unsyn_cell_cycle_length_control.pdf}
+  \caption{}
+  \label{fig:ccd_unsyn}
+\end{subfigure}
+\begin{subfigure}{.65\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{images/syn_cell_cycle_length_control.pdf}
+  \caption{}
+  \label{fig:ccd_syn}
+\end{subfigure}
+\caption{Measured distribution of cell cycle duration (CCD) $T_{div}$ of (a) unsynchronized and (b) synchronized experiments from an ensemble of 116 and 26 cells (AML-M5a MOLM-13) showing a mean doubling time of (a) $20.90$ hours and standard deviation of $4.98$ hours and (b) $20.75$ hours and standard deviation of $1.32$ hours. The dotted red line corresponds to the lognormal fit and the dashed blue line to the gamma distribution fit.}
+\label{fig:ccd_all}
+\end{figure}
+
+The observed lognormal cell cycle duration distribution is well documented in literature, with both the size of mammalian cells as well as cell doubling times following a lognormal distribution \cite{hosoda2011origin, paulus1975platelet}. The underlying mechanism of cell division timing is an active field of research. It is however assumed that the so-called added model accepted in bacteria \cite{campos2014constant} is also valid in somatic cells. In general size regulation can arise from various types of coupling between cell size, cell growth and cell cycle progression \cite{cadart2017size}. It has also been proposed, based on a coupled mathematical model of mammalian cell cycle and circadian clock, that the circadian clock triggers critical size control in the mammalian cell cycle and that it is more readily observed in cell lines that contain circadian rhythms \cite{zamborszky2007computational}. In this context it is important that the adder mechanism also predicts exponential time correlation between sister cells as observed in our experiments \cite{campos2014constant}.
+
+We also analyzed the difference of CCD between two sisters. Subfigures \ref{fig:ccd_hist_syn} and \ref{fig:ccd_hist_unsyn} show the distribution of the difference in CCD between sister cells in unssynchronized and synchronized experiments. Subfigures \ref{fig:ccd_scatter_unsyn} and \ref{fig:ccd_scatter_syn} show the correlation plots of $T_{div}$ of sister cells (black circle) and randomly picked pairs (red triangle) from unsynchronized and synchronized experiments.
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}{.4\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{images/ccd_hist_unsyn.pdf}
+  \caption{}
+  \label{fig:ccd_hist_unsyn}
+\end{subfigure}
+~
+\begin{subfigure}{.4\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{images/ccd_scatter_unsyn.pdf}
+  \caption{}
+  \label{fig:ccd_scatter_unsyn}
+\end{subfigure}
+
+\centering
+
+\begin{subfigure}{.4\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{images/ccd_hist_syn.pdf}
+  \caption{}
+  \label{fig:ccd_hist_syn}
+\end{subfigure}
+~
+\begin{subfigure}{.4\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{images/ccd_scatter_syn.pdf}
+  \caption{}
+  \label{fig:ccd_scatter_syn}
+\end{subfigure}
+\caption[Difference of cell-cycle duration between sisters]{Difference of cell-cycle duration between sisters. Distribution of the difference of the cell cycle duration between sister cells in (a) unsynchronized and (b) synchronized experiment. Correlation plots of the cell cycle duration for sister cells (black circles) and randomly paired cells (red  triangles) in (a) unsynchronized and (b) synchronized experiments. In unsynchronized experiment, the Pearson correlation coefficient for sister cells is r = $0.525$ with p-value = $2.66 \cdot 10^{-5}$, and for random-paired cells r = $0.02$ with p-value = $0.85$.  In synchronized experiment, the Pearson correlation coefficient for sister cells is r = 0.956 with p-value = $1.24 \cdot 10^{-6}$, and for random-paired cells r = $-0.48$ with p-value = $1.09$.}
+\label{fig:ccd_diff_all}
+\end{figure}
 
 \section{Variability of time-to-death between sister cells}
 \label{section:sisters_death_time}
 
 %TODO adjust and add
 %TODO explain results and discussion
-
-\section{Variability of time-to-death by time-in-cycle}
 
 MOLM-13 cells were seeded from the cell culture flask in the micro-trenches array and directly placed under the time-lapse microscope. Mother cell mitosis, i.e. the division time (t0), is used as a reference point of the cell-phase indication. After 20 hours, when most cells had divided once based on the previously measured cell cycle duration distribution (Figure 2b), the drugs (Vincristine or Daunorubicin) were added (Figure 3a). Time-lapse movies were simultaneously taken in brightfield and fluorescence. To track the cells in an automated routine (see Methods) we acquired the brightfield images in a slightly defocused mode (focus at -20 μm), which resulted in images with slightly blurred but well peaked intensity distribution. Fluorescence images of both the propidium iodide (PI) and the Cell Event Caspase 3/7 marker for the Vincristine data and of only the Cell Event Caspase 3/7 marker for the Daunorubicin data, since Daunorubicin is autofluorescent in the red region, were acquired. In Figure 3a a timeline of the experimental procedure is shown together with exemplary brightfield and fluorescence (PI marker) images are shown in overlay.
 
@@ -2147,9 +2257,7 @@ Comparison of synchronized and unsynchronized populations. We performed a cytoto
 
 In Figure 5 we compare our results of the unsynchronized cell population (Figure 3) with a cell population synchronized with thymidine block (Figure 4). For both the unsynchronized and the synchronized population, the total number of dead cells as a function of drug concentration is shown in Figure 5a and shows the expected increase in death response with increasing dose. Figure 5b, shows the death times between the synchronized (blue) and the unsynchronized (red) population. The distributions plotted are the normalized number of cells in all drug treatments, for all cells tracked. Apart from a peak at the beginning of the measurement in the synchronized population, the shape of the two distributions is equivalent. In the synchronized population less cells haves a short time-to-death, especially evident in the VCR 1000 nM concentration (Figure 3b and 4b), indicating that the synchronized population is more resistant to death. In Figure 5c, we show scatter plots of the time-to-death between sister cells in an ensemble of all drug treatments. The Pearson correlation coefficient (r) is 0.5 (medium correlation) for the sister cells of the unsynchronized population and 0.06 for the synchronized. The ellipses indicate the directionality of the correlation. Thus, the time-to-death between sister cells was positively correlated for the unsynchronized population but not for the synchronized.
 
-
-\section{Correlation of time-to-death to time-in-cycle}
-\label{section:time_to_death_time_in_cycle}
+\section{Variability of time-to-death by time-in-cycle}
 
 %TODO adjust and add
 %TODO explain results and discussion
@@ -2225,9 +2333,10 @@ Introduced by Oliver Hilsenbeck in his master's thesis in 2014 \cite{hilsenbeck2
 \begin{table}[H]
 \centering
 \begin{tabular}[t]{ c | c | c }
-Position & $\delta_x$ & $\delta_y$
-\\
 \hline
+Pos. & $\delta_x$ & $\delta_y$
+\\
+\hline\hline
 01 & -2 & -4
 \\
 02 & -3 & -4
@@ -2269,12 +2378,15 @@ Position & $\delta_x$ & $\delta_y$
 20 & -6 & -4
 \\
 21 & -7 & -5
+\\
+\hline
 \end{tabular}
 ~
 \begin{tabular}[t]{ c | c | c }
-Position & $\delta_x$ & $\delta_y$
-\\
 \hline
+Pos. & $\delta_x$ & $\delta_y$
+\\
+\hline\hline
 22 & -7 & -4
 \\
 23 & -7 & -4
@@ -2316,13 +2428,15 @@ Position & $\delta_x$ & $\delta_y$
 41 & -7 & -3
 \\
 42 & -7 & -3
+\\
+\hline
 \end{tabular}
 ~
 \begin{tabular}[t]{ c | c | c }
-%\hline
-Position & $\delta_x$ & $\delta_y$
-\\
 \hline
+Pos. & $\delta_x$ & $\delta_y$
+\\
+\hline\hline
 43 & -7 & -3
 \\
 44 & -7 & -3
@@ -2364,12 +2478,246 @@ Position & $\delta_x$ & $\delta_y$
 62 & -3 & -2
 \\
 63 & -4 & -2
+\\
+\hline
 \end{tabular}
 \caption[The inferred shift (in pixels) for each image position in unsynchronized experiment]{The inferred shift (in pixels) for each image position in unsynchronized experiment. The shifts are inferred using the shift correction algorithm explained in Subsection \ref{subsection:shift_correction}.}
 \label{table:inferred_shift}
 \end{table}
 
+\section{Micro-trench occupancy statistics}
 
+\begin{table}[H]
+\begin{tabular}[t]{ c | c | c | c | c | c | c }
+\hline
+Pos. & Det. & Occ. & 1 & 2 & 3 & 4+
+\\
+\hline\hline
+1 & 305 & 68 & 55 & 12 & 1 & 0
+\\
+2 & 314 & 57 & 52 & 5 & 0 & 0
+\\
+3 & 291 & 57 & 48 & 8 & 1 & 0
+\\
+6 & 300 & 76 & 64 & 11 & 1 & 0
+\\
+7 & 313 & 62 & 47 & 14 & 0 & 1
+\\
+8 & 310 & 78 & 69 & 9 & 0 & 0
+\\
+9 & 305 & 77 & 59 & 16 & 2 & 0
+\\
+10 & 303 & 54 & 45 & 9 & 0 & 0
+\\
+12 & 253 & 79 & 60 & 17 & 2 & 0
+\\
+14 & 234 & 79 & 56 & 13 & 7 & 3
+\\
+15 & 301 & 86 & 66 & 15 & 5 & 0
+\\
+16 & 305 & 53 & 44 & 8 & 0 & 1
+\\
+17 & 309 & 69 & 54 & 15 & 0 & 0
+\\
+18 & 199 & 30 & 25 & 5 & 0 & 0
+\\
+21 & 240 & 49 & 45 & 4 & 0 & 0
+\\
+22 & 232 & 53 & 49 & 4 & 0 & 0
+\\
+23 & 235 & 64 & 48 & 7 & 8 & 1
+\\
+24 & 305 & 59 & 53 & 5 & 0 & 1
+\\
+25 & 307 & 62 & 60 & 2 & 0 & 0
+\\
+26 & 296 & 85 & 76 & 6 & 3 & 0
+\\
+27 & 312 & 83 & 69 & 12 & 2 & 0
+\\
+28 & 308 & 93 & 78 & 14 & 0 & 1
+\\
+29 & 208 & 22 & 20 & 2 & 0 & 0
+\\
+30 & 307 & 80 & 63 & 12 & 3 & 2
+\\
+31 & 307 & 87 & 64 & 18 & 4 & 1
+\\
+32 & 292 & 40 & 35 & 5 & 0 & 0
+\\
+\hline
+\end{tabular}
+~
+\begin{tabular}[t]{ c | c | c | c | c | c | c }
+\hline
+Pos. & Det. & Occ. & 1 & 2 & 3 & 4+
+\\
+\hline\hline
+33 & 311 & 55 & 50 & 4 & 1 & 0
+\\
+34 & 109 & 14 & 13 & 1 & 0 & 0
+\\
+35 & 266 & 56 & 51 & 5 & 0 & 0
+\\
+36 & 108 & 19 & 16 & 3 & 0 & 0
+\\
+39 & 284 & 111 & 87 & 20 & 4 & 0
+\\
+40 & 310 & 67 & 60 & 6 & 1 & 0
+\\
+41 & 309 & 76 & 66 & 10 & 0 & 0
+\\
+42 & 301 & 78 & 68 & 10 & 0 & 0
+\\
+43 & 286 & 85 & 73 & 10 & 1 & 1
+\\
+45 & 295 & 45 & 36 & 8 & 1 & 0
+\\
+46 & 312 & 57 & 50 & 7 & 0 & 0
+\\
+47 & 217 & 71 & 60 & 10 & 1 & 0
+\\
+48 & 280 & 80 & 67 & 11 & 1 & 1
+\\
+49 & 312 & 77 & 70 & 6 & 1 & 0
+\\
+50 & 262 & 57 & 48 & 7 & 2 & 0
+\\
+51 & 304 & 114 & 84 & 26 & 4 & 0
+\\
+52 & 287 & 94 & 69 & 21 & 4 & 0
+\\
+55 & 309 & 67 & 57 & 9 & 1 & 0
+\\
+56 & 281 & 53 & 45 & 8 & 0 & 0
+\\
+57 & 307 & 44 & 40 & 4 & 0 & 0
+\\
+58 & 280 & 60 & 56 & 4 & 0 & 0
+\\
+59 & 57 & 14 & 13 & 1 & 0 & 0
+\\
+61 & 304 & 58 & 51 & 7 & 0 & 0
+\\
+62 & 298 & 101 & 83 & 16 & 2 & 0
+\\
+63 & 214 & 51 & 48 & 3 & 0 & 0
+\\
+\hline
+\end{tabular}
+\caption[The occupancy statistics of the unsynchronized experiment]{The number of detected micro-trenches (Det.), occupied micro-trenches (Occ.), micro-trenches with one cell tree (1), micro-trenches with two cell trees (2), micro-trenches with three cells (3) and micro-trenches with more than 3 cells (4+) of the unsynchronized experiment.}
+\label{table:occupancy_statistics_unsyn}
+\end{table}
+
+\newpage
+
+\begin{table}[H]
+\begin{tabular}[t]{ c | c | c | c | c | c | c }
+\hline
+Pos. & Det. & Occ. & 1 & 2 & 3 & 4+
+\\
+\hline\hline
+1 & 294 & 40 & 38 & 2 & 0 & 0
+\\
+2 & 305 & 31 & 30 & 1 & 0 & 0
+\\
+3 & 310 & 66 & 51 & 14 & 1 & 0
+\\
+6 & 311 & 26 & 24 & 2 & 0 & 0
+\\
+7 & 313 & 16 & 16 & 0 & 0 & 0
+\\
+8 & 280 & 70 & 63 & 7 & 0 & 0
+\\
+9 & 299 & 31 & 29 & 2 & 0 & 0
+\\
+11 & 290 & 50 & 46 & 3 & 1 & 0
+\\
+13 & 310 & 76 & 63 & 12 & 1 & 0
+\\
+15 & 263 & 32 & 27 & 4 & 1 & 0
+\\
+16 & 305 & 50 & 45 & 5 & 0 & 0
+\\
+17 & 307 & 71 & 66 & 4 & 1 & 0
+\\
+18 & 314 & 79 & 65 & 11 & 3 & 0
+\\
+21 & 314 & 71 & 62 & 9 & 0 & 0
+\\
+22 & 309 & 70 & 65 & 5 & 0 & 0
+\\
+23 & 306 & 53 & 47 & 5 & 1 & 0
+\\
+24 & 302 & 69 & 61 & 8 & 0 & 0
+\\
+27 & 294 & 98 & 75 & 18 & 5 & 0
+\\
+28 & 311 & 71 & 58 & 11 & 1 & 1
+\\
+30 & 303 & 59 & 51 & 8 & 0 & 0
+\\
+31 & 305 & 56 & 50 & 6 & 0 & 0
+\\
+32 & 306 & 65 & 57 & 7 & 1 & 0
+\\
+33 & 311 & 70 & 62 & 7 & 1 & 0
+\\
+\hline
+\end{tabular}
+~
+\begin{tabular}[t]{ c | c | c | c | c | c | c }
+\hline
+Pos. & Det. & Occ. & 1 & 2 & 3 & 4+
+\\
+\hline\hline
+35 & 314 & 72 & 58 & 14 & 0 & 0
+\\
+36 & 310 & 73 & 59 & 14 & 0 & 0
+\\
+39 & 312 & 106 & 98 & 7 & 1 & 0
+\\
+40 & 310 & 72 & 60 & 10 & 2 & 0
+\\
+41 & 297 & 68 & 57 & 9 & 2 & 0
+\\
+42 & 309 & 55 & 49 & 4 & 2 & 0
+\\
+43 & 307 & 40 & 37 & 2 & 1 & 0
+\\
+45 & 300 & 52 & 44 & 6 & 2 & 0
+\\
+46 & 298 & 59 & 53 & 5 & 1 & 0
+\\
+48 & 308 & 63 & 57 & 5 & 0 & 1
+\\
+49 & 314 & 72 & 63 & 7 & 2 & 0
+\\
+51 & 314 & 51 & 42 & 9 & 0 & 0
+\\
+52 & 313 & 40 & 37 & 2 & 1 & 0
+\\
+54 & 319 & 52 & 46 & 6 & 0 & 0
+\\
+55 & 304 & 55 & 51 & 4 & 0 & 0
+\\
+56 & 311 & 101 & 89 & 10 & 2 & 0
+\\
+57 & 310 & 63 & 51 & 11 & 1 & 0
+\\
+58 & 309 & 32 & 28 & 4 & 0 & 0
+\\
+61 & 309 & 51 & 48 & 2 & 1 & 0
+\\
+62 & 304 & 43 & 38 & 5 & 0 & 0
+\\
+63 & 294 & 8 & 8 & 0 & 0 & 0
+\\
+\hline
+\end{tabular}
+\caption[The occupancy statistics of the synchronized experiment]{The number of detected micro-trenches (Det.), occupied micro-trenches (Occ.), micro-trenches with one cell tree (1), micro-trenches with two cell trees (2), micro-trenches with three cells (3) and micro-trenches with more than 3 cells (4+) of the synchronized experiment.}
+\end{table}
+\label{table:occupancy_statistics_syn}
 \chapter{Experiment Protocols}
 
 %\section{Micro-trenches array fabrication}
