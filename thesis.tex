@@ -2029,7 +2029,7 @@ In this chapter the findings of the project are presented. The pipeline describe
 
 \section{Characteristics of analyzed cells}
 
-As already discussed in Subsection \ref{subsection:cell_death_determination}, we are mainly interested in the analysis of singly-placed cell  for various analysis in this project. This, however, is not the only requirement for such. Table \ref{table:cell_reqs_main} lists down the successively stricter category a cell tree has to fulfill for time-to-death (TTD) and sisters death time (SDT) correlation analyses in unsynchronized experiment.
+As already discussed in Subsection \ref{subsection:cell_death_determination}, we are mainly interested in the analysis of singly-placed cell  for various analyses in this project. This, however, is not the only requirement for such. Table \ref{table:cell_reqs_main} lists down the successively stricter categories a cell tree has to fulfill for time-to-death (TTD) and sisters death time (SDT) correlation analyses in unsynchronized experiment.
 
 \begin{table}[H]
 \centering
@@ -2046,7 +2046,7 @@ Children's DT & $t_{death} > t_{treat}$  & Both children die after the treatment
 \label{table:cell_reqs_main}
 \end{table}
 
-The reason is rather tautological: to investigate differential dynamics of cancer drug treatment between two sister cells, both cells have to divide before the treatment and die after treatment. The single division emphasizes the necessity for the cells to die in the experiment. The requirement also requires the tracking data to be highly reliable due to the micro-trench having only one cell tree and thus reducing mistracking error (see Subsection \ref{section:occupancy_of_microtrench}).
+The reason is rather tautological: to investigate differential dynamics of cancer drug treatment between two sister cells, both cells have to divide before the treatment and die after treatment. The single division emphasizes the necessity for cells to die in the experiment. Furthermore, the tracking data needs to be highly reliable due to the micro-trench having only one cell tree and thus reducing mistracking error (see Subsection \ref{section:occupancy_of_microtrench}).
 
 Table \ref{table:cell_reqs_syn} lists down requirements for TTD analysis in synchronized experiment.
 
@@ -2105,12 +2105,12 @@ Grandchildren's DT & $t_{death} > t_{treat}$  & All grandchildren die after the 
 \section{Occupancy of micro-trench}
 \label{section:occupancy_of_microtrench}
 
-Ideally, a micro-trench setup should maximize tracking accuracy and throughput. This means that every wafer should have as many micro-trench as possible while having as many singly-placed cell as possible. The reason for single-placement preference can be derived from the inherent uncertainty involved during tracking. Figure \ref{fig:cell_placements} explains the issue of ambiguity arising from multiple cell placement. Given the focuses of this project stated in Chapter \ref{chapter:introduction}, we want to optimize for the placement setting with as many singly placed cells as possible.
+Ideally, a micro-trench setup should maximize tracking accuracy and throughput. This means that every wafer should have as many micro-trenches as possible while having as many singly-placed cells as possible. The reason for single-placement preference can be derived from the inherent uncertainty involved during tracking. Figure \ref{fig:cell_placements} explains the issue of ambiguity arising from multiple cell placement. Given the focuses of this project stated in Chapter \ref{chapter:introduction}, we want to optimize for the placement setting with as many singly placed cells as possible.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.7\textwidth]{images/cells_confusion.pdf}
-\caption[Illustration of SVM in 2D]{The ambiguity arising from multiple cell placements in a micro-trench.  Each colored circle represents a cell and the dashed line enclosing the cell refers to assumed possible movement range within recording interval (a) Two cells which are far away from each other can be tracked uniquely in one recording interval. However, at one point, the cells may get close to each other. (b) Two cells that are within the movement range of other cell might be tracked wrongly. This, however, should not be the concern for analysis of time-to-death (TTD)  and sisters death time (SDT) correlation analysis. (c) In case of two or more cells the analysis gets more tricky  since two cells which are sister to each can not be mistaken for the other cells. SDT and TTD can not be done reliably in this setting.}
+\caption[Illustration of SVM in 2D]{The ambiguity arising from multiple cell placements in a micro-trench.  Each colored circle represents a cell and the dashed line enclosing the cell refers to assumed possible movement range within recording interval. (a) Two cells which are far away from each other can be tracked uniquely in one recording interval. However, at one point, the cells may get close to each other. (b) Two cells that are within the movement range of the other cell might be tracked wrongly. This, however, should not be the concern for analysis of time-to-death (TTD)  and sisters death time (SDT) correlation analysis. (c) In case of two or more cells the analysis gets more tricky  since two cells which are sisters to each other can not be mistaken for the other cells. SDT and TTD can not be done reliably in this setting.}
 \label{fig:cell_placements}
 \end{figure}
 
@@ -2119,37 +2119,37 @@ Assuming that each cell arrives at any point in the well independently at differ
 \begin{itemize}
 \item The cell placement rate is constant.
 \item In one time window, $k$ placements can take place with $k \in \mathbb{N}_0$
-\item The placement of one cell in a micro-trench does not affect the probability of another cell being placed in micro-trench.
+\item The placement of one cell in a micro-trench does not affect the probability of another cell being placed in a micro-trench.
 \item The probability of a cell being placed in a micro-trench is proportional to the time.
 \item Two cells can not land in one micro-trench at exactly the same instant.
 \end{itemize}
 
-For now, we assume these to be true in the short time when the pipette discharges AML-M5a MOLM-13 cells (this is confirmed later based on observation data). Therefore, we can well model the placement of cells in the micro-trench as a Poisson process.
+For now, we assume these to be true in the short time when the pipette discharges AML-M5a MOLM-13 cells (this is confirmed later based on observation data). Therefore, we can model the placement of cells in the micro-trench as a Poisson process.
 
-For a set of micro-trenches $\mathfrak{T}$ in an image position, the mapping $o: \mathfrak{t} \rightarrow \mathbb{N}_0$ with $\mathfrak{t} \in \mathfrak{T}$ the placement data for a micro-trench.  We then define the set
+For a set of micro-trenches $\mathfrak{T}$ in an image position, the mapping $o: \mathfrak{t} \rightarrow \mathbb{N}_0$ with $\mathfrak{t} \in \mathfrak{T}$ being the placement data for a micro-trench.  We then define the set
 
 \begin{equation}
 \mathfrak{O} := \{o(\mathfrak{t}) \; \forall \mathfrak{t} \in \mathfrak{T}\}
 \end{equation}
 
-as  the distribution of cell placement in an image data. Since the placement process is Poisson, the probability of a micro-trench being placed with $n$ cells is
+as  the distribution of cell placements in an image data. Since the placement process is Poisson, the probability of a micro-trench being placedFILLED with $n$ cells is
 
 \begin{equation}
 P_{pois}(o(\mathfrak{t}) = n) = \frac{\lambda^n}{n!} e^{-\lambda}
 \end{equation}
 
-The distribution of occupancy is checked to confirm this. For an image position, the cell tree is traced back to its location and corresponding micro-trench. Figure \ref{fig:cell_placements_dist} shows the occupancy the micro-trenches in the image position 41. The figure shows that the cell placement processed is very well modeled using Poisson process. Arguing in reverse, we can also argue that the assumptions  listed above which are necessary for the process to be Poisson seem to be true in our experiment.
+The distribution of occupancy is checked to confirm the assumption. For an image position, the cell tree is traced back to its location and corresponding micro-trench. Figure \ref{fig:cell_placements_dist} shows the occupancy of micro-trenches in the image position 41. The figure shows that the cell placement processed is very well modeled using Poisson process. Arguing in reverse, we can also say that the assumptions  listed above which are necessary for the process to be Poisson seem to be true in our experiment.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.6\textwidth]{images/occupancy_distribution.pdf}
-\caption[Occupancy distribution of micro-trenches in the image position 41.]{Occupancy distribution of micro-trenches in the image position 41. The blue line is fitted expected Poisson distribution $P_{pois}(x)$  for continuous $x$ from 0 to 3. The fitting process yields fitted parameter $\lambda = 0.242$. As shown, the model fits perfectly with observation confirming our assumption of the Poisson characteristics of the cell placement process.}
+\caption[Occupancy distribution of micro-trenches in the image position 41.]{Occupancy distribution of micro-trenches in the image position 41. The blue line is the fitted expected Poisson distribution $P_{pois}(x)$  for continuous $x$ from 0 to 3. The fitting process yields fitted parameter $\lambda = 0.242$. As shown, the model fits perfectly with observation confirming our assumption of the Poisson characteristics of the cell placement process.}
 \label{fig:cell_placements_dist}
 \end{figure}
 
-On the down side, however, knowing the process is Poisson, increasing the number of singly-placed cells beyond this distribution is hard due to the nature of the process explained in the assumptions list. Manually placing each cancer cell takes a lot of time and may not work at all. Scaling experiment thus, for now, translates directly to increasing the number of micro-trench to increase the number of singly-placed cancer cells.
+On the down side, however, knowing the process is Poisson, increasing the number of singly-placed cells beyond this distribution is hard due to the nature of the process explained in the assumptions list. Manually placing each cancer cell takes a lot of time and may not work at all. Scaling up the experiment thus, for now, translates directly to raise the number of micro-trench to increase the number of singly-placed cancer cells.
 
-The complete occupancy statistics for every valid image positions in the unsynchronized and synchronized experiments can be seen in Table and \ref{table:occupancy_statistics_syn} \ref{table:occupancy_statistics_syn} in Appendix \ref{chapter:appendix_tables}.
+The complete occupancy statistics for every valid image positions in the unsynchronized and synchronized experiments can be seen in Tables \ref{table:occupancy_statistics_unsyn} and \ref{table:occupancy_statistics_syn} in Appendix \ref{chapter:appendix_tables}.
 
 \section{Variability of cell cycle duration (CCD) time}
 \label{section:cell_cycle_duration}
