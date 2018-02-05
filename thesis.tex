@@ -453,9 +453,9 @@ Vincristine, a vinca alcaloid, is initially isolated from the Madagascar periwin
 
 \begin{figure}[H]
 \centering
-\begin{subfigure}{.8\textwidth}
+\begin{subfigure}{.4\textwidth}
   \centering
-  \includegraphics[width=.3\textwidth]{images/vincristine}
+  \includegraphics[width=\textwidth]{images/vincristine}
   \caption{}
   \label{fig:vincristine}
 \end{subfigure}
@@ -489,21 +489,21 @@ Daunorubicin is initially isolated from bacterium \textit{Streptomyces peucetius
 In normal chemotherapeutic regimes, both Vincristine and Daunorubicin are prescribed intravenously to patients \cite{skeel2011handbook}. Needless to say, both drugs will disrupt both cancerous and healthy cells. The effect is however mostly felt in actively dividing cells and organs such as blood cells and hair follicles due to chemotherapeutic agents' highly disruptive effect during cell division as mentioned above \cite{skeel2011handbook, mayo2018chemotherapy}. Figure \cite{yang2014doxorubicin} shows the structure of Daunorubicin and its mechanism of action.
 
 \begin{figure}[H]
-\begin{subfigure}{.55\textwidth}
+\begin{subfigure}{.5\textwidth}
   \centering
   \includegraphics[width=\textwidth]{images/daunorubicin}
   \caption{}
   \label{fig:dauno}
 \end{subfigure}
 ~
-\begin{subfigure}{.4\textwidth}
+\begin{subfigure}{.35\textwidth}
   \centering
   \includegraphics[width=\textwidth]{images/doxorubicin_dna}
   \caption{}
   \label{fig:anthracyclines_dna}
 \end{subfigure}
 \centering
-\begin{subfigure}{\textwidth}
+\begin{subfigure}{0.9\textwidth}
   \centering
   \includegraphics[width=\textwidth]{images/daunorubicin_mechanism}
   \caption{}
@@ -555,7 +555,7 @@ Caspase 3 and 7 are both known as executioner Caspases in programmed cell death 
 
 \subsubsection*{Propium Iodide (PI)}
 
-PI is membrane impermeable marker and generally excluded from viable cells. Therefore it is commonly used for identifying dead cells in a population and as a counterstain in multicolor fluorescent techniques. PI binds to DNA by intercalating between the bases with little or no sequence preference and with a stoichiometry of one dye per 4-5 base pairs of DNA \cite{suzuki1997dna}.  In aqueous solution, the dye has excitation/emission maxima of 493/636 nm (see Figure \ref{fig:pi_spectra}). PI also binds to RNA, necessitating treatment with nucleases to distinguish between RNA and DNA staining. Once the dye is bound to nucleic acids, its fluorescence is enhanced 20- to 30-fold. For this project PI vial from ThermoFisher Scientific is used \cite{thermofisher2018pi}.
+PI is a membrane impermeable marker and generally excluded from viable cells. Therefore it is commonly used for identifying dead cells in a population and as a counterstain in multicolor fluorescent techniques. PI binds to DNA by intercalating between the bases with little or no sequence preference and with a stoichiometry of one dye per 4-5 base pairs of DNA \cite{suzuki1997dna}.  In aqueous solution, the dye has excitation/emission maxima of 493/636 nm (see Figure \ref{fig:pi_spectra}). PI also binds to RNA, necessitating treatment with nucleases to distinguish between RNA and DNA staining. Once the dye is bound to nucleic acids, its fluorescence is enhanced 20- to 30-fold. For this project PI vial from ThermoFisher Scientific is used \cite{thermofisher2018pi}.
 
 \begin{figure}[H]
 \centering
@@ -610,10 +610,10 @@ B1: 5 nM - VCR & 56-63 \\
 
 \begin{table}[H]
 \centering
-\begin{tabular}{| l | l | c |}
+\begin{tabular}{ l | l | c }
 \hline
 Image type & Purpose & $\Delta_t$ \\
-\hline
+\hline\hline
 In-focus brightfield (BF) image & Sanity check, micro-trench masking & 30 minutes \\
 Out-of-focus BF image & Image tracking, image analysis & 15 minutes \\
 Red fluorescence channel (PI)& Image tracking, image analysis & 15 minutes \\
@@ -634,10 +634,10 @@ Like in the unsynchronized experiment, several concentration levels are tested i
 
 \begin{table}[H]
 \centering
-\begin{tabular}{| l | c |}
+\begin{tabular}{ l | c }
 \hline
 Condition & Positions \\
-\hline
+\hline\hline
 A1: 1000 nM - VCR & 1-8 \\
 A2: 100 nM - VCR & 9-15 \\
 A3: 10 nM - VCR & 16-23 \\
@@ -681,8 +681,8 @@ Several image standards and encodings are being processed in our pipeline. We st
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{images/focus/pict.png}
-\caption[Effect on focal plane on out-of-focus image]{In-focus image and out-of-focus brightfield images taken at various focus levels.  In the first row are images focused behind the microfluidics system while in the second row are images focused before the system. A: in focus image. B: $+10 \mu m$. C: $+20 \mu m$. D: $+30 \mu m$. E: $+40 \mu m$. F: $+50 \mu m$. G: $-10 \mu m$. H: $-20 \mu m$. I: $-30 \mu m$. J: $-40 \mu m$. K: $-50 \mu m$.}
+\includegraphics[width=\textwidth]{images/focus/pict.pdf}
+\caption[Effect on focal plane on out-of-focus image]{In-focus image and out-of-focus brightfield images taken at various focus levels.  In the first row are images focused behind the microfluidics system while in the second row are images focused before the system.}
 \label{fig:focustest}
 \end{figure}
 
@@ -2024,8 +2024,6 @@ In this chapter the findings of the project are presented. The pipeline describe
 \item Occupancy of micro-trench. Here we look at the distribution of occupancy among micro-trench using our single-cell tracking data (see Section \ref{section:occupancy_of_microtrench}).
 \item Variability of cell cycle by duration times. Here we analyze how the cell cycle duration time varies by cells (see Section \ref{section:cell_cycle_duration}).
 \item Variability of time-to-death by time in cell cycle and between sisters.  Here we look into the effect of the time in cell cycle, which roughly translates to the current cell phase, on the response towards the cancer drug treatment. We also analyze the variability of time-to-death between sister cells to have a high level understanding about heritable response towards the cancer drug treatment  (see Section \ref{section:ttd_tic_sisters}).
-\item Variability of time-to-death between sister cells. .
-\item Cell survivability 
 \item Machine learning models of cell death. Here we try several machine learning methods to investigate whether there are some features that can be exploited to predict the stage of cell death and thus the time-to-death at a given time point.
 \end{itemize}
 
@@ -2397,7 +2395,7 @@ In Figure \ref{fig:conc_effect} we compare our results of the unsynchronized cel
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.75\textwidth]{images/conc_effect/conc_effect.pdf}
+\includegraphics[width=0.6\textwidth]{images/conc_effect/conc_effect.pdf}
 \caption{Survival rate of cells in increasing Vincristine concentration in the unsynchronized and synchronized experiments. Note that even in the image positions without any cancer drug treatments some cell undergo programmed cell death emitting fluorescent signal.}
 \label{fig:conc_effect}
 \end{figure}
@@ -2405,7 +2403,7 @@ In Figure \ref{fig:conc_effect} we compare our results of the unsynchronized cel
 \section{Machine learning models of cell death}
 \label{section:ml_results}
 
-As sideline analysis, we try to figure out whether it is possible to predict a given cell's time-to-death using features coming out of our pipeline. To do that, we use extension of SVM called Support Vector Regression (SVR, see \textbf{Regressive SVM} part of Subsection \ref{subsection:svm}) to predict the time-to-death of a cell at a given time point. For the regression, following measurements are used:
+As sideline analysis, we try to figure out whether it is possible to predict a given cell's time-to-death using features coming out of our pipeline. To do that, we use extension of SVM called Support Vector Regression (SVR, see \textbf{Regressive SVM} part of Subsection \ref{subsection:svm}) to predict the time-to-death of a cell at a given time point. For the regression, we first take every valid time point for every valid cell tree. For every time point $t$, following features are used:
 
 \begin{itemize}
 \item Cell's velocity at time $t$.
