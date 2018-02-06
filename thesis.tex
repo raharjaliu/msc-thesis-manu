@@ -2491,32 +2491,17 @@ In future work, the micro-trenches array can be used with more than one drug, na
 
 \subsection{Fully automated microfluidics pipeline}
 
-An interesting improvement possibility for the microfluidics would be designing cell placement process that is not bound by the Poisson distribution. There are some progresses in the fields of microrobotics for example.
+An interesting improvement possibility for the microfluidics would be designing cell placement process that is not bound by the Poisson distribution. Microrobotics has been an up and growing field in the recent years with new developments attempting to manipulate cells using micro-sized robotcs \cite{kim2008nanonewton}. Some microrobots have found its use in non-invasive surgery for example \cite{nelson2010microrobots}. Scaling up the process would mean that the bottleneck caused by the Poisson characteristics of cell placement may be resolved in the future.
 
 \subsection{Fully automated pipeline for single-cell analysis}
-
-
-Improvements in analysis pipeline:
-
-\begin{itemize}
-\item better method for masking recognition
-\item possibly even machine learning based methods
-\end{itemize}
-
-\subsection{Automated micro-trench masking}
 
 One positive thing about the design of our data analysis pipeline is the modularity of its component. As mentioned multiple times in this thesis (in particular in Subsection \ref{subsection:micro_trench_masking}, our method can well be improved by automatizing the micro-trench masking process. Although itself not a bottleneck of the process, as the entire dataset of 63 image positions could be processed in less than an hour, automating this process will save time and more importantly, clicking and draging efforts, thus lets scientists do the things that matter more for them.
 
 There are several methods that came to mind in improving the micro-trench masking, which generally can be separated in two groups: ML-based methods and non-ML-based methods. ML-based methods generally require either a manual annotation of correctly recognized micro-trench (a class of methods called supervised learning methods) or certain prior knowledge regarding distinctive features of micro-trench that separate it from background image and/or the cells (a class of methods called unsupervised/semi-supervised learning methods).
 
-In the following part of this subsection various potential implementations of both ML-based and non-ML-based methods are listed down.
+In his master's thesis, Oliver Hilsenbeck introduced a masking tool that requires minimum amount of annotation data \cite{hilsenbeck2014maximally}. As one of recent series of groundbreaking papers, Jonathan Long proposes fully convolutional extension \cite{long2015fully} of previously state of the art convolutional networks \cite{simonyan2014very, szegedy2015going} thereby improving the performance and speed of the process. Considering the relatively simple form of micro-trench, training a model for trench detection seems to be the next natural step to improve on the pipeline.
 
-\subsubsection*{Maximally interesting extremal region (MNER)}
-
-Introduced by Oliver Hilsenbeck in his master's thesis in 2014 \cite{hilsenbeck2014maximally} %TODO continue
-
-
-%TODO
+%TODO continue
 
 %% BIBLIOGRAPHY %%
 
