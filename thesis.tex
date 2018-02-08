@@ -271,24 +271,28 @@ Quantitative measurement of cancer drug response is esential to objectively gaug
 \chapter{Introduction}
 \label{chapter:introduction}
 
-AML-M5a MOLM-13\\
+%AML-M5a MOLM-13\\
 
-Cancer is among the deadliest diseases ever known to human being. It is a leading cause of death in 2009, second only to cardiovascular diseases \cite{sudhakar2009history}. The numbers are discontenting, especially in the developed world. In the United States alone, half of men and a third of women are expected to develop some kind of cancer. According to US government, in 2016 alone, an estimated 1,685,210 people will be diagnosed with cancer, while 595,690 more will be die from it \cite{cancergov2017stat}.
+%\begin{verbatim}
+%I.
+%- readable to people without background in the fields
+%- non technical at all
+%II.
+%- what have the researches done
+%-- biologics
+%-- technicals
+%III.
+%thesis overview
+%4~8 pages
+%\end{verbatim}
 
-Worldwide, the International Agency for Research on Cancer's GLOBOCAN series report that, in 2014, \cite{ferlay2015cancer}.
+Cancer is among the deadliest diseases ever known to human being. It is a leading cause of death in 2009, second only to cardiovascular diseases \cite{sudhakar2009history}. The numbers are discontenting, especially in the developed world. In the United States alone, half of men and a third of women are expected to develop some kind of cancer. According to US government, in 2016 alone, an estimated 1,685,210 people will be diagnosed with cancer, while 595,690 more will be die from it \cite{cancergov2017stat}. Worldwide, the International Agency for Research on Cancer's GLOBOCAN series report that, in 2012, \cite{ferlay2015cancer} there were 14.1 million new cancer cases, 8.2 million cancer deaths and 32.6 million people living with cancer (within 5 years of diagnosis).
 
-\begin{verbatim}
-I.
-- readable to people without background in the fields
-- non technical at all
-II.
-- what have the researches done
--- biologics
--- technicals
-III.
-thesis overview
-4~8 pages
-\end{verbatim}
+Among the most studied type of cancer is the Acute Myeloid Leukimia (AML), a cancer that affected about one million people globally and resulted in almost 150,000 deaths in 2016 \cite{vos2016global}. A cancer of myeloid line of blood cells, it is mostly indicated by overabundance of myeloid cells in bone marrow. In the advanced stage of AML, the abnormal myeloid cells interfere with the production of normal myeloid cells \cite{nci2018aml} (Megakaryocyte, Erythrocyte, Basophil, Neutrophil, Eosinophil and Macrophage among others \cite{collins1977continuous}) which, if left untreated, will be lethal to patient.
+
+Among the unique characteristics of the AML is its difference in curability in various stages of cancer. Early stage of AML is highly curable while advanced stage of AML is barely curable \cite{greaves1993stem}. Deriving an early detection of the disease is thus of utmost importance to ensure patient's survival. Several methods are developed for early AML detection ranging from a screening-based \cite{cowen1973aml} to a flow cytometry-based methods \cite{terwijn2013high}.
+
+In this project we are focused on the analysis of one famous cell of AML, the AML-M5a MOLM-13 cell line \cite{matsuo1997two}. 
 
 %TODO organize this part
 
@@ -303,11 +307,6 @@ Cancer is an intrinsically highly diverse disease; tumors of any different histo
 It is essential toTo understand sources of heterogeneous response of to cancer in therapy and , in order to design novel therapeutic strategies and potent agents,  that not only targets key signaling pathways with high specificity but also address the contextual role of cell cycle timing in cancer therapyin the response of cells to chemotherapeutic drugs has to be investigated. In this context, time-lapse imaging, which allows for recording accurate histories of individual cancer cell fates and cancer subpopulations, received increasing attention [12, 14, 15]. However, the to study the effect of particular cell cycle phases on chemo sensitiveness, single cells have to be observed continuously throughout division, drug addition, and death.  has not been explored at the single cell level. 
 The typical bottleneck for a high-throughput analysis for such is cell tracking. Tracking single cells in time-lapse microscopy movies is a challenging problem. Different automatic image analysis tracking tools have been proposed [19,20 ] and compared [16,17]  [16-20]  but to achieve tracks for for fast moving cells movements, high cell densities, challenging cell identification, and long-term observations, also time-intensive manual tracking becomes necessary to achieve accurate tracksis often applied [18,21] to generate tracks with maximal accuracy. For many approaches, the workload of manual tracking has to be compared to correcting erroneous track from tracking algorithms [schröder review].   [21] . Confining cells spatially obviously reduces possible tracking errors and facilitates the application of tracking algorithms. In particular, non-adherent cells are painstaking to track since diffusive and convective drift in long-term measurements complicate cell assignments [20]. Among the techniques to capture non-adherent cells for long-term observation microfluidic devices [22] as well as micro-well platforms [23-28] were have been developed. Alternatively, individual cell cycle phases were imaged using fluorescent cell cycle reporters [29].  The confinement of single cells into well-defined spatial structures provides a straightforward implementation to facilitate automatic tracking since long-term crossing of individual tracks is avoided. PConsequently, platforms that confine single starting cells and thus lead to spatially separated cell families (also called clones) are an especially derived from a single mother cell are a useful tool to investigate cell cycle length, sister cell correlations, or the effect of cell cycle phases to to enable the automatization of the image analysis and to yield in a faster and effortless way to collect time traces that can address questions regarding the sources of cell-to-cell variability in a high-throughput manner. 
 Here we introduce a platform that enables the continuous observation of cell families derived from individual non-adherent cells of the leukemia cell line MOLM-13. The platform employs arrays of micro-trenches optimized to observe cells for two consecutive generations. We demonstrate that automated image analysis is feasible and allows for precisely determination determiningof the cell division cycle time  distribution and sister cell correlations. A key feature of the platform is the direct and parallel observation of many hundreds of cells with individualin different cell cycle statess. We show that the time-to-death after induction of apoptosis of the leukemia cell line MOLM-13 using the anti-mitotic agent vincristine (VCR) and daunorubicin (dauno) has a small dependence on cell cycle . The results were found consistent with experiments using cells that were synchronized using standard thymidine cell cycle arrest. Using arrays of micro-trenchesOur approach also enabled a time correlation analysis which showed that the time-to-death of daughter cells correlates with the time spent in cell cycle, while this effect is not detectable when cells are synchronized. 
-
-
-\section{Hypothesis}
-
-In this part, the hypothesis underlying the experiment is presented.
 
 \section{Advances in microfluidics, image processing and machine learning}
 
@@ -367,23 +366,22 @@ The second method is using cell size. During apopotosis, the cells would shrink.
 
 Some other cell lines were examined as potential probe cell line in this experiment. One of them is Jurkat Cell, a model cell commonly used to study T Cell Leukimia, T cell signalling mechanism and the expression of various HIV-related chemokines \cite{schneider1977characterization}. The cell line was a considered since it is well-studied \cite{johnson2007genome, schena1996parallel}. This is especially true if we consider apoptotic mechanism of the cell line, a problem this project and other related projects by our  and partner labs are trying to investigate. There are several seminal publications about the dynamics of apoptotic mechanism of Jurkat cells we could well compare our results to \cite{gottlieb1996apoptosis}. Samali \textit{et al.} \cite{samali1999presence} even studies the dynamics of Caspase expression in Jurkat cells, a topic dealt a lot in this project as the chapters progress (see for example Subsection \ref{subsection:treatment}) while Kasai \textit{et al.} considers the aspect of spindle checkpoint in the context of apopototic cell death \cite{kasai2002prevalent}. However, we figured out early on that the cell motility of the Jurkat cell line was increased dramatically (a phenomenon observed by others before us \cite{barnhart2004cd95}) upon the introduction of chemotherapeutic treatment -- the increase dramatic enough that the cells managed to escape the micro-trench it initially landed in.
 
+\section{Hypothesis}
+
+%TODO
+
+In this part, the hypothesis underlying the experiment is presented.
+
 \section{The structure of the thesis}
 
-%TODO fill
 
-The thesis is presented as two closely-related things. First, we present high throughput system that enables analysis in single-cell resolution of cells' response towards certain chemical reaction and a software suite that processes, analyzes and visualizes the data. This is an end-to-end solution that possibly can help researcher in their research. Second, we apply this method on the main question of the project: the response dynamics of cancer cell towards chemotherapeutic treatment. Here several questions are posed and addressed using the system and software suit.
-
-%TODO improve
-
-%TODO add chapter one
-
-Chapter \ref{chapter:data_and_method} contains %TODO continue
+The thesis is presented as two closely-related things. Chapter \ref{chapter:data_and_method} deals mostly with: (i) the experimental setting used in this project including the microfluidics system used, the cancer drug treatments used, the reporting signals used and the protocol of the experiment and (ii) the methods used to process and analyze the resulting images from the experiment. Chapter \ref{chapter:analytic_pipeline} describes the application of methods from Chapter \ref{chapter:data_and_method} on the data coming from the experiments. In Chapter \ref{chapter:results}, selected findings from the analysis of the processed data are presented. Finally in Chapter \ref{chapter:conclusion_and_outlook}, we discuss the results in relation to published findings that are related to ours. There we will also confirm the validity of our microfluidics method.
 
 \chapter{Data and Methods}
 
 \label{chapter:data_and_method}
 
-As mentioned in previous parts of this thesis: this project consists of three parts: (i) the problem statement regarding the dynamics of cancerous single-cells under pressure of treatment, (ii) the microfluidics which enables the single-cell protocol and (iii) the software implementation used to process and analyze the time-lapse data coming out of the experiment.
+This project consists of three parts: (i) the problem statement regarding the dynamics of cancerous single-cells under pressure of treatment, (ii) the microfluidics which enables the single-cell protocol and (iii) the software implementation used to process and analyze the time-lapse data coming out of the experiment.
 
 This chapter considers two aspects of the project: the experimental setting and the theoretical aspects behind the data analysis pipeline. In the first half of the chapter, we deal mostly with the experimental background and the underlying questions of single cell dynamics of cancer cell under stress with focus on chemotherapeutic pressure. In this part, the highlight of the experiment, the microfluidic system for cell containment is elucidated. In conjunction with the system, some biomedical and biochemical aspects of the experiment are also mentioned. This includes the drug, the auxiliary chemicals used in the experiment and the cell lines probed. The second part deals mostly with the quantitative methods and algorithms used to process data into meaningful observations. This part is opened with definitions used in the methods section.
 
@@ -2017,6 +2015,7 @@ The image and tracking data is combined and post-processed using Python scripts 
 \href{https://github.com/raharjaliu/MA/tree/master/source}{https://github.com/raharjaliu/MA/tree/master/source}.
 
 \chapter{Results}
+\label{chapter:results}
 
 In this chapter the findings of the project are presented. The pipeline described in details in Chapter \ref{chapter:analytic_pipeline} provides us with wealth of data to be analyzed. Some analyses done during the project are presented in this chapter. Those are:
 
@@ -2461,6 +2460,7 @@ The model is trained on 70\% of data points from the unsynchronized tracking dat
 \end{figure}
 
 \chapter{Conclusion and Outlook}
+\label{chapter:conclusion_and_outlook}
 
 We showed that arrays of micro-structured trenches provide a platform that enables a label-free method for tracking cells and for approximating the cell cycle phase without the use of molecular markers. Our approach allows to set individual clocks in single cells using the first division for each occupied trench as a starting point. This is highly accurate and overcomes typical drawbacks of low detection efficiency of fluorescence-based indicators such as the FUCCI marker, which usually have low transfection efficiency round 20-40\%, and generally short duration of staining, namely ~15 hours \cite{zielke2015fucci}, which is no sufficient for our long-time measurements.
 
