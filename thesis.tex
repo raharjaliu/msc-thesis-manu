@@ -290,39 +290,39 @@ Cancer is among the deadliest diseases ever known to human being. It is a leadin
 
 Among the most studied type of cancer is the Acute Myeloid Leukimia (AML), a cancer that affected about one million people globally and resulted in almost 150,000 deaths in 2016 \cite{vos2016global}. A cancer of myeloid line of blood cells, it is mostly indicated by overabundance of myeloid cells in bone marrow. In the advanced stage of AML, the abnormal myeloid cells interfere with the production of normal myeloid cells \cite{nci2018aml} (Megakaryocyte, Erythrocyte, Basophil, Neutrophil, Eosinophil and Macrophage among others \cite{collins1977continuous}) which, if left untreated, will be lethal to patient.
 
-Among the unique characteristics of the AML is its difference in curability in various stages of cancer. Early stage of AML is highly curable while advanced stage of AML is barely curable \cite{greaves1993stem}. Deriving an early detection of the disease is thus of utmost importance to ensure patient's survival. Several methods are developed for early AML detection ranging from a screening-based \cite{cowen1973aml} to a flow cytometry-based methods \cite{terwijn2013high}.
+One of the special characteristics of the AML is its difference in curability in various stages of cancer. Early stage of AML is highly curable while advanced stage of AML is barely curable \cite{greaves1993stem}. Deriving an early detection of the disease is thus of utmost importance to ensure patient's survival. Several methods are developed for early AML detection ranging from a screening-based \cite{cowen1973aml} to a flow cytometry-based methods \cite{terwijn2013high}. However, these methods either focus on population level thereby ignoring single-cell dynamics or are not high-throughput enough in analyzing cells in single-cell resolution.
 
-In this project we are focused on the analysis of one famous cell of AML, the AML-M5a MOLM-13 cell line \cite{matsuo1997two}. 
+%In this project we are focused on the analysis of one famous cell of AML, the AML-M5a MOLM-13 cell line \cite{matsuo1997two}. 
 
 %TODO organize this part
 
+%In this project, we are focused in cell-to-cell variability in response to external stimuli such as cancer call.
 
 
 \section{Variability of cell-to-cell response towards cancer treatment}
 
 %TODO : modify to local use
 
-Cell-to-cell variability in response to external stimuli is a pervasive trait in cellular systems that prevails even in isogenic cell populations. Here, heterogeneity might be caused by epigenetic modifications, differences in the cell cycle phase, or by intrinsic stochastic fluctuations in gene expression and biochemical regulation. The implications of heterogeneity for cancer progression and treatment are poorly understood. In some cases, heterogeneity is dominated by intrinsic fluctuations in the stochastic expression of key regulators that randomly alter the sensitiveness of individual cancer cells. A raw model of this scenario has been put forward in recent work on TRAIL-induced apoptosis [1, 2]. Experiments and simulations show that variability in cell fate is sensitive to small stochastic increases in the levels of Bcl-2 and are transiently heritable to siblings [3, 4]. The study on TRAIL-induced apoptosis led to a novel interpretation of fractional killing and predicts reversible resistance to chemotherapy. The profound consequences for cancer treatment have been subject to theoretical studies on the stochastic origins of cell-to-cell variability in cancer cell death decisions [5-7]. 
-Cancer is an intrinsically highly diverse disease; tumors of any different histological type not only exhibit genetic diversity but also display their variation when exposed to all forms of chemotherapy [8]. Most state of the art chemotherapeutic drugs in clinical use, target rapidly dividing cells and trigger apoptosis. Vincristine (VCR), an antitumor vinca alkaloid, binds to tubulin and stops the dividing cell from separating its chromosomes during metaphase in M-phase. It is thus considered an M-phase dependent drug [9]. In contrast, daunorubicin, an anthracycline aminoglycoside antineoplastic, intercalates on DNA and inhibits the function of the enzyme topoisomerase II during transcription and replication. Daunorubicin is thus expected to act throughout the whole cell cycle and but especially strong during the DNA replication in the S-phase. Both drugs are used to fight hematopoietic disorders such as Acute Myeloid Leukemia (AML)[10, 11] among other neoplams. In the literature, a drug that interferes with the cell cycle is in general considered cell cycle dependent, but in practice it is not clear whether it only acts on a specific cell cycle phase, due to side effect toxicities. Based on this, it is hypothesized that both VCR and daunorubicin are cell cycle dependent. Since it is assumed that VCR acts only during M-phase in their cycling, we can expect that cells that are closer to M-phase will die earlier [12, 13].  
-It is essential toTo understand sources of heterogeneous response of to cancer in therapy and , in order to design novel therapeutic strategies and potent agents,  that not only targets key signaling pathways with high specificity but also address the contextual role of cell cycle timing in cancer therapyin the response of cells to chemotherapeutic drugs has to be investigated. In this context, time-lapse imaging, which allows for recording accurate histories of individual cancer cell fates and cancer subpopulations, received increasing attention [12, 14, 15]. However, the to study the effect of particular cell cycle phases on chemo sensitiveness, single cells have to be observed continuously throughout division, drug addition, and death.  has not been explored at the single cell level. 
-The typical bottleneck for a high-throughput analysis for such is cell tracking. Tracking single cells in time-lapse microscopy movies is a challenging problem. Different automatic image analysis tracking tools have been proposed [19,20 ] and compared [16,17]  [16-20]  but to achieve tracks for for fast moving cells movements, high cell densities, challenging cell identification, and long-term observations, also time-intensive manual tracking becomes necessary to achieve accurate tracksis often applied [18,21] to generate tracks with maximal accuracy. For many approaches, the workload of manual tracking has to be compared to correcting erroneous track from tracking algorithms [schröder review].   [21] . Confining cells spatially obviously reduces possible tracking errors and facilitates the application of tracking algorithms. In particular, non-adherent cells are painstaking to track since diffusive and convective drift in long-term measurements complicate cell assignments [20]. Among the techniques to capture non-adherent cells for long-term observation microfluidic devices [22] as well as micro-well platforms [23-28] were have been developed. Alternatively, individual cell cycle phases were imaged using fluorescent cell cycle reporters [29].  The confinement of single cells into well-defined spatial structures provides a straightforward implementation to facilitate automatic tracking since long-term crossing of individual tracks is avoided. PConsequently, platforms that confine single starting cells and thus lead to spatially separated cell families (also called clones) are an especially derived from a single mother cell are a useful tool to investigate cell cycle length, sister cell correlations, or the effect of cell cycle phases to to enable the automatization of the image analysis and to yield in a faster and effortless way to collect time traces that can address questions regarding the sources of cell-to-cell variability in a high-throughput manner. 
-Here we introduce a platform that enables the continuous observation of cell families derived from individual non-adherent cells of the leukemia cell line MOLM-13. The platform employs arrays of micro-trenches optimized to observe cells for two consecutive generations. We demonstrate that automated image analysis is feasible and allows for precisely determination determiningof the cell division cycle time  distribution and sister cell correlations. A key feature of the platform is the direct and parallel observation of many hundreds of cells with individualin different cell cycle statess. We show that the time-to-death after induction of apoptosis of the leukemia cell line MOLM-13 using the anti-mitotic agent vincristine (VCR) and daunorubicin (dauno) has a small dependence on cell cycle . The results were found consistent with experiments using cells that were synchronized using standard thymidine cell cycle arrest. Using arrays of micro-trenchesOur approach also enabled a time correlation analysis which showed that the time-to-death of daughter cells correlates with the time spent in cell cycle, while this effect is not detectable when cells are synchronized. 
+Cell-to-cell variability in response to external stimuli is a pervasive trait in cellular systems that prevails even in isogenic cell populations \cite{snijder2011origins}. Here, heterogeneity might be caused by epigenetic modifications, differences in the cell cycle phase, or by intrinsic stochastic fluctuations in gene expression and biochemical regulation. The implications of heterogeneity for cancer progression and treatment are poorly understood. In some cases, heterogeneity is dominated by intrinsic fluctuations in the stochastic expression of key regulators that randomly alter the sensitiveness of individual cancer cells \cite{spencer2009non}. Experiments and simulations show that variability in cell fate is sensitive to small stochastic increases in the levels of several regulator proteins and are transiently heritable to siblings \cite{bertaux2014modeling, gaudet2012exploring}. The profound consequences for cancer treatment have been subject to theoretical studies with several proposed models explaining the stochastic origins of cell-to-cell variability in cancer cell death decisions \cite{bhola2009determinism, greene2015modeling}.
+
+Since cancer is an intrinsically highly diverse disease, tumors of any different histological type not only exhibit genetic diversity but also display their variation when exposed to all forms of chemotherapy \cite{beroukhim2010landscape}. Most state of the art chemotherapeutic drugs in clinical use, target rapidly dividing cells and trigger apoptosis. Vincristine (VCR), an antitumor vinca alkaloid, binds to tubulin and stops the dividing cell from separating its chromosomes during metaphase in M-phase. It is thus considered an M-phase dependent drug \cite{sears2015total}. In contrast, Daunorubicin, an anthracycline aminoglycoside antineoplastic, intercalates on DNA and inhibits the function of the enzyme Topoisomerase II during transcription and replication. Daunorubicin is thus expected to act throughout the whole cell cycle and but especially strong during the DNA replication in the S-phase. Both drugs are used to fight hematopoietic disorders such as AML among other neoplams (both drugs are further explained in Subsection \ref{subsection:treatment}). In the literature, a drug that interferes with the cell cycle is in general considered cell cycle dependent, but in practice it is not clear whether it only acts on a specific cell cycle phase, due to side effect toxicities. Based on this, it is hypothesized that both VCR and daunorubicin are cell cycle dependent.
+
+\section{Combination of the time lapse imaging and the microfluidics system for single-cell analysis of cancer}
+
+It is essential to understand sources of the heterogeneous response to cancer drug treatment in a therapy in order to design novel therapeutic strategies and potent agents that not only targets key signaling pathways with high specificity but also address the contextual role of cell cycle timing in the treatment. In this context, time-lapse imaging, which allows for the recording of accurate histories of individual cancer cell fates and cancer subpopulations, received increasing attention \cite{gascoigne2008cancer, hawkins2009single, aftab2014label}. However, the study of the effect of particular cell cycle phases on cell response to cancer drug treatment requires that single cells are observed continuously throughout their lives including during cell division, drug addition, and death. For this, the single-cell level of detail has not been explored before.
+
+The typical bottleneck for a high-throughput analysis for such is cell tracking. Different automatic tracking tools have been proposed \cite{doh2010cell, zurgil2010polymer} and compared \cite{skylaki2016challenges, wlodkowic2009microfluidic}. But to achieve tracks for fast moving cells, high cell densities and long term identifications, manual tracking is often applied \cite{rettig2005large, zurgil2010polymer} to generate tracks with maximal accuracy. For many approaches, the workload of manual tracking has to be compared to correcting erroneous track from tracking algorithms \cite{skylaki2016challenges}. Among the techniques to capture non-adherent cells for long-term observation microfluidic devices \cite{wlodkowic2009microfluidic} as well as micro-well platforms \cite{rettig2005large, doh2010cell, zurgil2010polymer, zaretsky2012monitoring, day2009method, schiffenbauer2009cell} have been developed. Platforms that confine single starting cells and thus lead to spatially separated cell families (also called clones) are an especially useful tool to investigate cell cycle length, sister cell correlations, or the effect of cell cycle phases to cell-to-cell variability in a high-throughput manner.
+
+%TODO move to abstract
+Here we introduce a platform that enables the continuous observation of cell clones derived from individual non-adherent cells of the leukemia cell line AML-M5a MOLM-13. The platform employs arrays of micro-trenches optimized to observe cells for two consecutive generations. We demonstrate that automated image analysis is feasible and allows precise determination of the cell cycle distribution and sister cell correlations. A key feature of the platform is the direct and parallel observation of hundreds of cells in different cell cycle states. Here, we first studied the time distribution of a full cell cycle, i.e. the time between the first and second division. We then focused on the response dynamics of single cells to chemotherapeutic drugs and on the comparison of the response to these agents between a chemically synchronized and a non-synchronized population. We show that the time-to-death after induction of apoptosis using the anti-mitotic agent vincristine and daunorubicin exhibits dependence on cell cycle. The results were found consistent with experiments using cells that were synchronized using standard thymidine cell cycle arrest. trenchesOur approach also enabled a time correlation analysis, which showed that the time-to-death of sister cells is correlated.
 
 \section{Advances in microfluidics, image processing and machine learning}
 
-In the recent decades, as in many other fields, there are numerous groundbreaking advances in the fields of microfluidics, image processing and machine learning.
-
-%TODO : continue
-
-The advances, coupled with general technological advances in computing power and energy efficiency, have made it possible for us to design almost completely automated analytical pipeline for single-cell microfluidic system.
-
-%TODO : expand
-
-While not all methods and algorithms in this project are the most recent, many of them are state-of-the-art and/or good enough for the pipeline to work seamlessly.
+In the recent decades, as in many other fields, there are numerous groundbreaking advances in the fields of microfluidics, image processing and machine learning. The advances, coupled with general technological advances in computing power and energy efficiency, have made it possible for us to design almost completely automated analytical pipeline for single-cell microfluidic system. While not all methods and algorithms in this project are the most recent, many of them are state-of-the-art for the purpose and, more importantly, robust enough for the pipeline to work seamlessly. The explanation of every method used is available in Chapter \ref{chapter:data_and_method}.
 
 \subsection{Microfluidics}
 
-As the name suggests, 'microfluidics' concerns the manipulation of fluids in a small working dimension, typically starting from nanometers to lower millimeters \cite{whitesides2006origins}. In modern context, the entire fields tries to find application of micro-sized devices which hold and control the state of liquid \cite{whitesides2006origins} including cell culture medium. There are two categories of microfluidics: active and passive microfluidics devices. The separation is based on the device's ability to actively manipulate the flow and control of devices \cite{sekhavati2015dynamic}. Active devices use micro-valves to perform sophisticated chemical processes \cite{marsden1993interdisciplinary}. This goes as far as reactions at individual cell level \cite{eyer2012microchamber}. A passive device, which our micro-array system is, exploits on the other hand its physical property to provide rapid controlled environment for micro-sized experiments.
+As the name suggests, 'microfluidics' concerns the manipulation of fluids in a small working dimension, typically starting from nanometers to lower millimeters \cite{whitesides2006origins}. In modern context, the entire fields tries to find application of micro-sized devices which hold and control the state of liquid \cite{whitesides2006origins} including cell culture medium. There are two categories of microfluidics: active and passive microfluidic devices. The separation is based on the device's ability to actively manipulate the flow and control of devices \cite{sekhavati2015dynamic}. Active devices use micro-valves to perform sophisticated chemical processes \cite{marsden1993interdisciplinary}. This goes as far as reactions at individual cell level \cite{eyer2012microchamber}. A passive device, which our micro-array system is, exploits on the other hand its physical property to provide rapid controlled environment for micro-sized experiments.
 
 Active microfluidic methods for analysis and manipulation of biological cells have been done in various way and form. In 2003, Wheeler \textit{et al.} developed a novel microfluidic device from poly-dimethylsioxane using multilayer soft lithography technology for the analysis of single cells \cite{wheeler2003microfluidic}. The microfluidic setup facilitates the passive and gentle separation of a single cell from the bulk cell suspension. This in turn enables the precise delivery of reagents as little as one nanoliter to the cell. In other use cases, the optical-based microfluidic methods have been used to sort cell with very high accuracy \cite{macdonald2003microfluidic}. This family of method utilizes the fact that different dielectric particles respond differently to an applied light field \cite{tatarkova2003brownian}. Combined with the miniscule spatial setting, the methods are compatible for single-cell resolution analysis. For example, optical-based microfluidic methods have been used to sort cells with very high accuracy \cite{macdonald2003microfluidic, wang2005microfluidic, baret2009fluorescence}.
 
@@ -333,7 +333,6 @@ In the last decades, the recent advances in both passive and active microfluidic
 The use of microfluidics enables us firstly to study the distribution of division times among single cells and also to correlate the division times between sister cells, which are genetically very similar. Secondly, the array of micro-trenches enabled the study of the response dynamics of single-cells to doxorubicin, a widely used chemotherapeutic drug, and the comparison of the response to this agent between a chemically synchronized and a non-synchronized population
 
 \subsection{Image Processing and Computer Vision}
-
 \label{subsection:cv_advances}
 
 Before the runaway advance of deep learning methods in the last years, object and area detection methods generaly rely on disciminating certain patterns and features in the picturek -- with and without utilizing machine learning methods. In 2001, Paul Viola and Michael Jones proposed a method that was able to recognize face \cite{viola2004robust}, and later, objects in almost real-time fasion \cite{viola2001rapid}. %TODO continue with viola jones
@@ -341,21 +340,20 @@ Before the runaway advance of deep learning methods in the last years, object an
 %TODO fill
 
 \subsection{Machine Learning}
-
 \label{subsection:ml_advances}
 
 %TODO fill
 
-\section{Comparison with other methods}
+\section{Related methods considered for the project}
 
 \subsection{Cell death determination}
 \label{subsection:comp_cell_death_determination}
 
 %TODO modify
 
-Measuring cell death is a crucial part of the experiment, as the reliable determination of it is the basis of most analysis in this thesis. There are several way to measure cell deaths with varying complexity and accuracy. Each method contains certain assumptions of cell death.\\
+Measuring cell death is a crucial part of the experiment, as the reliable determination of it is the basis of most analysis in this thesis. There are several way to measure cell deaths with varying complexity and accuracy. Each method contains certain assumptions of cell death.
 
-For example, determining cell death by cell movement assumes death of a cell if no movement beyond random flux is observed in certain amount of time. This obviously has certain drawbacks, such as when the observation is done in non-static environment. Moreover, defining the limit of the random flux, above which a given cell is assumed to actively move, is not a trivial task. Some kind of gold standard for a given cell line and environment has to be established manualy, which is very time consuming. This fact is again made even more complicated by the fact that many cells show different movement pattern upon introduction of treatment. It is well known that some cells tend to move faster or slower under stress, the situation many cancerous cells in our experiment will experience upon addition of cancer drug treatment \cite{pienta1991effects, fenteany2003small, ruocco2012suppressing}.\\
+For example, determining cell death by cell movement assumes death of a cell if no movement beyond random flux is observed in certain amount of time. This obviously has certain drawbacks, such as when the observation is done in non-static environment. Moreover, defining the limit of the random flux, above which a given cell is assumed to actively move, is not a trivial task. Some kind of gold standard for a given cell line and environment has to be established manualy, which is very time consuming. This fact is again made even more complicated by the fact that many cells show different movement pattern upon introduction of treatment. It is well known that some cells tend to move faster or slower under stress, the situation many cancerous cells in our experiment will experience upon addition of cancer drug treatment \cite{pienta1991effects, fenteany2003small, ruocco2012suppressing}.
 
 The second method is using cell size. During apopotosis, the cells would shrink. Given It is known that cell size %TODO continue.
 
@@ -368,14 +366,18 @@ Some other cell lines were examined as potential probe cell line in this experim
 
 \section{Hypothesis}
 
-%TODO
+In this part, the hypothesis underlying the experiment is presented:
 
-In this part, the hypothesis underlying the experiment is presented.
+\begin{itemize}
+\item \textbf{Cell-cycle dependency of cell response toward cancer treatments:} Since it is assumed that VCR acts only during M-phase in their cycling, we can expect that cells that are closer to M-phase will die earlier \cite{gascoigne2008cancer, holland2008beyond}
+\end{itemize}
+
+%TODO expand
 
 \section{The structure of the thesis}
 
 
-The thesis is presented as two closely-related things. Chapter \ref{chapter:data_and_method} deals mostly with: (i) the experimental setting used in this project including the microfluidics system used, the cancer drug treatments used, the reporting signals used and the protocol of the experiment and (ii) the methods used to process and analyze the resulting images from the experiment. Chapter \ref{chapter:analytic_pipeline} describes the application of methods from Chapter \ref{chapter:data_and_method} on the data coming from the experiments. In Chapter \ref{chapter:results}, selected findings from the analysis of the processed data are presented. Finally in Chapter \ref{chapter:conclusion_and_outlook}, we discuss the results in relation to published findings that are related to ours. There we will also confirm the validity of our microfluidics method.
+The thesis is presented as two closely-related things. Chapter \ref{chapter:data_and_method} deals mostly with: (i) the experimental setting used in this project including the microfluidic system used, the cancer drug treatments used, the reporting signals used and the protocol of the experiment and (ii) the methods used to process and analyze the resulting images from the experiment. Chapter \ref{chapter:analytic_pipeline} describes the application of methods from Chapter \ref{chapter:data_and_method} on the data coming from the experiments. In Chapter \ref{chapter:results}, selected findings from the analysis of the processed data are presented. Finally in Chapter \ref{chapter:conclusion_and_outlook}, we discuss the results in relation to published findings that are related to ours. There we will also confirm the validity of our microfluidic method.
 
 \chapter{Data and Methods}
 
@@ -674,8 +676,6 @@ Several image standards and encodings are being processed in our pipeline. We st
 
 \item The green fluoroscent channel is used to capture emission from caspase3/7 activation due to DAVD peptide cleavage (see Subsection \ref{subsection:exp_setup}).
 \end{itemize}
-
-%TODO change image labeling
 
 \begin{figure}[H]
 \centering
@@ -1088,15 +1088,14 @@ Figure \ref{fig:clahe} visualizes the step 2, 3 and 4 of the algorithm descripti
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.7\textwidth]{images/clahe}
-\caption[Visualizatoin of CLAHE algorithm]{Visualization of CLAHE algorithm taken from Pizer, Zuiderfeld et al., 1987 \cite{pizer1987adaptive}. Note the  smoothen intensity CDF function (lower part of the figure) after reassigning some pixels with pixel values above the clipping value.}
+\caption[Visualizatoin of the CLAHE algorithm]{Visualization of the CLAHE algorithm taken from Pizer, Zuiderfeld et al., 1987 \cite{pizer1987adaptive}. Note the  smoothen intensity CDF function (lower part of the figure) after reassigning some pixels with pixel values above the clipping value.}
 \label{fig:clahe}
 \end{figure}
 
-%TODO improve image
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{images/clahe_before_after}
-\caption[Example of application of CLAHE algorithm]{The upper left corner of the in-focus brightfield channel of the image position 41 at time $t=0$: before (left) and after (right) the application of CLAHE on the image. Scale bar on the left figure is $100 \mu M$ long.}
+\caption[Example of application of CLAHE algorithm]{Example of the CLAHE algorithm applied on an image. The upper left corner of the in-focus brightfield channel of the image position 41 at time $t=0$: before (left) and after (right) the application of CLAHE on the image. Scale bar on the left figure is $100 \mu M$ long.}
 \label{fig:clahe_before_after}
 \end{figure}
 
@@ -1280,8 +1279,6 @@ where $\mathbb{C}$ is the maximum value of the upper left quadrant of the matrix
 The optimization over the matrix is then solved with the Munkers \& Kuhn algorithm \cite{munkres1957algorithms}, which solves the problem in cubic time $\mathcal{O}((m + n)^3)$. The algorithm returns assignment minimizing the sum of the assignment costs.
 
 The interpretation of the cost functions is following: without any penalty, the optimization problem favors the solution which minimizes the sum of squared distance between two blobs. This is in line with previously mentioned assumption of the Brownian motion of cells. By adding feature penalties, we aim at favoring linking blobs that are more similar to each other. In brute single particle linking problems, spots are generally all the same, and they only differ by the coordinate. However, there is a variety of problems for which these feature penalties can add robustness to the tracking process. In our case for example, the cells might pose several features that change over time depending on the treatment and cell-dependent characteristics (the phenomenon we further investigate using machine learning methods, see Subsection \ref{subsection:svm} and and Section \ref{section:ml_results}).
-
-%TODO decide whether Random Forest should be added
 
 Upon the linking of blobs into track segments, more refinement is then done to achieve globally optimal cell tracks configuration. To do this, three events are considered in our model:
 
