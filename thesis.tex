@@ -226,7 +226,7 @@ Note that in this thesis, following things are used interchangeably:
 
 \begingroup
 %\setlength{\tabcolsep}{10pt} % Default value: 6pt
-\renewcommand{\arraystretch}{1.5} % Default value: 1
+\renewcommand{\arraystretch}{1.25} % Default value: 1
 \begin{tabular}{ l l l }
 \textbf{Abbreviation} & \textbf{Full Form} & \textbf{Explanation} \\
 TTD &  Time-to-death & See Subsection \ref{subsection:cell_death_determination} \\
@@ -242,15 +242,21 @@ SDT &  Sisters death time & See Section \ref{section:ttd_tic_sisters}
 
 \begingroup
 %\setlength{\tabcolsep}{10pt} % Default value: 6pt
-\renewcommand{\arraystretch}{1.5} % Default value: 1
+\renewcommand{\arraystretch}{1.25} % Default value: 1
 \begin{tabular}{ l l }
 \textbf{Symbol} & \textbf{Explanation} \\
+$\mathbf{B}(x;\,a,b)$ & Beta function\\
 $B_t$ & A 1-bit monochrome image taken at time t (t-th image)\\
-$G_t$ & Grayscale image at time $t$\\
+$\rho_{X, Y}$ & Pearson's correlation coefficient (PCC) of two random variables $X$ and $Y$\\
+$\mathbf{cov}(X, Y)$ & Covariance of two random variables $X$ and $Y$\\
+$d(v_i, v_j)$ & $L_2$ distance between two objects\\
+$d_G(G_i, G_j)$ & Sum of intensity difference between two grayscale images\\
 $\mathbb{G}_{x, y}$ & Sobel gradient of pixel $M_{t, x, y}$\\
 $\mathbb{g}_{x, y}$ & Quadratic Sobel gradient of pixel $M_{t, x, y}$\\
+$G_t$ & Grayscale image at time $t$\\
 $G(x)$ & One dimensional Gaussian function\\
 $G(x, y)$ & Two dimensional Gaussian function\\
+$\mathbf{I}_x(a,b)$ & Regularized Beta function\\
 $I_t(x, y)$ & Intensity function for pixel $(x, y)$ of RGB image taken at time t $M_t$\\
 $I^{c_G}_t(x, y)$ & Gaussian blurred intensity function for pixel $(x, y)$ of $M_t$\\
 $J_t(x, y)$ & Brightness and contrast transforming function for pixel $(x, y)$ of \\
@@ -306,16 +312,7 @@ Among the most studied type of cancer is the Acute Myeloid Leukimia (AML), a can
 
 One of the special characteristics of the AML is its difference in curability in various stages of cancer. Early stage of AML is highly curable while advanced stage of AML is barely curable \cite{greaves1993stem}. Deriving an early detection of the disease is thus of utmost importance to ensure patient's survival. Several methods are developed for early AML detection ranging from a screening-based \cite{cowen1973aml} to a flow cytometry-based methods \cite{terwijn2013high}. However, these methods either focus on population level thereby ignoring single-cell dynamics or are not high-throughput enough in analyzing cells in single-cell resolution.
 
-%In this project we are focused on the analysis of one famous cell of AML, the AML-M5a MOLM-13 cell line \cite{matsuo1997two}. 
-
-%TODO organize this part
-
-%In this project, we are focused in cell-to-cell variability in response to external stimuli such as cancer call.
-
-
 \section{Variability of cell-to-cell response towards cancer treatment}
-
-%TODO : modify to local use
 
 Cell-to-cell variability in response to external stimuli is a pervasive trait in cellular systems that prevails even in isogenic cell populations \cite{snijder2011origins}. Here, heterogeneity might be caused by epigenetic modifications, differences in the cell cycle phase, or by intrinsic stochastic fluctuations in gene expression and biochemical regulation. The implications of heterogeneity for cancer progression and treatment are poorly understood. In some cases, heterogeneity is dominated by intrinsic fluctuations in the stochastic expression of key regulators that randomly alter the sensitiveness of individual cancer cells \cite{spencer2009non}. Experiments and simulations show that variability in cell fate is sensitive to small stochastic increases in the levels of several regulator proteins and are transiently heritable to siblings \cite{bertaux2014modeling, gaudet2012exploring}. The profound consequences for cancer treatment have been subject to theoretical studies with several proposed models explaining the stochastic origins of cell-to-cell variability in cancer cell death decisions \cite{bhola2009determinism, greene2015modeling}.
 
@@ -1637,7 +1634,7 @@ where $\mathbf{I}_x$ is the regularized beta function
 and $\mathbf{B}$ is the beta function
 
 \begin{equation}
-B(x;\,a,b) = \int_0^x t^{a-1}\,(1-t)^{b-1}\,dt.
+\mathbf{B}(x;\,a,b) = \int_0^x t^{a-1}\,(1-t)^{b-1}\,dt.
 \end{equation}
 
 Using the  standard definition of one-sided right tail p-value we can derive for the p-value of the F statistic as following:
@@ -1992,7 +1989,6 @@ Trees\textsubscript{BF} & Trees\textsubscript{FS} & Remark \\
 
 The image processing pipelines for both brightfield and florescence channels can be seen in following figures:
 
-%TODO separate huge images into smaller images
 %TODO add following explanation:
 %Brightfield channel pipeline. (j) The original out-of-focus image of the upper left corner of  the image position 41. (k) The view of the same area as (l) after applying brightness and contrast adustment. (m) The view of the same area after applying RATS on image in (n) showing the contour of micro-trenches in the area. (d) The contours filled with neutral color (black). Note that some micro-trenches are not filled as they are open and thus topologically not the outernmost contours. Scale bar on the uppermost figure is $100 \mu M$ long
 
@@ -2073,7 +2069,7 @@ The pipeline described in Chapter \ref{chapter:analytic_pipeline} provides us wi
 \section{Characteristics of analyzed cells}
 \label{section:characteristics_of_analyzed_cells}
 
-Our experimental setup and analysis pipeline allows for a strict filtering of the data with respect to various requirements. Table \ref{table:cell_reqs_main} lists the requirements a cell tree has to fulfill for time-to-death (TTD) and sisters death time (SDT) correlation analyses in the unsynchronized experiment (see Section \ref{section:ttd_tic_sisters}).
+Our experimental setup and analysis pipeline allows for a strict filtering of the data with respect to various requirements. Table \ref{table:cell_reqs_main} lists the requirements a cell tree has to fulfill for time-to-death (TTD) and sisters death time (SDT) correlation analyses in the unsynchronized experiment (see Section \ref{section:ttd_tic_sisters}). The number of cells fulfilling requirements listed in the Table \ref{table:cell_reqs_main} can be seen in the Table \ref{table:micro_trench_yields} in Appendix \ref{section:micro_trench_yields_statistics}.
 
 \begin{table}[H]
 \centering
@@ -2573,6 +2569,35 @@ In his master's thesis, Oliver Hilsenbeck introduced a masking tool that require
 \begin{appendices}
 \newpage
 
+\chapter{Source code and data}
+
+{
+\flushleft
+
+All our code are available in the github repository:
+
+\begin{center}
+\href{https://github.com/raharjaliu/MA}{https://github.com/raharjaliu/MA}.
+\end{center}
+
+Following scripts are particularly interesting:
+
+\begin{itemize}
+\item \texttt{fij.py} contains Jython implementation of the image pre-processing pipeline.
+\item \texttt{source/} contains various analysis scripts used in the post-tracking analysis.
+\end{itemize}
+}
+
+The data used in this project are proprietary to the Soft Condensed Matter Group at the Faculty of Physics of the Ludwig-Maximilli\"ans-Universit\"at M\"unchen (the chair of Prof. Joachim O. R\"adler). If any access to the data are required, please contact one of the following email addresses:
+
+\begin{itemize}
+\item \href{mailto:pandu.raharja@tum.de}{pandu.raharja@tum.de}
+\item \href{mailto:carsten.marr@helmholtz-muenchen.de}{carsten.marr@helmholtz-muenchen.de}
+\item \href{raedler@lmu.de}{raedler@lmu.de}
+\item \href{e.chatzopoulou@physik.uni-muenchen.de}{e.chatzopoulou@physik.uni-muenchen.de}
+\end{itemize}
+
+
 \chapter{Tables}
 \label{chapter:appendix_tables}
 
@@ -2968,6 +2993,7 @@ Pos. & Det. & Occ. & 1 & 2 & 3 & 4+
 \label{table:occupancy_statistics_syn}
 
 \section{Micro-trench yields statistics}
+\label{section:micro_trench_yields_statistics}
 
 %TODO add reference in main part
 
@@ -2975,7 +3001,7 @@ Pos. & Det. & Occ. & 1 & 2 & 3 & 4+
 \centering
 \begin{tabular}{c | c | c | c | c | c}
 \hline
-Pos. & Tree & Singly-placed & One division & $T_{div} < T_{treat}$ & $T_{eot} > T_{treat}$
+Pos. & Cell trees & Singly-placed & One division & $T_{div} < T_{treat}$ & $T_{eot} > T_{treat}$
 \\
 \hline\hline
 1 & 82 & 55 & 9 & 8 & 0
@@ -3032,6 +3058,8 @@ Pos. & Tree & Singly-placed & One division & $T_{div} < T_{treat}$ & $T_{eot} > 
 \\
 \hline
 \end{tabular}
+\label{table:micro_trench_yields}
+\caption[Micro-trench yields statistics for the image positions 1 - 32 in the unsynchronized experiment]{The number of processed cells in the unsynchronized experiment for the time-to-death (TTD) analyses. From left to right the requirements become more stringent and only the cell trees fulfilling all criteria (rightmost column) are used for TTD analyses.}
 \end{table}
 
 \begin{table}[h]
@@ -3093,6 +3121,7 @@ Pos. & Tree & Singly-placed & One division & $T_{div} < T_{treat}$ & $T_{eot} > 
 \\
 \hline
 \end{tabular}
+\caption[Micro-trench yields statistics for the image positions 33 - 63 in the unsynchronized experiment]{The number of processed cells in the unsynchronized experiment for the time-to-death (TTD) analyses. From left to right the requirements become more stringent and only the cell trees fulfilling all criteria (rightmost column) are used for TTD analyses.}
 \end{table}
 
 
