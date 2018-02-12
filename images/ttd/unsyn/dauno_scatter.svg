@@ -14,8 +14,8 @@
    id="svg2"
    xml:space="preserve"
    width="956.91467"
-   height="305.60602"
-   viewBox="0 0 956.91467 305.60602"
+   height="313.59949"
+   viewBox="0 0 956.91467 313.59949"
    sodipodi:docname="dauno_scatter.svg"
    inkscape:version="0.92.2 (5c3e80d, 2017-08-06)"><metadata
      id="metadata8"><rdf:RDF><cc:Work
@@ -4218,8 +4218,8 @@
      inkscape:measure-start="0,0"
      inkscape:measure-end="0,0"
      inkscape:zoom="1.0805476"
-     inkscape:cx="715.7287"
-     inkscape:cy="169.65685"
+     inkscape:cx="761.8646"
+     inkscape:cy="189.84997"
      inkscape:window-x="-9"
      inkscape:window-y="-9"
      inkscape:window-maximized="1"
@@ -4664,7 +4664,7 @@
            id="tspan530"
            x="-182.47151"
            y="11.033238"
-           style="font-size:16px">Time to death (h)</tspan></text>
+           style="font-size:16px">Time-to-death (h)</tspan></text>
 <text
          transform="translate(115.92765,8.900399)"
          style="font-variant:normal;font-weight:normal;font-size:12px;font-family:Verdana;-inkscape-font-specification:Verdana;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -6079,14 +6079,10 @@
        style="font-variant:normal;font-weight:normal;font-size:10px;font-family:Verdana;-inkscape-font-specification:Verdana;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
        x="458.84567"
        y="206.21136"><tspan
-         id="tspan3232"
-         sodipodi:role="line"
-         y="206.21136"
-         x="458.84567 465.19568">20</tspan><tspan
          id="tspan3234"
          sodipodi:role="line"
-         y="220.88326"
-         x="321.76004 327.87003 330.61002 340.33002 346.50003 349.66003 352.44003 358.76004 361.94003 367.42001 373.55002 376.33002 379.07004 382.27002 387.75003 393.66003 399.13004 401.87003 408.04004 411.20004 415.10004 421.42001">Time in cell cycle (h)</tspan></text>
+         y="206.21136"
+         x="458.84567">20</tspan></text>
 <g
        transform="scale(1,-1)"
        id="g3238"><path
@@ -8483,4 +8479,37 @@
                            d="m 52.953,63.146 h 36.605 v 83.109 H 52.953 Z"
                            style="fill:#80cc28;fill-opacity:1;fill-rule:nonzero;stroke:none"
                            id="path5714-1"
-                           inkscape:connector-curvature="0" /></g></g></g></g></g></g></g></g></g></g></g></svg>
+                           inkscape:connector-curvature="0" /></g></g></g></g></g></g></g></g></g></g><text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:16px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.75"
+       x="366.74603"
+       y="256.21143"
+       id="text4162"><tspan
+         sodipodi:role="line"
+         id="tspan4160"
+         x="366.74603"
+         y="270.80872"
+         style="font-size:16px;stroke-width:0.75" /></text>
+<text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:16px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.75"
+       x="339.67642"
+       y="165.97939"
+       id="text4166"><tspan
+         sodipodi:role="line"
+         id="tspan4164"
+         x="339.67642"
+         y="180.57668"
+         style="stroke-width:0.75" /></text>
+<text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:16px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.75"
+       x="303.58359"
+       y="225.67134"
+       id="text4170"><tspan
+         sodipodi:role="line"
+         id="tspan4168"
+         x="303.58359"
+         y="225.67134"
+         style="font-size:16px;stroke-width:0.75">Time in cell cycle (h)</tspan></text>
+</g></svg>

@@ -34,6 +34,14 @@
 % definitions for pseudocode
 \newcommand{\forcond}{$i=0$ \KwTo $k - 1$}
 
+%afterpage empty pagex
+\usepackage{afterpage}
+\newcommand\blankpage{%
+    \null
+    \thispagestyle{empty}%
+    \addtocounter{page}{-1}%
+    \newpage}
+
 % declare macros
 %\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
 %\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
@@ -64,10 +72,12 @@
 \includegraphics[width=0.4\textwidth]{logo1.jpg}  
 \\[5cm]
 
-{\Large Department of Mathematics}\\[0.5cm]
-{\Large Chair of Mathematical Modeling of Biological Systems}\\[0.5cm]
-{Technische Universit\"at M\"unchen}\\[2cm]
-{\Large Master's Thesis in Bioinformatics}\\[1.5cm]
+{\Huge Institute of Computational Biology (ICB)}\\[0.5cm]
+{\Huge Helmholtz Zentrum M\"unchen}\\[1cm]
+
+%{\Large Chair of Mathematical Modeling of Biological Systems}\\[0.5cm]
+%{Technische Universit\"at M\"unchen}\\[2cm]
+{\Huge Master's Thesis in Bioinformatics}\\[1.5cm]
 
 % Title
 \HRule \\[0.4cm]
@@ -75,7 +85,7 @@
 
 \HRule \\[1.5cm]
 
-{\Large Pandu Raharja}\\[2.5cm]
+{\Huge Pandu Raharja}\\[2.5cm]
 
 \vfill
 \end{center}
@@ -94,9 +104,12 @@
 \includegraphics[width=0.4\textwidth]{logo1.jpg}  
 \\[1.5cm]  
 
-{\Large Department of Mathematics}\\[0.5cm]
-{\Large Chair of Mathematical Modeling of Biological Systems}\\[0.5cm]
-{Technische Universit\"at M\"unchen}\\[1cm]
+{\Large Institute of Computational Biology (ICB)}\\[0.5cm]
+{\Large Helmholtz Zentrum M\"unchen}\\[1cm]
+
+%{\Large Department of Mathematics}\\[0.5cm]
+%{\Large Chair of Mathematical Modeling of Biological Systems}\\[0.5cm]
+%{Technische Universit\"at M\"unchen}\\[1cm]
 
 {\Large Master's Thesis in Bioinformatics}\\[2cm]
 {\textbf{\Large Single-cell analysis of cancer drug response using computer vision and learning algorithms on time-lapse micro-trench data}}\\[2cm]
@@ -109,7 +122,7 @@
     Supervisor: &  Prof. Dr. Fabian Theis, Dr. Carsten Marr\\
     Advisor:        &  Prof. Dr. Fabian Theis\\
     & Prof. Dr. Dmitrij Frishman\\
-    Submitted:     &  15.12.2017
+    Submitted:     &  15/02/2018
   \end{tabular}
 \end{center}
 
@@ -117,32 +130,29 @@
 
 \end{titlepage}
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % thesis content starts here
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 {\parindent 0cm
 %%%%%%%%%%%%%%%%%%%%%%%%%%deutsche Version%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\vspace{80mm}
   
   \section*{Selbst\"andigkeitserkl\"arung}
-  Ich erkl\"are hiermit, dass ich die vorliegende Arbeit selbst\"andig verfasst 
-  und nur unter Verwendung der angegebenen Quellen und Hilfsmittel angefertigt habe. 
-  Weiterhin erkl\"are ich, eine Diplomarbeit in diesem Studiengebiet erstmalig einzureichen.\\
+  Ich versichere, dass ich diese Master's Thesis selbst\"andig verfasst und nur die angegebenen Quellen und Hilfsmittel verwendet habe.
   \vspace{3\baselineskip}
   
-  M\"unchen, den \today \hspace{0.1\linewidth}\parbox{0.3\linewidth}{\dotfill}
+  M\"unchen, den 12. Februar 2018 \hspace{0.1\linewidth}\parbox{0.3\linewidth}{\dotfill}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%englische Version%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section*{Statement of authorship}
-I declare that I completed this thesis on my own and that information which has been 
-directly or indirectly taken from other sources has been noted as such. Neither this 
-nor a similar work has been presented to an examination committee.
+I confirm that this master's thesis is my own work and I have documented all sources and material used.
 
   \vspace{3\baselineskip}
   
-  Munich, \today \hspace{0.1\linewidth}\parbox{0.3\linewidth}{\dotfill}
+  Munich, February 11, 2018  \hspace{0.1\linewidth}\parbox{0.3\linewidth}{\dotfill}
 }
 
 \newpage
@@ -155,11 +165,23 @@ To Jennifer Carissa, whose support has made it possible to go through the hard p
 
 To Julian, Ganesh and other best friends which I resort to for personal assistance. Friends really are hard to find.\\
 
-And finally, to Prof. Fabian Theis, Prof. Joachim R\"adler, Elisavet Chatzopoulou, Felix Buggenthin and Alexandra Murschhauser for tremendous assistant in doing this project. Never did I know a project could be done in this maner.\\
+To Prof. Fabian Theis, Prof. Joachim R\"adler, Elisavet Chatzopoulou, Felix Buggenthin and Alexandra Murschhauser for tremendous assistant in doing this project. Never did I know a project could be done in this maner.\\
 
 Finally for my best supervisor, Carste Marr. Your boundless patience, deep insight and attention to detail have made this project impossible without your selfless assistance. I hope we could do more things in the future. 
 
 \newpage
+
+\begin{abstract}
+Quantitative measurement of cancer drug response is essential to objectively gauge the efficacy of cancer drugs. So far, there has been no method to reliably track and quantitatively measure single-cell response of of cancer drug treatment over a long time (over 12 hours). A novel platform and image processing pipeline are presented in this thesis that enables the continuous observation of cell clones derived from individual non-adherent cells of the leukemia cell line AML-M5a MOLM-13. The platform employs arrays of micro-trenches optimized to observe cells for two consecutive generations. We demonstrate that automated image analysis is feasible and allows precise determination of the cell cycle distribution and sister cell correlations. A key feature of the platform is the direct and parallel observation of hundreds of cells in different cell cycle states. Here, we first studied the time distribution of a full cell cycle, i.e. the time between the first and second division. We then focused on the response dynamics of single cells to chemotherapeutic drugs and on the comparison of the response to these agents between a chemically synchronized and a non-synchronized population. We show that the time-to-death after induction of apoptosis using the anti-mitotic agent Vincristine and Daunorubicin exhibits dependence on cell cycle. The results were found consistent with experiments using cells that were synchronized using standard thymidine cell cycle arrest. Our approach also enabled a time correlation analysis, which showed that the time-to-death of sister cells is correlated. While the method enabled relatively easy and quasi-high-throughput analysis of cancer treatment \textit{in vitro}, our pipeline could also be adapted in various contexts involving single-cell analysis in a micro-trench environment with only reasonable amount of modifications necessary.
+\end{abstract}
+
+\newpage
+
+\renewcommand{\abstractname}{Zusammenfassung}
+\begin{abstract}
+Quantitative Messung des Zell-Responses zu einem Krebsmedikament ist bedeutsam zur objektiven Messung von Wirksamkeit von dem Medikament. Bisher existiert keine Methode, die in der Lage ist, die Wirkung eines Krebsmedikaments in Einzeller Aufl\"osung verl\"asslich in l\"angerem Zeitraum (\"uber 12 Stunden) zu tracken und messen. Wir stellen in dieser Arbeit neue Platform und Pipeline vor, die kontinuirliche Beobachtung von der bewegenden Zelllinie AML-M5a MOLM-13 in Einzeller Aufl\"osung erm\"oglichen. Das Platform besteht aus den Microtrench-Arrays, die die Zellen optimal eingrenzen und daher zuverl\"assige Videoaufnahme und nachfolgende Auswertung erm\"oglichen. Dieses Platform nimmt die Videoaufnahme direkt und parallel auf, was zur hochdurchsatziger Eigenschaft des Platforms f\"uhrt. Anhand von dieser Kombination von dem Platform und dem Bildverarbeitungspipeline f\"uhren wir folgende Analysen vor. Zuerst analysieren wir die Zellzyklusdauer aller g\"ultigen Zellen. Wir analysieren danach die Zellraktion zu den ausgew\"ahlten Krebsmedikamenten Vincristine und Daunorubicin. Wir stellen fest, dass die Response-Dynamik zu dem Medikament von den Zellphasen abh\"angig ist. Diese und andere Resultate bez\"uglich Response-Dynamik sind in \"Ubereinstimmung mit vorigen Ergebnissen, die die Validit\"at unserer Platform und Bildverarbeitungspipeline best\"atigen. Neben ihrer hochdurchsatziger Eigenschaft zeichnet sich unsere Methode aus durch ihre Anpassbarkeit. Durch das modulare Design von dem Pipeline l\"asst sich die Methode in verschiedenen einzellen Analysen in Microtrench-Arrays einfach anpassen.
+\end{abstract}
+
 
 \chapter*{Terminology and abbreviations}
 
@@ -240,20 +262,12 @@ $M_{t, x, y, 1}$ & First channel of pixel $M_{t, x, y}$ \\
 $M^b_t$ & A $b$-bit encoded RGB image captured at time t\\
 $M^m_{t, x, y, i}$ & Pixel-wise mean-substracted pixel $M_{t, x, y}$ \\
 $\langle M \rangle$  & Pixel-wise mean image of stack $M$.\\
-$T_R$ & Gradient threshold value in a quadtree  (used in RATS algorithm).
+$T_R$ & Gradient threshold value in a quadtree  (used in RATS algorithm).\\
+$\Phi_{RBF}(x_i, x_j)$ & An RBF kernel function. 
 \end{tabular}
 \endgroup
 
 }
-\newpage
-
-%TODO update abstract
-%TODO add German version
-
-\begin{abstract}
-Quantitative measurement of cancer drug response is esential to objectively gauge the efficacy of cancer drugs. So far, there has been no method to track and  quantitatively measure single-cell response of of cancer drug treatment. A novel pipeline is presented in this thesis. First, a quasi-high-throughput method to track cells and quantitatively analyze single-cell response to drugs. We investigate the response of model cancer cell lineagues, MOLM and Jurkat, to known anti-cancer drugs Vincristine and Doxorubicine. While the method enabled relatively easy and quasi-high-throughput analysis of cancer treatment \textit{in vitro}, our pipeline could also be adapted in varios contexts involving single-cell analysis with reasonable amount of modifications necessary.
-\end{abstract}
-
 \newpage
 
 \tableofcontents
@@ -313,9 +327,6 @@ It is essential to understand sources of the heterogeneous response to cancer dr
 
 The typical bottleneck for a high-throughput analysis for such is cell tracking. Different automatic tracking tools have been proposed \cite{doh2010cell, zurgil2010polymer} and compared \cite{skylaki2016challenges, wlodkowic2009microfluidic}. But to achieve tracks for fast moving cells, high cell densities and long term identifications, manual tracking is often applied \cite{rettig2005large, zurgil2010polymer} to generate tracks with maximal accuracy. For many approaches, the workload of manual tracking has to be compared to correcting erroneous track from tracking algorithms \cite{skylaki2016challenges}. Among the techniques to capture non-adherent cells for long-term observation microfluidic devices \cite{wlodkowic2009microfluidic} as well as micro-well platforms \cite{rettig2005large, doh2010cell, zurgil2010polymer, zaretsky2012monitoring, day2009method, schiffenbauer2009cell} have been developed. Platforms that confine single starting cells and thus lead to spatially separated cell families (also called clones) are an especially useful tool to investigate cell cycle length, sister cell correlations, or the effect of cell cycle phases to cell-to-cell variability in a high-throughput manner.
 
-%TODO move to abstract
-Here we introduce a platform that enables the continuous observation of cell clones derived from individual non-adherent cells of the leukemia cell line AML-M5a MOLM-13. The platform employs arrays of micro-trenches optimized to observe cells for two consecutive generations. We demonstrate that automated image analysis is feasible and allows precise determination of the cell cycle distribution and sister cell correlations. A key feature of the platform is the direct and parallel observation of hundreds of cells in different cell cycle states. Here, we first studied the time distribution of a full cell cycle, i.e. the time between the first and second division. We then focused on the response dynamics of single cells to chemotherapeutic drugs and on the comparison of the response to these agents between a chemically synchronized and a non-synchronized population. We show that the time-to-death after induction of apoptosis using the anti-mitotic agent vincristine and daunorubicin exhibits dependence on cell cycle. The results were found consistent with experiments using cells that were synchronized using standard thymidine cell cycle arrest. trenchesOur approach also enabled a time correlation analysis, which showed that the time-to-death of sister cells is correlated.
-
 \section{Advances in microfluidics, image processing and machine learning}
 
 In the recent decades, as in many other fields, there are numerous groundbreaking advances in the fields of microfluidics, image processing and machine learning. The advances, coupled with general technological advances in computing power and energy efficiency, have made it possible for us to design almost completely automated analytical pipeline for single-cell microfluidic system. While not all methods and algorithms in this project are the most recent, many of them are state-of-the-art for the purpose and, more importantly, robust enough for the pipeline to work seamlessly. The explanation of every method used is available in Chapter \ref{chapter:data_and_method}.
@@ -335,31 +346,29 @@ The use of microfluidics enables us firstly to study the distribution of divisio
 \subsection{Image Processing and Computer Vision}
 \label{subsection:cv_advances}
 
-Before the runaway advance of deep learning methods in the last years, object and area detection methods generaly rely on disciminating certain patterns and features in the picturek -- with and without utilizing machine learning methods. In 2001, Paul Viola and Michael Jones proposed a method that was able to recognize face \cite{viola2004robust}, and later, objects in almost real-time fasion \cite{viola2001rapid}. %TODO continue with viola jones
-
-%TODO fill
+Before the runaway advance of deep learning methods in the last years, object and area detection methods generaly rely on disciminating certain patterns and features in the picturek. In 1999, David Lowe proposed the method of image recognition using features similar to the ones observed in primate neuron \cite{lowe1999object}. Known as SIFT, these features are invariant to image scaling, translation, rotation and, partly, illumination changes and affine or 3D projection. In 2001, Paul Viola and Michael Jones proposed a method that was able to recognize face \cite{viola2004robust}, and later, objects in almost real-time fasion \cite{viola2001rapid}. Until the advent of deep neural network-based breakthrough in the early 2010s, these methods have been a go-to method for recognizing objects in an image.
 
 \subsection{Machine Learning}
 \label{subsection:ml_advances}
 
-%TODO fill
+The breakthrough by Lowe increased the interest in the solution of vision pattern recognition based on human perception. This sparked interest in neural network-based model for image recognition. Due to advent in computing power in the early and later 2000s enabled the construction of larger and deeper neural network allowing for more general representation of features \cite{goodfellow2016deep}.
+
+In 2012, the improvement of the best method over the  last year's method in recognizing object in the annual ImageNet Large Scale Visual Recognition Challenge (ILSVRC), the world's most important general image recognition challenge at that time, has been dramatic. The improvement is marked by the utilization of deep neural network (AlexNet \cite{krizhevsky2012imagenet}). From that time on, many deep neural network architectures are born, including VGG Net (Simonyan  and Zisserman, 2014 \cite{simonyan2014very}), Google's Inception Net \cite{szegedy2015going} and Microsoft's ResNet \cite{he2016deep}.
+
+Since then, almost every new method, while basing itself on principles very similar to classical computer vision methods such as Viola-Jones and SIFT, is implemented using some variant deep neural networks.l
 
 \section{Related methods considered for the project}
 
 \subsection{Cell death determination}
 \label{subsection:comp_cell_death_determination}
 
-%TODO modify
-
-Measuring cell death is a crucial part of the experiment, as the reliable determination of it is the basis of most analysis in this thesis. There are several way to measure cell deaths with varying complexity and accuracy. Each method contains certain assumptions of cell death.
+Measuring cell death is a crucial part of the experiment, as the reliable determination of it is the basis of most analysis in this thesis. There are several other ways to measure cell deaths with varying complexity and accuracy. Each method contains certain assumptions of cell death.
 
 For example, determining cell death by cell movement assumes death of a cell if no movement beyond random flux is observed in certain amount of time. This obviously has certain drawbacks, such as when the observation is done in non-static environment. Moreover, defining the limit of the random flux, above which a given cell is assumed to actively move, is not a trivial task. Some kind of gold standard for a given cell line and environment has to be established manualy, which is very time consuming. This fact is again made even more complicated by the fact that many cells show different movement pattern upon introduction of treatment. It is well known that some cells tend to move faster or slower under stress, the situation many cancerous cells in our experiment will experience upon addition of cancer drug treatment \cite{pienta1991effects, fenteany2003small, ruocco2012suppressing}.
 
-The second method is using cell size. During apopotosis, the cells would shrink. Given It is known that cell size %TODO continue.
+The second method is using cell size. During apopotosis, a cell blebs, shrinks and discharges pockets of containing organelles \cite{green2011means}. This is followed by nuclear fragmentation and chromatin condensation and finally the day of the entire nucleus. This has direct effect on cell size: as apopotosis proceeds, more parts of the cell are discharged from the main body thus reducing its size. Detecting cell death based on the size is however not veriable as the process takes hours if not days and the definition of cell death is not generally agreed upon based on the size.
 
 \subsection{Other model cell lines}
-
-%TODO modify
 
 
 Some other cell lines were examined as potential probe cell line in this experiment. One of them is Jurkat Cell, a model cell commonly used to study T Cell Leukimia, T cell signalling mechanism and the expression of various HIV-related chemokines \cite{schneider1977characterization}. The cell line was a considered since it is well-studied \cite{johnson2007genome, schena1996parallel}. This is especially true if we consider apoptotic mechanism of the cell line, a problem this project and other related projects by our  and partner labs are trying to investigate. There are several seminal publications about the dynamics of apoptotic mechanism of Jurkat cells we could well compare our results to \cite{gottlieb1996apoptosis}. Samali \textit{et al.} \cite{samali1999presence} even studies the dynamics of Caspase expression in Jurkat cells, a topic dealt a lot in this project as the chapters progress (see for example Subsection \ref{subsection:treatment}) while Kasai \textit{et al.} considers the aspect of spindle checkpoint in the context of apopototic cell death \cite{kasai2002prevalent}. However, we figured out early on that the cell motility of the Jurkat cell line was increased dramatically (a phenomenon observed by others before us \cite{barnhart2004cd95}) upon the introduction of chemotherapeutic treatment -- the increase dramatic enough that the cells managed to escape the micro-trench it initially landed in.
@@ -369,7 +378,8 @@ Some other cell lines were examined as potential probe cell line in this experim
 In this part, the hypothesis underlying the experiment is presented:
 
 \begin{itemize}
-\item \textbf{Cell-cycle dependency of cell response toward cancer treatments:} Since it is assumed that VCR acts only during M-phase in their cycling, we can expect that cells that are closer to M-phase will die earlier \cite{gascoigne2008cancer, holland2008beyond}
+\item \textbf{Cell-cycle dependency of cell response towards cancer drug  treatments:} Since it is assumed that VCR acts only during M-phase in their cycling, we can expect that cells that are closer to M-phase will die earlier \cite{gascoigne2008cancer, holland2008beyond}. We also expect that there is some degree of correlation of the response towards cancer drug treatments between sister cells.
+\item \textbf{Machine learning model of cancer cell deaths:} we can also expect that there are certain features taken from cell that correspond to some stage of programmed cell death.  These features shall be partly learnable using some simple machine learning method.
 \end{itemize}
 
 %TODO expand
@@ -628,7 +638,7 @@ Green fluorescence channel (Csp3/7) & Image tracking, image analysis & 15 minute
 \subsubsection{Synchronized experiment}
 \label{subsection:synchronized_experiment}
 
-The main difference between unsynchronized and synchronized experiments is the synchronization step. This process involves arresting cell cycle with the so-called "double thymidine block" protocol \cite{harper2005synchronization}, which arrests cell development at $G_1/S$-phase by stopping DNA synthesis using double thymidine block, a well known DNA synthesis inhibitor \cite{bostock1971evaluation}.
+The main difference between unsynchronized and synchronized experiments is the synchronization step. This process involves arresting cell cycle with the so-called "double thymidine block" protocol \cite{harper2005synchronization}, which arrests cell development at $G_1/S$-phase by stopping DNA synthesis using double thymidine block, a well known DNA synthesis inhibitor \cite{bostock1971evaluation}. Cells were released 3 h before the start of imaging and seeded in micro-trenches. The drug was added just before starting imaging
 
 Like in the unsynchronized experiment, several concentration levels are tested in this experiment (see Table \ref{table:syn_treatments}). The image capturing starts right after the cells are synchronized and lasts 24 hours. The image capturing frequency is exactly the same as in the unsynchronized experiment (see Table \ref{table:image_capture_frequency}).
 
@@ -1126,7 +1136,7 @@ M^m_{t, x, y, R} := M_{t, x, y, R} - \langle M \rangle_{x, y, R}
 The same applies to $\langle M \rangle_{x, y, G}$ and $\langle M \rangle_{x, y, B}$. The transformed RGB value is thus defined as
 
 \begin{equation}
-M^m_{t, x, y} := [M^m_{t, x, y, 1}; M^m_{t, x, y, 2}; M^m_{t, x, y, 3}
+M^m_{t, x, y} := [M^m_{t, x, y, 1}; M^m_{t, x, y, 2}; M^m_{t, x, y, 3}]
 \end{equation}
 
 As for a grayscale image we define following:
@@ -1649,7 +1659,7 @@ Every method developed/used in the pipeline is brought forward and explained wit
 
 To assess single cell characteristics (like its lifetime, time-to-death, division time, daughter cells and other information relating to its time- and generation-dependent cell cycle information), we track all cells in the brightfield channel from the start of the movie, assign cells to individual micro-trenches to e.g. filter out micro-trenches with multiple starting cells, and determine cell death via marker onset in the fluorescent channels.
 
-Figure \ref{fig:pipeline1}a shows how the image is sequentially processed from out-of-focus image to cell trees information.
+Figure \ref{fig:pipeline11} shows how the image is sequentially processed from out-of-focus image to cell trees information.
 
 \section{Micro-trench masking}
 \label{subsection:micro_trench_masking}
@@ -1703,14 +1713,14 @@ creating transformed intensity $I^t$.
 
 Note that this is still not a perfect transformation, as there are some pixels in $\mathfrak{S}$ with intensity lower than the minimum intensity of pixels in $\mathfrak{M}$. Besides doing this manually, we also improve this by refining the transformed intensity $I^t$ further with the next step: Robust Automatic Threshold Selection.
 
-Subfigures \ref{fig:pipeline1}j and \ref{fig:pipeline1}k show images of micro-trenches before and after brightness and contrast adjustment in the image processing pipeline. While the example does not show clear difference on macro level, the algorithm removes local artifacts that may distort micro-trench masking process. The step is done manually for each image position using the \textbf{Bright/Contrast Adjustment} function in Fiji.
+Subfigures \ref{fig:pipeline12}i and \ref{fig:pipeline12}j show images of micro-trenches before and after brightness and contrast adjustment in the image processing pipeline. While the example does not show clear difference on macro level, the algorithm removes local artifacts that may distort micro-trench masking process. The step is done manually for each image position using the \textbf{Bright/Contrast Adjustment} function in Fiji.
 
 \subsection{RATS denoising}
 \label{subsubsection:rats_denoising}
 
 After brightness and contrast adjustment, some parts inside the micro-trench still have pixels  that were not transformed to complete white color (maximum intensity). This can be removed by the global and local noise correction through Robust Automatic Threshold Selection (RATS, see Subsection \ref{subsubsection:rats}). The algorithm is applied on each adjusted brightfield image, which creates a binary image of the micro-trench margins.
 
-Subfigures \ref{fig:pipeline1}k and \ref{fig:pipeline1}l show the input and output of  RATS in the image processing pipeline. The noise partaining in a micro-trench is removed upon application of gradient-based filtering. We can thus say that,
+Subfigures \ref{fig:pipeline12}j and \ref{fig:pipeline12}k show the input and output of  RATS in the image processing pipeline. The noise partaining in a micro-trench is removed upon application of gradient-based filtering. We can thus say that,
 
 \begin{itemize}
 \item the first part of RATS ($\mathbb{g}$-filtering by $\lambda \sigma$) is designed to move global level noise  which in this case means white noises coming from non-perfect reflection of light from the well.
@@ -1728,17 +1738,18 @@ Parameter & Value \\
 \texttt{noise\_threshold} & 25 \\
 \texttt{lambda\_factor} & 3 \\
 \texttt{min\_leaf\_size\_pixels} & 408 \\
+\hline
 \end{tabular}
 \end{table}
 
 \subsection{Micro-trench mask filling}
 
-After applying brightness and contrast adjustment and RATS, the image now contains only the margin of micro-trenches. We can then fill these holes to create micro-trench masks. Subsection \ref{subsection:holes_filling} desribes the holes filling algorihm. The step is done automatically using the \textbf{Fill Holes} function in Fiji. Subfigures \ref{fig:pipeline1}l and \ref{fig:pipeline1}m show the input and output of the holes filing algorithm in the image processing pipeline. Upon holes filling, Each mask (appearing as a black rod-like form) is assigned a unique identity, which is then used as an identifier for tracks in both the brightfield and the fluorescent channel for filtering of cells and clones (see Sections \ref{section:pipeline_brightfield} and \ref{section:pipeline_fluoroscent}).
+After applying brightness and contrast adjustment and RATS, the image now contains only the margin of micro-trenches. We can then fill these holes to create micro-trench masks. Subsection \ref{subsection:holes_filling} desribes the holes filling algorihm. The step is done automatically using the \textbf{Fill Holes} function in Fiji. Subfigures \ref{fig:pipeline12}k and \ref{fig:pipeline12}l show the input and output of the holes filing algorithm in the image processing pipeline. Upon holes filling, Each mask (appearing as a black rod-like form) is assigned a unique identity, which is then used as an identifier for tracks in both the brightfield and the fluorescent channel for filtering of cells and clones (see Sections \ref{section:pipeline_brightfield} and \ref{section:pipeline_fluoroscent}).
 
 \section{Single cell tracking in the brightfield channel}
 \label{section:pipeline_brightfield}
 
-To identify and track single cells from movie start, each out-of-focus brightfield image is processed in the following way (see Figure \ref{fig:pipeline1}a for pipeline visualization): 
+To identify and track single cells from movie start, each out-of-focus brightfield image is processed in the following way (see Figure \ref{fig:pipeline11} for pipeline visualization): 
 
 \subsection{Gaussian blurring}
 
@@ -1746,11 +1757,11 @@ First, a Gaussian blur  with a large radius of 50 pixel is applied to each brigh
 
 This step frees the out-of-focus image from global background and gradient which may have been arisen during image acquisition process caused by non-homogeneous lightning and unsycnhronized lightning for example. This step is done using \textbf{Gaussian blur} filter implementation in Fiji with $\sigma = 50$ as parameter.
 
-Subfigures \ref{fig:pipeline1}b, \ref{fig:pipeline1}c and \ref{fig:pipeline1}d depict the input of the algorithm, computed background and output of the algorithm in the image processing pipeline.
+Subfigures \ref{fig:pipeline12}a, \ref{fig:pipeline12}b and \ref{fig:pipeline12}c depict the input of the algorithm, computed background and output of the algorithm in the image processing pipeline.
 
 \subsection{Local contrast normalization}
 
-After removing global background and gradient, we normalize the local contrast of each image(Zuiderveld, 1994  \cite{zuiderveld1994contrast}). Subsection \ref{subsection:clahe} explains the details of  the algorithm. This separates foreground from background. Upon running the algorithms the cells will be visible as negative while other parts of the image (micro-trench, noises etc) disappear. Figures \ref{fig:pipeline1}d and \ref{fig:pipeline1}e depict the input and output of the algorithm in the image processing pipeline. This step is done using \textbf{Normalize Local Contrast} function in Fiji with following parameters:
+After removing global background and gradient, we normalize the local contrast of each image(Zuiderveld, 1994  \cite{zuiderveld1994contrast}). Subsection \ref{subsection:clahe} explains the details of  the algorithm. This separates foreground from background. Upon running the algorithms the cells will be visible as negative while other parts of the image (micro-trench, noises etc) disappear. Figures \ref{fig:pipeline12}c and \ref{fig:pipeline12}d depict the input and output of the algorithm in the image processing pipeline. This step is done using \textbf{Normalize Local Contrast} function in Fiji with following parameters:
 
 \begin{table}[H]
 \centering
@@ -1761,6 +1772,7 @@ Parameter & Value \\
 \texttt{block\_radius\_x} & 100 \\
 \texttt{block\_radius\_y} & 100 \\
 \texttt{standard\_deviation} & 1 \\
+\hline
 \end{tabular}
 \end{table}
 
@@ -1769,11 +1781,11 @@ Parameter & Value \\
 
 To reduce noise from micro-trench margins in the foreground, we calculate the pixel-wise intensity average from all slices in one image position and subtract this from each image to generate a binary image with mainly cells in the foreground. The details of this step is explained in Subsection \ref{subsection:substraction_by_mean}. This creates a mask of the cells.  Equation \ref{eq:mean_calc_gs} is used to calculate the mean while the correction is done using Equation \ref{eq:mean_corr_gs}.
 
-Subfigures \ref{fig:pipeline1}e, \ref{fig:pipeline1}f and \ref{fig:pipeline1}g depict the input of the algorithm, computed pixel-wise mean intensity and output of the algorithm in the image processing pipeline.
+Subfigures \ref{fig:pipeline12}d, \ref{fig:pipeline12}e and \ref{fig:pipeline12}f depict the input of the algorithm, computed pixel-wise mean intensity and output of the algorithm in the image processing pipeline.
 
 \subsection{Cells recognition}
 
-After the image pre-processing, the image now shows only the negative of the cells (see Subfigure \ref{fig:pipeline1}g). Subsection \ref{subsection:cell_recognition} explains the Laplacian of Gaussian (LoG) detector in depth. The cells are recognized using the \textbf{Downsampled LoG Detector} in the Fiji TrackMate plugin \cite{tinevez2017trackmate} with following parameters:
+After the image pre-processing, the image now shows only the negative of the cells (see Subfigure \ref{fig:pipeline12}f). Subsection \ref{subsection:cell_recognition} explains the Laplacian of Gaussian (LoG) detector in depth. The cells are recognized using the \textbf{Downsampled LoG Detector} in the Fiji TrackMate plugin \cite{tinevez2017trackmate} with following parameters:
 
 \begin{table}[H]
 \centering
@@ -1787,10 +1799,11 @@ Parameter & Value \\
 \texttt{downsample\_factor} & 2 \\
 \texttt{blob\_diameter\_pixel} & 15 \\
 \texttt{threshold} & 0 \\
+\hline
 \end{tabular}
 \end{table}
 
-Subfigure \ref{fig:pipeline1}h shows the recognized cells from input image shown in Subfigure \ref{fig:pipeline1}g.
+Subfigure \ref{fig:pipeline12}g shows the recognized cells from input image shown in Subfigure \ref{fig:pipeline12}f.
 
 \subsection{Cells tracking}
 
@@ -1811,11 +1824,12 @@ Parameter & Value \\
 \texttt{track\_segment\_gap\_closing\_max\_frame} & 6 \\
 \texttt{track\_segment\_splitting} & \texttt{True} \\
 \texttt{track\_segment\_splitting\_pixel} & 25 \\
+\hline
 \end{tabular}
 \end{table}
 
 
-Figure \ref{fig:pipeline1}i shows the tracked trajectory of the cells from Figure \ref{fig:pipeline1}h.
+Figure \ref{fig:pipeline12}h shows the tracked trajectory of the cells from Figure \ref{fig:pipeline12}g.
 
 \section{Single cell tracking in the fluorescent channel and cell death signal determination}
 \label{section:pipeline_fluoroscent}
@@ -1824,15 +1838,15 @@ The main issue of fully tracking the cells using only brightfield images is the 
 
 We thus track dying cells in the fluorescent channels and concatenate the tracks with earlier tracks in the brightfield to determine time-to-death. Unlike in brightfield images, dying cells start emitting light under fluorescent light beam as they begin dying (see examples in Figure \ref{fig:onset_samples}). This continues as the programmed cell death advances and the emitted light becomes even brighter (the progression of the emission follows roughly the step function, see Figure \ref{fig:cell_death_determination_example}).
 
-Knowing that at one point the disruption by the drug treatments induces cell death and thus emission of PI or Caspase fluorescent signals (see $t_{PMP}$ in Figure \ref{fig:cell_death_determination_example}), finding the cell death time is reduced to simply finding the time point at which the blob of the cell in fluorescent channels is detected. Take for example the Figure \ref{fig:caspase_onset_sample}. Here we see that on the upper right side of the image there are at least two blobs visible in the naked eye. We can thus do similar pre-processing step as that of brightfield images followed by image detection to detect at which time the onset happened (see Figure \ref{fig:pipeline2}).
+Knowing that at one point the disruption by the drug treatments induces cell death and thus emission of PI or Caspase fluorescent signals (see $t_{PMP}$ in Figure \ref{fig:cell_death_determination_example}), finding the cell death time is reduced to simply finding the time point at which the blob of the cell in fluorescent channels is detected. Take for example the Figure \ref{fig:caspase_onset_sample}. Here we see that on the upper right side of the image there are at least two blobs visible in the naked eye. We can thus do similar pre-processing step as that of brightfield images followed by image detection to detect at which time the onset happened (see Figure \ref{fig:pipeline21}).
 
 \subsection{Brightness and contrast adjustment}
 
-This step is similar to the method used in micro-trench masking in Subsection \ref{subsubsection:brightness_contrast_adjustment}. Brightness and contrast are adjusted to remove the artefacts on the wafer. Subfigures \ref{fig:pipeline2}b and \ref{fig:pipeline2}c show the input and output of the brightness and contrast adjustment step.
+This step is similar to the method used in micro-trench masking in Subsection \ref{subsubsection:brightness_contrast_adjustment}. Brightness and contrast are adjusted to remove the artefacts on the wafer. Subfigures \ref{fig:pipeline22}a and \ref{fig:pipeline22}b show the input and output of the brightness and contrast adjustment step.
 
 \subsection{Mean intensity correction}
 
-Again, the method is the same as the method described in Subsection \ref{subsection:mean_intensity_correction}. The resulting image can be seen in Subfigure \ref{fig:pipeline2}d.
+Again, the method is the same as the method described in Subsection \ref{subsection:mean_intensity_correction}. The resulting image can be seen in Subfigure \ref{fig:pipeline22}c.
 
 \subsection{Cells recognition and tracking}
 
@@ -1850,6 +1864,7 @@ Parameter & Value \\
 \texttt{downsample\_factor} & 2 \\
 \texttt{blob\_diameter\_pixel} & 30 \\
 \texttt{threshold} & 0 \\
+\hline
 \end{tabular}
 \end{table}
 
@@ -1870,6 +1885,7 @@ Parameter & Value \\
 \texttt{track\_segment\_gap\_closing\_max\_frame} & 2 \\
 \texttt{track\_segment\_splitting} & \texttt{False} \\
 \texttt{track\_segment\_splitting\_pixel} & 25 \\
+\hline
 \end{tabular}
 \end{table}
 
@@ -1916,6 +1932,7 @@ Trees\textsubscript{BF} & Children\textsubscript{BF} & Trees\textsubscript{FS} &
 1 & 2 & 2  & Correct TTDs; dead cells analyzed for TTD and SC \\
 1 & 3+ & NA & Do nothing, some clones divided $> 1$ times\\
 2+ & NA & NA  & Do nothing, too many cells \\
+\hline
 \end{tabular}
 \caption[Scenario for time-to-death (TTD) and sisters death time(SDT) correlation analysis of unsynchronized experiment]{Scenario for time-to-death (TTD) and sisters death time (SDT) correlation analysis  of unsynchronized. Trees: number of cell tracks; Children: number of leaves. BF: brightfield; FS: fluorescent. Note that the cell tracks do not branch in FS.}
 \label{table:scenario_unsynchronized}
@@ -1934,6 +1951,7 @@ Trees\textsubscript{BF} & Trees\textsubscript{FS} & Remark \\
 2 & 1 & Correct TTD; dead cell analyzed for TTD \\
 2 & 2 & Correct TTDs; dead cells analyzed for TTD and SDT \\
 3+ & NA & Do nothing, too many cells \\
+\hline
 \end{tabular}
 \caption[Scenario for time-to-death (TTD) and sisters death time (SDT) correlation (SC) analysis of synchronized experiment]{Scenario for TTD and SC analysis of synchronized experiment. Note that in synchronized experiment, the number of cell track is equal to the number of leaves in BF.}
 \label{table:scenario_synchronized}
@@ -1978,29 +1996,58 @@ The image processing pipelines for both brightfield and florescence channels can
 %TODO add following explanation:
 %Brightfield channel pipeline. (j) The original out-of-focus image of the upper left corner of  the image position 41. (k) The view of the same area as (l) after applying brightness and contrast adustment. (m) The view of the same area after applying RATS on image in (n) showing the contour of micro-trenches in the area. (d) The contours filled with neutral color (black). Note that some micro-trenches are not filled as they are open and thus topologically not the outernmost contours. Scale bar on the uppermost figure is $100 \mu M$ long
 
-\begin{landscape}
-\begin{figure}[H]
-   \centering
-    %\includegraphics[width=1.0\textwidth]{Image.eps}
-    \includegraphics[height=0.95\textheight]{images/pipeline/01.pdf}
-    \caption[Brightfield channel pipeline]{Brightfield channel pipeline}
-\end{figure}
-\label{fig:pipeline1}
-\end{landscape}
+%\begin{landscape}
+%\begin{figure}[H]
+%   \centering
+%    %\includegraphics[width=1.0\textwidth]{Image.eps}
+%    \includegraphics[height=0.95\textheight]{images/pipeline/01.pdf}
+%    \caption[Brightfield channel pipeline]{Brightfield channel pipeline}
+%\end{figure}
+%\label{fig:pipeline1}
+%\end{landscape}
 
-\begin{landscape}
-\begin{figure}[H]
+
+\begin{figure}[p]
    \centering
-    %\includegraphics[width=0.5\textwidth]{Image.eps}
-    \includegraphics[height=\textheight]{images/pipeline/02.pdf}
-    \caption[Fluoroscence channel pipeline]{Fluorescence channel pipeline}
+    \includegraphics[height=0.95\textheight]{images/pipeline/01-01.pdf}
+    \caption[The image processing pipeline in the  brightfield channel]{The image processing pipeline in the  brightfield channel.}
 \end{figure}
-\label{fig:pipeline2}
-\end{landscape}
+\label{fig:pipeline11}
+
+\begin{figure}[p]
+   \centering
+    \includegraphics[width=.9\textwidth]{images/pipeline/01-02.pdf}
+    \caption[Example of the brightfield channel pipeline]{\textbf{Left}: an example of the image processing and the cell tracking in the brightfield channel. (a) The input image. (b) The result of Gaussian blur on input image. (c) The input image after correction with Gaussian blur. (d) The output of the local contrast normalization on (c). (e) The pixel-wise mean intensity image of (d). (f) The output of pixel-wise mean correction. (g) Detected cells in the the image (f). (h) The cell tracks superimposed on the image (f). \textbf{Right}: an example of the micro-trench masking pipeline in the brightfield channel: (a) The input image. (b) The input image after adjusting the brightness and contrast. (c) The output of RATS on image (b). (d) The output of the holes filling algorithm on (c).}
+\end{figure}
+\label{fig:pipeline12}
+
+%\begin{landscape}
+%\begin{figure}[H]
+%   \centering
+%    %\includegraphics[width=0.5\textwidth]{Image.eps}
+%    \includegraphics[height=\textheight]{images/pipeline/02.pdf}
+%    \caption[Fluoroscence channel pipeline]{Fluorescence channel pipeline}
+%\end{figure}
+%\label{fig:pipeline2}
+%\end{landscape}
+
+\begin{figure}[p]
+   \centering
+    \includegraphics[width=.95\textwidth]{images/pipeline/02-01.pdf}
+    \caption[The image processing pipeline in the fluorescence channel]{The image processing pipeline in the  fluorescence channel.}
+\end{figure}
+\label{fig:pipeline21}
+
+\begin{figure}[p]
+   \centering
+    \includegraphics[width=0.4\textwidth]{images/pipeline/02-02.pdf}
+    \caption[Fluorescence channel image pre-processing pipeline]{An example of the brightness and contrast adjustment in the fluorescence channel: (a) The input image (b) The input image after adjusting for the brightness and  contrast. (c) The out of the pixel-wise mean correction on (b).}
+\end{figure}
+\label{fig:pipeline22}
 
 \begin{figure}[H]
    \centering
-    \includegraphics[height=0.5\textwidth]{images/pipeline/03.pdf}
+    \includegraphics[width=.6\textwidth]{images/pipeline/03.pdf}
     \caption[Combination of tracking data with cell death information creating cell death signal-corrected tracks data]{Combination of tracking data with cell death information creating cell death signal-corrected tracks data.}
     \label{fig:pipeline3}
 \end{figure}
@@ -2014,18 +2061,19 @@ The image and tracking data is combined and post-processed using Python scripts 
 \chapter{Results}
 \label{chapter:results}
 
-In this chapter the findings of the project are presented. The pipeline described in details in Chapter \ref{chapter:analytic_pipeline} provides us with wealth of data to be analyzed. Some analyses done during the project are presented in this chapter. Those are:
+The pipeline described in Chapter \ref{chapter:analytic_pipeline} provides us with wealth of data to be analyzed. We present the characteristics of the analyzed cells in Section \ref{section:characteristics_of_analyzed_cells}. The results of our analyses are presented in this chapter. Those are:
 
 \begin{itemize}
-\item Occupancy of micro-trench. Here we look at the distribution of occupancy among micro-trench using our single-cell tracking data (see Section \ref{section:occupancy_of_microtrench}).
-\item Variability of cell cycle by duration times. Here we analyze how the cell cycle duration time varies by cells (see Section \ref{section:cell_cycle_duration}).
-\item Variability of time-to-death by time in cell cycle and between sisters.  Here we look into the effect of the time in cell cycle, which roughly translates to the current cell phase, on the response towards the cancer drug treatment. We also analyze the variability of time-to-death between sister cells to have a high level understanding about heritable response towards the cancer drug treatment  (see Section \ref{section:ttd_tic_sisters}).
-\item Machine learning models of cell death. Here we try several machine learning methods to investigate whether there are some features that can be exploited to predict the stage of cell death and thus the time-to-death at a given time point.
+\item The distribution of occupancy among micro-trenches using our single-cell tracking data (see Section \ref{section:occupancy_of_microtrench}).
+\item The variability of cell cycle times (see Section \ref{section:cell_cycle_duration}).
+\item The variability of time-to-death with time in cell cycle and between sisters.  Here we look into the effect of the time in cell cycle, which roughly translates to the current cell cycle phase, on the response to the cancer drug treatment. We also analyze the variability of time-to-death between sister cells to get an understanding about heritable response towards the cancer drug treatment  (see Section \ref{section:ttd_tic_sisters}).
+\item Machine learning methods to investigate whether there are features that can predict the time-to-death at a given time point (see Section \ref{section:ml_results}).
 \end{itemize}
 
 \section{Characteristics of analyzed cells}
+\label{section:characteristics_of_analyzed_cells}
 
-As already discussed in Subsection \ref{subsection:cell_death_determination}, we are mainly interested in the analysis of singly-placed cell  for various analyses in this project. This, however, is not the only requirement for such. Table \ref{table:cell_reqs_main} lists down the successively stricter categories a cell tree has to fulfill for time-to-death (TTD) and sisters death time (SDT) correlation analyses in unsynchronized experiment.
+Our experimental setup and analysis pipeline allows for a strict filtering of the data with respect to various requirements. Table \ref{table:cell_reqs_main} lists the requirements a cell tree has to fulfill for time-to-death (TTD) and sisters death time (SDT) correlation analyses in the unsynchronized experiment (see Section \ref{section:ttd_tic_sisters}).
 
 \begin{table}[H]
 \centering
@@ -2033,16 +2081,17 @@ As already discussed in Subsection \ref{subsection:cell_death_determination}, we
 \hline
 Category & Value & Explanation \\
 \hline\hline
-Placement & Single & Cell line is placed alone in micro-trench \\
-Branching & 1 & Only one branching (cell division) in cell tree \\
+Placement & Single & Cell is placed alone in a micro-trench \\
+Division  & 1 & Only one division in cell tree \\
 DivT & $t_{div} < t_{treat}$ & Mother cell divides before the treatment\\
-Children's DT & $t_{death} > t_{treat}$  & Both children die after the treatment
+Children's DT & $t^i_{death} > t_{treat}$  & Both children die after the treatment\\
+\hline
 \end{tabular}
-\caption[Cell tree's requirements for TTD and SDT analysis in the unsynchronized experiment]{Cell tree's requirements for TTD and SDT analysis in the unsynchronized experiment.}
+\caption[Requirements for TTD and SDT analysis in the unsynchronized experiment]{Cell tree's requirements for TTD and SDT analysis in the unsynchronized experiment.}
 \label{table:cell_reqs_main}
 \end{table}
 
-The reason is rather tautological: to investigate differential dynamics of cancer drug treatment between two sister cells, both cells have to divide before the treatment and die after treatment. The single division emphasizes the necessity for cells to die in the experiment. Furthermore, the tracking data needs to be highly reliable due to the micro-trench having only one cell tree and thus reducing mistracking error (see Subsection \ref{section:occupancy_of_microtrench}).
+To investigate differential dynamics of cancer drug treatment between two sister cells, both cells have to be born before the treatment and die after the treatment. For the tracking data to be highly reliable, we focus on a singly-placed cell (see Table \ref{table:cell_reqs_syn}) with only one division, thus reducing mistracking error (see Subsection \ref{section:occupancy_of_microtrench}).
 
 Table \ref{table:cell_reqs_syn} lists down requirements for TTD analysis in synchronized experiment.
 
@@ -2054,15 +2103,16 @@ Table \ref{table:cell_reqs_syn} lists down requirements for TTD analysis in sync
 \hline
 Category & Value & Explanation \\
 \hline\hline
-Placement & Single & Cell line is placed alone in micro-trench \\
+Placement & Single & Cell is placed alone in a micro-trench \\
 Branching & 0 & Cell does not divide \\
-Death time & $t_{death} < 24$ hours  & Cell dies eventually
+Death time & $t_{death} < 24$ hours  & Cell dies eventually\\
+\hline
 \end{tabular}
 \caption[Cell tree's requirements for TTD analysis in the synchronized experiment]{Cell tree's requirements for TTD analysis in the synchronized experiment.}
 \label{table:cell_reqs_syn}
 \end{table}
 
-For synchronized experiment, only TTD analysis is done, since it can not be  determined for sure whether two cells placed in one micro-trench are sisters We can however, exploit the fact that the doubly-placed cells in synchronized population are not sisters. By analyzing their death time (DT) correlation we can use it as control against the sister death time correlation acquired in unsynchronized experiment. Table \ref{table:dt_setup} shows the protocol of non-sisters DT correlation analysis in synchronized experiment.
+For the synchronized experiment, only the TTD analysis is done, since imaging starts with drug addition and it can thus not be  determined whether two cells placed in one micro-trench are sisters We can however, exploit the fact that the doubly-placed cells in synchronized population are not sisters. By analyzing their death time (DT) correlation we can use it as control against the sister death time correlation acquired in unsynchronized experiment. Table \ref{table:dt_setup} shows the protocol of non-sisters DT correlation analysis in synchronized experiment.
 
 \begin{table}[H]
 \centering
@@ -2072,14 +2122,15 @@ Category & Experiment & Remark \\
 \hline\hline
 Placement & Double & Two non-sister cells are placed in a micro-trench\\
 Branching & 0 & Cells do not divide \\
-Death time & $t_{death} < 24$ hours  & Cell dies eventually
+Death time & $t_{death} < 24$ hours  & Cell dies eventually\\
+\hline
 \end{tabular}
 \caption[Requirements for control non-sister death time (DT) correlation analysis]{Setup for control non-sister death time (DT) correlation analysis in synchronized experiment.}
 \label{table:dt_setup}
 \end{table}
 
 
-For cell cycle duration (CCD) determination analysis, we require cell lines to have two full-generations, i.e. both the mother and the two daughter cells divide. Table \ref{table:cell_reqs_ccd} lists down requirements a cell tree has to fulfill for CCD analysis.
+For cell cycle duration (CCD) analysis, we require cell trees to span two full generations, i.e. the mother and at least one of the two daughter cells divides. Table \ref{table:cell_reqs_ccd} lists requirements a cell tree has to fulfill for the CCD analysis.
 
 \begin{table}[H]
 \centering
@@ -2087,102 +2138,93 @@ For cell cycle duration (CCD) determination analysis, we require cell lines to h
 \hline
 Category & Value & Explanation \\
 \hline\hline
-Concentration & 0 mM & Only cells in control treatment are eligible\\
-Placement & Single & Cell line is placed alone in micro-trench \\
-Branching & 3 & Three cell divisions in cell tree \\
-Generation & 2 & Both children divide \\
+Concentration & 0 mM & Only cells in control treatment are used\\
+Placement & Single & Cell is placed alone in a micro-trench \\
+Division & 2/3 & At least one child divides\\
+Generations & 2 & At least one child divides \\
 DivT & $t_{div} < t_{treat}$ & Mother cell divides before the treatment\\
-Grandchildren's DT & $t_{death} > t_{treat}$  & All grandchildren die after the treatment
+Children's DT & $t^i_{death} > t_{treat}$  & Children die after the treatment\\
+\hline
 \end{tabular}
-\caption[Cell tree's requirements for TTD and SDT analysis]{Cell tree's requirements for TTD and SDT analysis.}
+\caption[Cell tree's requirements for CCD analysis in the unsynchronized experiment]{Cell tree's requirements for CCD analysis in the unsynchronized experiment.}
 \label{table:cell_reqs_ccd}
 \end{table}
 
 \section{Occupancy of micro-trench}
 \label{section:occupancy_of_microtrench}
 
-Ideally, a micro-trench setup should maximize tracking accuracy and throughput. This means that every wafer should have as many micro-trenches as possible while having as many singly-placed cells as possible. The reason for single-placement preference can be derived from the inherent uncertainty involved during tracking. Figure \ref{fig:cell_placements} explains the issue of ambiguity arising from multiple cell placement. Given the focuses of this project stated in Chapter \ref{chapter:introduction}, we want to optimize for the placement setting with as many singly placed cells as possible.
+The micro-trench setup is designed to maximize tracking accuracy and throughput: in principle every wafer should have as many micro-trenches as possible with as many singly-placed cells as possible. The reason for the single-placement preference comes from the inherent uncertainty involved in tracking. Figure \ref{fig:cell_placements} explains the issue of ambiguity arising from multiple cell placement. There we see that the ambiguity occurs as soon as two cells are within possible moving range of each other. This ambiguity can be minimized by having one cell in a micro-trench.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.7\textwidth]{images/cells_confusion.pdf}
-\caption[Illustration of SVM in 2D]{The ambiguity arising from multiple cell placements in a micro-trench.  Each colored circle represents a cell and the dashed line enclosing the cell refers to assumed possible movement range within recording interval. (a) Two cells which are far away from each other can be tracked uniquely in one recording interval. However, at one point, the cells may get close to each other. (b) Two cells that are within the movement range of the other cell might be tracked wrongly. This, however, should not be the concern for analysis of time-to-death (TTD)  and sisters death time (SDT) correlation analysis. (c) In case of two or more cells the analysis gets more tricky  since two cells which are sisters to each other can not be mistaken for the other cells. SDT and TTD can not be done reliably in this setting.}
+\caption[Illustration of SVM in 2D]{The ambiguity arising from multiple cell placements in a micro-trench.  Each colored circle represents a cell and the dashed line enclosing the cell refers to assumed possible movement range. (a) Two cells which are far away from each other can be tracked uniquely in one recording interval. However, at one point, the cells may get close to each other. (b) Two cells that are within the movement range of the other cell might be tracked wrongly. This, however, is irrelevant for the time-to-death (TTD) analysis and  the sister death time (SDT) correlation analysis. (c) In case of more than two cells the SDT and TTD analyses can be flawed by tracking errors.}
 \label{fig:cell_placements}
 \end{figure}
 
-Assuming that each cell arrives at any point in the well independently at different time during the cell placement process, we can model this process as a stochastic point process.  Due to the independent nature of the cell placement, the Poisson point process is best suited to model the placement process \cite{miles1970homogeneous}. Framing this problem into a Poisson placement process, following assumptions related to the process need to be true:
+Due to the independent nature of the cell placement in the micro-trench, the Poisson point process is suited to model the placement process \cite{miles1970homogeneous} with the following assumptions:
 
 \begin{itemize}
 \item The cell placement rate is constant.
-\item In one time window, $k$ placements can take place with $k \in \mathbb{N}_0$
 \item The placement of one cell in a micro-trench does not affect the probability of another cell being placed in a micro-trench.
-\item The probability of a cell being placed in a micro-trench is proportional to the time.
-\item Two cells can not land in one micro-trench at exactly the same instant.
+\item The probability that a micro-trench receives a cell is proportional to the length of the observation.
+\item Two cells can't land in one micro-trench at exactly the same instant.
 \end{itemize}
 
-For now, we assume these to be true in the short time when the pipette discharges AML-M5a MOLM-13 cells (this is confirmed later based on observation data). Therefore, we can model the placement of cells in the micro-trench as a Poisson process.
-
-For a set of micro-trenches $\mathfrak{T}$ in an image position, the mapping $o: \mathfrak{t} \rightarrow \mathbb{N}_0$ with $\mathfrak{t} \in \mathfrak{T}$ being the placement data for a micro-trench.  We then define the set
-
-\begin{equation}
-\mathfrak{O} := \{o(\mathfrak{t}) \; \forall \mathfrak{t} \in \mathfrak{T}\}
-\end{equation}
-
-as  the distribution of cell placements in an image data. Since the placement process is Poisson, the probability of a micro-trench being placedFILLED with $n$ cells is
+Since the placement process is Poisson, the probability of a micro-trench being placed with $n$ cells is
 
 \begin{equation}
 P_{pois}(o(\mathfrak{t}) = n) = \frac{\lambda^n}{n!} e^{-\lambda}
 \end{equation}
 
-The distribution of occupancy is checked to confirm the assumption. For an image position, the cell tree is traced back to its location and corresponding micro-trench. Figure \ref{fig:cell_placements_dist} shows the occupancy of micro-trenches in the image position 41. The figure shows that the cell placement processed is very well modeled using Poisson process. Arguing in reverse, we can also say that the assumptions  listed above which are necessary for the process to be Poisson seem to be true in our experiment.
+We can compare this model with the experimental occupancy distribution. For the image position 41, each cell is tracked back to the initial time point. Figure \ref{fig:cell_placements_dist} shows that the cell placement process is very well modeled using the Poisson process. Arguing in reverse, we can also say that the assumptions  listed above which are necessary for the process to be Poisson seem to be met in our experiment.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.6\textwidth]{images/occupancy_distribution.pdf}
-\caption[Occupancy distribution of micro-trenches in the image position 41.]{Occupancy distribution of micro-trenches in the image position 41. The blue line is the fitted expected Poisson distribution $P_{pois}(x)$  for continuous $x$ from 0 to 3. The fitting process yields fitted parameter $\lambda = 0.242$. As shown, the model fits perfectly with observation confirming our assumption of the Poisson characteristics of the cell placement process.}
+\caption[Occupancy distribution of micro-trenches in the image position 41.]{Occupancy distribution of micro-trenches in the image position 41. The blue line is a fitted Poisson distribution $P_{pois}(x)$  for $x$ from 0 to 3. The fitting process yields fitted parameter $\lambda = 0.242$  which corresponds tio the average placement of the micro-trench. This means that on average, less than one cell can be found in a micro-trench. Also, the fits with with the observation confirming our assumption of the Poisson characteristics of the cell placement process.}
 \label{fig:cell_placements_dist}
 \end{figure}
 
-On the down side, however, knowing the process is Poisson, increasing the number of singly-placed cells beyond this distribution is hard due to the nature of the process explained in the assumptions list. Manually placing each cancer cell takes a lot of time and may not work at all. Scaling up the experiment thus, for now, translates directly to raise the number of micro-trench to increase the number of singly-placed cancer cells.
+On the down side, however, knowing the process is Poisson, increasing the number of singly-placed cells beyond this distribution is hard due to the nature of the process. Manually placing each cell takes a lot of time and may not work at all. Scaling the experiment thus, for now, translates directly to raise the number of micro-trench to increase the number of singly-placed cancer cells.
 
-The complete occupancy statistics for every valid image positions in the unsynchronized and synchronized experiments can be seen in Tables \ref{table:occupancy_statistics_unsyn} and \ref{table:occupancy_statistics_syn} in Appendix \ref{chapter:appendix_tables}.
+The complete occupancy statistics for every valid image positions in the unsynchronized and synchronized experiments can be seen in Table \ref{table:occupancy_statistics_unsyn} in Appendix \ref{chapter:appendix_tables}.
 
 \section{Variability of cell cycle duration (CCD) time}
 \label{section:cell_cycle_duration}
 
-To conduct CCD analysis, cell lines fulfilling criteria in Table \ref{table:cell_reqs_ccd} are used. For each cell tree, we determine the first division time point $t_0$, the second division of the first daughter cell at time $t_1$, and the division second daughter cell at $t_2$. Figure \ref{fig:ccd_schema} also shows an exemplary image series of one trench filled with initially one cell which gives rise to four cells within the first 45 hours. 
+To conduct CCD analysis, cell trees fulfilling criteria in Table \ref{table:cell_reqs_ccd} are used. For each cell tree, we determine the first division time point $t_0$, the second division of the first daughter cell at time $t_1$, and the division of the second daughter cell at $t_2$. Figure \ref{fig:ccd_schema} shows an exemplary image series of one micro-trench filled with initially one cell which giving birth to four cells within the first 45 hours. 
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.7\textwidth]{images/divs/cell_graphics.pdf}
-\caption{Schematic representation of the individual time spans, $T_{div}$ , from one cell division event to the next. The timepoints are all in \texttt{hours:minutes}}
+\caption{Schematic representation of each cell's division time $T_{div}$ and cell cycle duration $T_{ccd}$ of a cell tree. The accompanying insets show the recording of the cell tree in various time points (left to right): shortly after the start of the recording, after the first division, after the first division of the children and after the second division of the children. The timepoints are all in \texttt{hours:minutes}.}
 \label{fig:ccd_schema}
 \end{figure}
 
-In unsynchronized and synchronized experiments, 58 and 13 sisters of singly-placed AML-M5a MOLM-13 cells were observed for 45 and 24 hours to detect a minimum of two divisions. Some distributional statistics are gathered for each experiment. The data were also fitted with gamma (dashed blue line, see Subfigures \ref{fig:ccd_unsyn} and \ref{fig:ccd_syn}) and lognormal (red line, see Subfigures \ref{fig:ccd_unsyn} and \ref{fig:ccd_syn}) distributions.  Following table lists down the findings for unsynchronized experiment:
+In unsynchronized and synchronized experiments, 58 and 13 sisters of singly-placed cells were observed for 45 and 24 hours to detect three cell divisions. Some distributional statistics are gathered for each experiment. The data were also fitted with gamma (dashed blue line, see Subfigures \ref{fig:ccd_unsyn} and \ref{fig:ccd_syn}) and lognormal (red line, see Subfigures \ref{fig:ccd_unsyn} and \ref{fig:ccd_syn}) distributions.  Tables \ref{table:ccd_res_unsyn} and \ref{table:ccd_res_syn} list the findings for the unsynchronized and the unsynchronized experiments.
 
 \begin{table}[H]
 \centering
 \begin{tabular}{ c | c }
 Category & Value \\
 \hline\hline
-Size & 116 cells (25 sisters pairs) \\
-Mean $T_{div}$ & 20.903 hours \\
-Median $T_{div}$ & 20.458 hours \\
-Standard dev. of $T_{div}$ & 4.981 hours \\
+Size & 116 cells (58 sisters pairs) \\
+Mean $T_{div}$ & 20.9 hours \\
+Median $T_{div}$ & 20.5 hours \\
+Standard dev. of $T_{div}$ & 5.0 hours \\
 \hline
-Gamma -- shape & 5.688 \\
-Gamma -- shift & 8.490 \\
-Gamma -- scale & 2.182 \\
-\hline Lognorm -- shape & 0.200 \\
-Lognorm --  shift & -4.177 \\
-Lognorm --  scale & 24.596 \\
+Gamma -- shape & 5.7 \\
+Gamma -- shift & 8.5 \\
+Gamma -- scale & 2.2 \\
+\hline Lognorm -- shape & 0.2 \\
+Lognorm --  shift & -4.2 \\
+Lognorm --  scale & 24.6 \\
+\hline
 \end{tabular}
-\caption[Results of CCD analysis in unsynchronized experiment]{Results of CCD analysis in unsynchronized experiment.}
+\caption[Results of CCD analysis in the unsynchronized experiment]{Results of CCD analysis in the unsynchronized experiment. The shape, shift and scale parameters refer to the parameters of gamma and lognorm  distribution as defined in scipy's \textit{gamma} and \texttt{lognorm} classes' \texttt{cfd} function.}
 \label{table:ccd_res_unsyn}
 \end{table}
-
-Following table lists down the findings for synchronized experiment
 
 \begin{table}[H]
 \centering
@@ -2190,22 +2232,23 @@ Following table lists down the findings for synchronized experiment
 Category & Value \\
 \hline\hline
 Size & 26 cells (13 sisters pairs) \\
-Mean $T_{div}$ & 20.753 hours \\
-Median $T_{div}$ & 21.125 hours \\
-Standard dev. of $T_{div}$ & 1.324 hours \\
+Mean $T_{div}$ & 20.8 hours \\
+Median $T_{div}$ & 21.1 hours \\
+Standard dev. of $T_{div}$ & 1.3 hours \\
 \hline
-Gamma -- shape & 345.341 \\
-Gamma -- shift & -4.265 \\
-Gamma -- scale & 0.072 \\
-\hline Lognorm -- shape & 0.003 \\
-Lognorm --  shift & -426.146 \\
-Lognorm --  scale & 446.897 \\
+Gamma -- shape & 345.3 \\
+Gamma -- shift & -4.3 \\
+Gamma -- scale & 0.1 \\
+\hline Lognorm -- shape & 0.01 \\
+Lognorm --  shift & -426.1 \\
+Lognorm --  scale & 446.9 \\
+\hline
 \end{tabular}
-\caption[Results of CCD analysis in synchronized experiment]{Results of CCD analysis in synchronized experiment.}
+\caption[Results of CCD analysis in the synchronized experiment]{Results of CCD analysis in the synchronized experiment. The shape, shift and scale parameters refer to the parameters of gamma and lognorm  distribution as defined in scipy's \textit{gamma} and \texttt{lognorm} classes' \texttt{cfd} function.}
 \label{table:ccd_res_syn}
 \end{table}
 
-The difference in size is attributable to the fact that unlike in unsynchronized experiment, the image capturing only last for 24 hours in synchronized experiment. Thus, assuming the cells are in various phase when the recording start, only cells that have just divided at the start of the recording will ever divide twice (see the distribution of cell-cycle time). In a sense, the size difference confirms our finding regarding the duration of the cell cycle. The numbers are also in line with  previously done experiment on the cell cycle  duration of the AML-M5a MOLM-13 cell line \cite{sekhavati2015dynamic}.
+The difference in size is attributable to the fact that unlike in unsynchronized experiment, the image capturing only last for 24 hours in synchronized experiment. Thus, assuming the cells are in various phase when the recording starts, only cells that have just divided at the start of the recording will ever divide twice (see the distribution of cell-cycle time). In a sense, the size difference confirms our finding regarding the duration of the cell cycle. The average cell cycle durations are also in line with previously done experiment by Sekhavati \cite{sekhavati2015dynamic}.
 
 \begin{figure}[H]
 \centering
@@ -2222,13 +2265,11 @@ The difference in size is attributable to the fact that unlike in unsynchronized
   \caption{}
   \label{fig:ccd_syn}
 \end{subfigure}
-\caption[Measured distribution of CCD in the synchronized and unsynchronized experiments]{Measured distribution of cell cycle duration (CCD) $T_{div}$ of (a) unsynchronized and (b) synchronized experiments from an ensemble of 116 and 26 cells (AML-M5a MOLM-13) showing a mean doubling time of (a) $20.90$ hours and standard deviation of $4.98$ hours and (b) $20.75$ hours and standard deviation of $1.32$ hours. The dotted red line corresponds to the lognormal fit and the dashed blue line to the gamma distribution fit.}
+\caption[Measured distribution of CCD in the synchronized and unsynchronized experiments]{Measured distribution of cell cycle duration (CCD) $T_{div}$ of (a) unsynchronized and (b) synchronized experiments from an ensemble of 116 and 26 cells showing a mean cell cycle time of (a) $20.90$ hours with standard deviation of $4.98$ hours and (b) $20.75$ hours with standard deviation of $1.32$ hours. The dotted red line corresponds to a lognormal fit and the dashed blue line to a gamma distribution fit. The difference in the distribution width from both experiments is caused by the fact that the synchronized experiment only lasts for 24 hours. The measurement is thus bounded at 24 hours.}
 \label{fig:ccd_all}
 \end{figure}
 
-The observed lognormal cell cycle duration distribution is well documented in literature, with both the size of mammalian cells as well as cell doubling times following a lognormal distribution \cite{hosoda2011origin, paulus1975platelet}. The underlying mechanism of cell division timing is an active field of research. It is however assumed that the so-called added model accepted in bacteria \cite{campos2014constant} is also valid in somatic cells. In general size regulation can arise from various types of coupling between cell size, cell growth and cell cycle progression \cite{cadart2017size}. It has also been proposed, based on a coupled mathematical model of mammalian cell cycle and circadian clock, that the circadian clock triggers critical size control in the mammalian cell cycle and that it is more readily observed in cell lines that contain circadian rhythms \cite{zamborszky2007computational}. In this context it is important that the adder mechanism also predicts exponential time correlation between sister cells as observed in our experiments \cite{campos2014constant}.
-
-We also analyzed the difference of CCD between two sisters. Subfigures \ref{fig:ccd_hist_syn} and \ref{fig:ccd_hist_unsyn} show the distribution of the difference in CCD between sister cells in unssynchronized and synchronized experiments. Subfigures \ref{fig:ccd_scatter_unsyn} and \ref{fig:ccd_scatter_syn} show the correlation plots of $T_{div}$ of sister cells (black circle) and randomly picked pairs (red triangle) from unsynchronized and synchronized experiments.
+We also analyzed the difference of CCD between two sisters. Subfigures \ref{fig:ccd_hist_syn} and \ref{fig:ccd_hist_unsyn} show the distribution of the difference in CCD between sister cells in unsynchronized and synchronized experiments. Subfigures \ref{fig:ccd_scatter_unsyn} and \ref{fig:ccd_scatter_syn} show the correlation plots of $T_{div}$ of sister cells (black circle) and randomly picked pairs (red triangle) from unsynchronized and synchronized experiments.
 
 \begin{figure}[H]
 \centering
@@ -2261,44 +2302,44 @@ We also analyzed the difference of CCD between two sisters. Subfigures \ref{fig:
   \caption{}
   \label{fig:ccd_scatter_syn}
 \end{subfigure}
-\caption[Difference of cell-cycle duration between sisters]{Difference of cell-cycle duration between sisters. Distribution of the difference of the cell cycle duration between sister cells in (a) unsynchronized and (b) synchronized experiment. Correlation plots of the cell cycle duration for sister cells (black circles) and randomly paired cells (red  triangles) in (a) unsynchronized and (b) synchronized experiments. In unsynchronized experiment, the Pearson correlation coefficient for sister cells is r = $0.525$ with p-value = $2.66 \cdot 10^{-5}$, and for random-paired cells r = $0.02$ with p-value = $0.85$.  In synchronized experiment, the Pearson correlation coefficient for sister cells is r = 0.956 with p-value = $1.24 \cdot 10^{-6}$, and for random-paired cells r = $-0.48$ with p-value = $0.109$.}
+\caption[Difference of cell-cycle duration between sisters]{Difference of cell-cycle duration between sisters. Distribution of the difference of the cell cycle duration between sister cells in (a) unsynchronized and (c) synchronized experiment. Correlation plots of the cell cycle duration for sister cells (black circles) and randomly paired cells (red  triangles) in (b) unsynchronized and (d) synchronized experiments. In unsynchronized experiment, the Pearson correlation coefficient for sister cells is r = $0.525$ with p-value = $2.66 \cdot 10^{-5}$, and for random-paired cells r = $0.02$ with p-value = $0.85$.  In synchronized experiment, the Pearson correlation coefficient for sister cells is r = 0.956 with p-value = $1.24 \cdot 10^{-6}$, and for random-paired cells r = $-0.48$ with p-value = $0.109$.}
 \label{fig:ccd_diff_all}
 \end{figure}
 
-\section{Variability of the time-to-death by the time in cell cycle}
+\section{Variability of time-to-death (TTD)}
 \label{section:ttd_tic_sisters}
 
-Generally, we are interested in investigating following aspects:
+Generally, we are interested in the following aspects:
 
 \begin{itemize}
-\item The effect of cell cycle on the the AML-M5a MOLM-13 cell line's response to cancer drugs treatment. Specifically, following questions needs to be answered: does the response of cancer cells depends on cell cycle?
+\item Does the response of cancer cells depends on their cell cycle state?
 
-\item The heritability of cancer drugs drug treatments. This can be done by comparing two sister AML-M5a MOLM-13's response towards cancer cell.
+\item The heritability of cancer drugs treatments.
 
-\item In parallel, we would like to investigate correlation between cancer treatment drugs' concentration levels and the response of AML-M5a MOLM-13 cell line. Since we have the concentration set at various concentration levels, this is done by simply comparing the results from various concentration levels.
+\item Correlation between drug concentration and the response of AML-M5a MOLM-13 cell line.
 \end{itemize}
 
 To answer the questions we select cells fulfilling criteria in Tables \ref{table:cell_reqs_main} (unsynchronized experiment) and \ref{table:cell_reqs_main} (synchronized experiment).
 
 \subsection{Effect of the time in cell cycle on cancer drugs response}
 
-The measured time-to-death distribution is shown in plots in Figure \ref{fig:ttd_hist_vcr} for increasing drug Vincristine concentration. Figure \ref{fig:ttd_hist_vcr} shows the measure time-to-death distribution for increasing Daunorubicin concentration. The blue curves represent the Kernel density estimation of the probability density function of each histogram.
+The measured time-to-death distribution is shown in Figure \ref{fig:ttd_hist_vcr} for increasing Vincristine concentration. Figure \ref{fig:ttd_hist_dauno} shows the measured time-to-death distribution for increasing Daunorubicin concentration. The blue curves represent the Kernel density estimation of the probability density function of each histogram.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{images/ttd/unsyn/vcr_all.pdf}
-\caption[Distribution of TTD for every Vincristine concentration in the synchronized experiment]{Distribution of the time-to-death measurement of AML-M5a MOLM-13 with increasing concentration of Vincristine (left-right, top-bottom). The upper left histogram is the distribution in the control image positions.}
+\caption[Distribution of TTD for every Vincristine concentration in the unsynchronized experiment]{Time-to-death distribution of AML-M5a MOLM-13 cells for increasing concentration of Vincristine in the unsynchronized experiment. The upper left histogram is the distribution in the control.}
 \label{fig:ttd_hist_vcr}
 \end{figure}
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{images/ttd/unsyn/dauno_all.pdf}
-\caption[Distribution of TTD for every Daunorubicin concentration in the synchronized experiment]{Distribution of the time-to-death measurement of AML-M5a MOLM-13 with increasing concentration of Daunorubicin (left-right). The leftmost histogram is the distribution in the control image positions.}
+\caption[Distribution of TTD for every Daunorubicin concentration in the unsynchronized experiment]{Time-to-death distribution of AML-M5a MOLM-13 cells with increasing concentration of Daunorubicin in the unsynchronized experiment. The leftmost histogram is the distribution in the control.}
 \label{fig:ttd_hist_dauno}
 \end{figure}
 
-The plots in Figure \ref{fig:ttd_scatter_vcr} depict, for each Vincristine concentration, a scatter plot of the time passed in the cell cycle, i.e. the time passed from the division until the drug was added, with the time-to-death i.e. the time passed from the drug administration time point until the death of the cell. The scatter plots for every Daunorubicin concentration can be seen in Figure \ref{fig:ttd_scatter_dauno}.  The blue lines are best linear fits and show the dependence of the time-to-death on the time spent in the cell cycle. The colored areas indicate the cell cycle phase based on the division distribution in Subfigure \ref{fig:ccd_unsyn}, the duration for each phase is calculated based on the phase durations proposed by T. S. Weber et al. \cite{weber2014quantifying}. We observed a negative correlation between the time in the cell cycle and the death time, which increased for increasing VCR concentrations (1-100 nM), but there was no correlation for the highest VCR concentration (1000 nM), indicating that in this high concentration side effect toxicities are prominent. The Pearson product-moment correlation test results are presented in \ref{table:unsyn_ttd_r_p}. In the case of Daunorubicin (100 nM), we observed an even stronger negative correlation between the time spent in the cell cycle and the time-to-death in the case of Daunorubicin (100 nM). Especially the time-to-death of the cells that were in the S phase when the drug was added, the phase in which Daunorubicin should be more effective, had a larger deviation in comparison to the time-of-death of cells that were in the G1 or in the G2/M phase.
+The plots in Figure \ref{fig:ttd_scatter_vcr} depict, for each Vincristine concentration, a scatter plot of the time passed in the cell cycle, i.e. the time passed from the division until the drug was added, with the time-to-death i.e. the time passed from the drug administration time point until the death of the cell. The scatter plots for every Daunorubicin concentration can be seen in Figure \ref{fig:ttd_scatter_dauno}.  The blue lines are best linear fits and show the dependence of the time-to-death on the time spent in the cell cycle. The colored areas indicate the cell cycle phase based on the division distribution in Subfigure \ref{fig:ccd_unsyn}, the duration for each phase is calculated based on the phase durations proposed by T. S. Weber et al. \cite{weber2014quantifying}. We observed a negative correlation between the time in the cell cycle and the death time, which increased for increasing VCR concentrations (1-100 nM), but there was no correlation for the highest VCR concentration (1000 nM), indicating that in this high concentration side effect toxicities are prominent. The Pearson product-moment correlation test results are presented in Table \ref{table:unsyn_ttd_r_p}. In the case of Daunorubicin (100 nM), we observed an even stronger negative correlation between the time spent in the cell cycle and the time-to-death in the case of Daunorubicin (100 nM). Especially the time-to-death of the cells that were in the S phase when the drug was added, the phase in which Daunorubicin should be more effective, had a larger deviation in comparison to the time-of-death of cells that were in the G1 or in the G2/M phase.
 
 \begin{table}[H]
 \centering
@@ -2315,42 +2356,43 @@ Vincristine 1000 nM & $-0.00$ & $0.97$ \\
 \hline
 Daunorubicin 10 nM & $0.26$ & $0.22$ \\
 Daunorubicin 100 nM & $-0.16$ & $0.22$ \\
+\hline
 \end{tabular}
-\caption{The results of the Pearson product-moment correlation test (correlation coefficient $r$ and p-value) for various every concentration in the synchronized experiment.}
+\caption{The results of the Pearson product-moment correlation test (correlation coefficient $r$ and p-value) for various concentrations in the unsynchronized experiment.}
 \label{table:unsyn_ttd_r_p}
 \end{table}
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{images/ttd/unsyn/vcr_scatter.pdf}
-\caption[TIC vs TTD correlation for every Vincristine concentration in the synchronized experiment]{Correlation between the time in cell cycle and the time-to-death for every Vincristine concentration in the synchronized experiment. The concentration increases from left to right with the leftmost plot shows the correlation in the control image positions.}
+\caption[TIC vs TTD correlation for every Vincristine concentration in the unsynchronized experiment]{Correlation between the time in cell cycle and the time-to-death for every Vincristine concentration in the unsynchronized experiment. The concentration increases from left to right with the leftmost plot shows the correlation in the control.}
 \label{fig:ttd_scatter_vcr}
 \end{figure}
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{images/ttd/unsyn/dauno_scatter.pdf}
-\caption[TIC vs TTD correlation for every Daunorubicin concentration in the synchronized experiment]{Correlation between the time in cell cycle and the time-to-death for every Daunorubicin concentration in the synchronized experiment. The concentration increases from left to right with the leftmost plot shows the correlation in the control image positions.}
+\caption[TIC vs TTD correlation for every Daunorubicin concentration in the unsynchronized experiment]{Correlation between the time in cell cycle and the time-to-death for every Daunorubicin concentration in the unsynchronized experiment. The concentration increases from left to right with the leftmost plot shows the correlation in the control.}
 \label{fig:ttd_scatter_dauno}
 \end{figure}
 
-We then compare the results from unsynchronized experiment. Thymidine arrests cells at the G1/S border \cite{jackman2001methods}, which is after the division time point within the length of G1 phase. Cells were released 3 h before the start of imaging and seeded in micro-trenches. The drug was added just before starting imaging. In Figure \ref{fig:ttd_scatter_vcr_syn}, we plot the distributions of the time-to-death for every Vincristine concentration. Figure \ref{fig:ttd_scatter_dauno_syn} shows the distribution of the time-to-death for every Daunorubicin concentration. The blue curves represent the Kernel density estimation of the probability density function of each histogram. For all drug concentrations the maximum of these distributions is near the 15th hour after starting imaging.
+We then compare the results to the synchronized experiment. In Figure \ref{fig:ttd_scatter_vcr_syn}, we plot the distributions of the time-to-death for every Vincristine concentration. Figure \ref{fig:ttd_scatter_dauno_syn} shows the distribution of the time-to-death for every Daunorubicin concentration. The blue curves represent the Kernel density estimation of the probability density function of each histogram. For all drug concentrations the maximum of these distributions is near the 15th hour after starting imaging.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{images/ttd/syn/vcr_all.pdf}
-\caption[Distribution of TTD for every Vincristine concentration in the synchronized experiment]{Distribution of the time-to-death measurement of AML-M5a MOLM-13 with increasing concentration of Vincristine (left-right, top-bottom) in the synchronized experiment. The upper left histogram is the distribution in the control image positions.}
+\caption[Distribution of TTD for every Vincristine concentration in the synchronized experiment]{Time-to-death distribution of AML-M5a MOLM-13 cells for increasing concentration of Vincristine in the synchronized experiment. The upper left histogram is the distribution in the control.}
 \label{fig:ttd_scatter_vcr_syn}
 \end{figure}
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{images/ttd/syn/dauno_all.pdf}
-\caption[Distribution of TTD for every Daunorubicin concentration in the synchronized experiment]{Distribution of the time-to-death measurement of AML-M5a MOLM-13 with increasing concentration of Daunorubicin (left-right) in the synchronized experiment. The leftmost histogram is the distribution in the control image positions}
+\caption[Distribution of TTD for every Daunorubicin concentration in the synchronized experiment]{Time-to-death distribution of AML-M5a MOLM-13 cells for increasing concentration of Daunorubicin (left-right) in the synchronized experiment. The leftmost histogram is the distribution in the control}
 \label{fig:ttd_scatter_dauno_syn}
 \end{figure}
 
-Figure 5b, shows the death times between the synchronized (blue) and the unsynchronized (red) population. The distributions plotted are the normalized number of cells in all drug treatments, for all cells tracked. Apart from a peak at the beginning of the measurement in the synchronized population, the shape of the two distributions is equivalent. In the synchronized population less cells haves a short time-to-death, especially evident in the VCR 1000 nM concentration (Figures \ref{fig:ttd_hist_vcr} and \ref{fig:ttd_scatter_vcr_syn}), indicating that the synchronized population is more resistant to death. 
+Figure \ref{fig:death_time_comparison}, shows the death times between the synchronized (blue) and the unsynchronized (red) population. The distributions plotted are the normalized number of cells in all drug treatments, for all cells tracked. Apart from a peak at the beginning of the measurement in the synchronized population, the shape of the two distributions is equivalent. In the synchronized population less cells haves a short time-to-death, especially evident in the VCR 1000 nM concentration (Figures \ref{fig:ttd_hist_vcr} and \ref{fig:ttd_scatter_vcr_syn}), indicating that the synchronized population is more resistant to death. 
 
 \begin{figure}[H]
 \centering
@@ -2363,17 +2405,17 @@ Figure 5b, shows the death times between the synchronized (blue) and the unsynch
 %TODO maybe add parts to this subsection
 %In Figure 5 we compare our results of the unsynchronized cell population (Figure 3) with a cell population synchronized with thymidine block (Figure 4). For both the unsynchronized and the synchronized population, the total number of dead cells as a function of drug concentration is shown in Figure 5a and shows the expected increase in death response with increasing dose. In Figure 5c, we show scatter plots of the time-to-death between sister cells in an ensemble of all drug treatments. The Pearson correlation coefficient (r) is 0.5 (medium correlation) for the sister cells of the unsynchronized population and 0.06 for the synchronized. The ellipses indicate the directionality of the correlation. Thus, the time-to-death between sister cells was positively correlated for the unsynchronized population but not for the synchronized.
 
-\subsection{Heritability and variability cancer drugs response}
+\subsection{Heritability of cancer drugs response}
 
 %TODO adjust and add
 %TODO explain results and discussion
 
-To test heritability of time-to-death. The SDT correlation and non-sister DT analyses are conducted. Only cell trees fulfilling the requirements listed in Tables \ref{table:cell_reqs_main} and \ref{table:dt_setup} are analyzed. Figure \ref{fig:image_scd} show scatter plots of the time-to-death between sister cells in an ensemble of all drug treatments. The Pearson correlation coefficient (r) is $0.52$ (medium correlation) with p-value of $1.14 \cdot 10^{-6}$ for the sister cells of the unsynchronized population and $0.06$ with p-value of $0.52$ for the non-sister cells in synchronized experiment. The ellipses indicate the directionality of the correlation. Thus, the time-to-death was positively correlated between sister cells in unsynchronized experiment but not correlated between non-sister cells placed in a same micro-trench in unsynchronized experiment.
+To test heritability of time-to-death. The sisters death time(SDT)correlation and non-sister death time analyses are conducted. Only cell trees fulfilling the requirements listed in Tables \ref{table:cell_reqs_main} and \ref{table:dt_setup} are analyzed. Figure \ref{fig:image_scd} show scatter plots of the time-to-death between sister cells in an ensemble of all drug treatments. The Pearson correlation coefficient r is $0.52$ (medium correlation) with p-value of $1.14 \cdot 10^{-6}$ for the sister cells of the unsynchronized population and $0.06$ with p-value of $0.52$ for the non-sister cells in synchronized experiment. The ellipses indicate the directionality of the correlation. Thus, the time-to-death was positively correlated between sister cells in unsynchronized experiment but not correlated between non-sister cells placed in the same micro-trench in the unsynchronized experiment.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.9\textwidth]{images/scd/scd.pdf}
-\caption{The correlation plot of measured time-to-deaths between two sisters in unsynchronized experiment (left) and two unrelated cells in synchronized experiment (right). The ellipses denote the directionality of the correlation and calculated with the Principal Component Analysis (PCA).}
+\caption[The correlation of measured time-to-deaths between two sisters in the unsynchronized experiment and two unrelated cells in the synchronized experiment]{The correlation of measured time-to-deaths between two sisters in the unsynchronized experiment (left) and two unrelated cells in the synchronized experiment (right). The ellipses denote the directionality of the correlation and were calculated with the Principal Component Analysis (PCA).}
 \label{fig:image_scd}
 \end{figure}
 
@@ -2381,34 +2423,51 @@ To test heritability of time-to-death. The SDT correlation and non-sister DT ana
 
 %TODO explain results and discussion
 
-We analyze the effect of cancer drug concentration on the survavibility of the cell. To conduct this, we take the latest slice in both brightfield and fluoroscent channels (i.e. the last image data in one image position). For each image the number of cells with fluorescent emissions $n_e$ is calculated. This number is then compared to the number of all cells in the image position $n$. Let $C$ the set of image positions with cancer drugs concentration $c$. The survival rate $p_i$ for a given concentration $c$ is thus defined as following:
+To analyze the effect of cancer drug concentration on cell survival, we take the latest timepoint in both brightfield and fluoroscent channels. For each image position $i$ the number of cells with fluorescent signals $n^i_e$ is calculated by using the LoG detector in Fiji. This number is then compared to the number of all cells in the image position $i$ $n^i$. Let $C$ be the set of image positions with cancer drugs concentration $c$. The percentage of death cells $p_c$ for a given concentration $c$ is thus defined as following:
 
 \begin{equation}
-p_{c} := \frac{\sum_{i \in C} N_{ei}}{\sum_{i \in C} N_i}
+p_{c} := \frac{\sum_{i \in C} n^i_{e}}{\sum_{i \in C} n^i}
 \end{equation}
 
-In Figure \ref{fig:conc_effect} we compare our results of the unsynchronized cell population with those of synchronized cell population. For both the unsynchronized and the synchronized population, the total number of dead cells as a function of drug concentration is shown in \ref{fig:conc_effect} and shows the expected increase in death response with increasing dose. For the error bars, we hypothesize that the data follow the binomial distribution. For a confidence level of 95\% the error is $1.96 \sqrt{\frac{p}{(1 - p)N_t}}$ where $p$ is the proportion of dead cells and $N_t$ the total number of cells.
+For both the unsynchronized and the synchronized population, the percentage of dead cells as a function of drug concentration is shown in Figure \ref{fig:conc_effect}. It shows the expected increase in death response with increasing dose of Vincristine. For the error bars, we hypothesize that the data follow the binomial distribution. For a confidence level of 95\% the error is $1.96 \sqrt{\frac{p_c}{(1 - p)n^i}}$.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.6\textwidth]{images/conc_effect/conc_effect.pdf}
-\caption{Survival rate of cells in increasing Vincristine concentration in the unsynchronized and synchronized experiments. Note that even in the image positions without any cancer drug treatments some cell undergo programmed cell death emitting fluorescent signal.}
+\caption[Percentage of dead cells in increasing Vincristine concentration in the unsynchronized and synchronized experiments]{Percentage of dead cells in increasing Vincristine concentration in the unsynchronized and synchronized experiments. Note that even in the image positions without any cancer drug treatments some cell undergo programmed cell death and emit fluorescent signal.}
 \label{fig:conc_effect}
 \end{figure}
 
 \section{Machine learning models of cell death}
 \label{section:ml_results}
 
-As sideline analysis, we try to figure out whether it is possible to predict a given cell's time-to-death using features coming out of our pipeline. To do that, we use extension of SVM called Support Vector Regression (SVR, see \textbf{Regressive SVM} part of Subsection \ref{subsection:svm}) to predict the time-to-death of a cell at a given time point. For the regression, we first take every valid time point for every valid cell tree. For every time point $t$, following features are used:
+Is it possible to predict a given cell's time-to-death using features coming out of our pipeline? To answer that, we use Support Vector Regression (SVR, see Subsection \ref{subsection:svm}) to predict the time-to-death of a cell at a given time point. For the regression, we first take every valid time point for every valid cell tree. For every time point $t$, following features are used:
 
 \begin{itemize}
-\item Cell's velocity at time $t$.
+\item The cell's velocity at time $t$.
 \item Total brightfield intensity at time $t$.
 \item Total PI intensity at time $t$.
 \item Total Caspase intensity at time $t$.
 \end{itemize}
 
-The model is trained on 70\% of data points from the unsynchronized tracking data and tested on the other 30\%. Figure \ref{fig:svm_all} shows the results of the analysis.
+The model is trained on 70\% of data points from the unsynchronized tracking data and tested on the other 30\%. Figure \ref{fig:svm_all} shows the results of the analysis. We evaluate the performance of the regressor using the coefficient of the determination between measured and predicted time-to-deaths (TTD), the measured Pearson's correlation between the real and predicted TTDs. Table \ref{table:unsyn_ttd_r_p} lists the evaluated measures for the model.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{ l | c }
+\hline
+Measure & Value \\
+\hline\hline
+R2 score & 0.15 \\
+\hline
+Pearson's correlation coefficient (PCC) & 0.33 \\
+p-value & $1.2 \cdot 10^{-257}$ \\
+\hline
+\end{tabular}
+\caption{The results of the Pearson product-moment correlation test (correlation coefficient $r$ and p-value) for various concentrations in the unsynchronized experiment.}
+\label{table:unsyn_ttd_r_p}
+\end{table}
+
 
 %TODO adjust and add
 %TODO explain results and discussion
@@ -2431,21 +2490,23 @@ The model is trained on 70\% of data points from the unsynchronized tracking dat
 
 \centering
 
-\begin{subfigure}{.3\textwidth}
+\begin{subfigure}{.45\textwidth}
   \centering
   \includegraphics[width=\textwidth]{images/svm/ttd_dist.pdf}
   \caption{}
   \label{fig:svm_ttd_dist}
 \end{subfigure}
 ~
-\begin{subfigure}{.3\textwidth}
+\begin{subfigure}{.45\textwidth}
   \centering
   \includegraphics[width=\textwidth]{images/svm/pred_ttd_dist.pdf}
   \caption{}
   \label{fig:pred_ttd_dist}
 \end{subfigure}
-~
-\begin{subfigure}{.3\textwidth}
+
+\centering
+
+\begin{subfigure}{.45\textwidth}
   \centering
   \includegraphics[width=\textwidth]{images/svm/pred_ttd_absdiff.pdf}
   \caption{}
@@ -2469,10 +2530,12 @@ We also observe an interesting finding regarding the distribution of the cells i
 
 The correlation between cancer drug concentration and cell survival is also shown to be inversely proportional in the logarithmic setting. This is for example in line with the Finding by Jackson and Bender \cite{jackson1979cytotoxic} on the cytotoxicity of Vincristine. Similar finding was also reported by Kobayashi et al. \cite{kobayashi1992relationship}.
 
-In addition, we demonstrate the practicability of the micro-trench platform to determine the time-to-death after induction of cell death with Vincristine and Daunorubicin. At high concentration Vincristine stimulates microtubule depolymerization and mitotic spindle destruction. At lower clinically relevant concentrations, it blocks mitotic progression. As a result, we expected a negative correlation between the time spent in the cell cycle and the time-to-death in the case of VCR, since a cell that spent a long large amount of time in the cell cycle should be closer to the M-phase so it should have a shorter time-to-death i.e. it should die earlier. Indeed here we observed that the time-to-death negatively correlates with the time spent in the cell cycle and that this correlation becomes more prominent with increasing VCR concentration up to 100 nM, but there is no correlation at the highest concentration (1000 nM). The reason for no correlation in the 1000 nM might be side effect toxicities that happen through the whole cell cycle and as it has been shown before \cite{gascoigne2008cancer}, after exposure to antimitotic drugs cells display complex fate profiles, such as unequal cell division producing aneuploid daughter cells, exiting the cell cycle without undergoing cell division (mitotic slippage), or exiting G1 and undergoing apoptosis or senescence. On the other hand, the correlation of the time-to-death with the time spent in the cell cycle is more prominent in the case of Daunorubicin (100 nM) and the deviation of the time-to-death for the cells in the S-phase during drug addition, is larger compared to the cells in G1 or G2/M phase (Figure 3b).
+In addition, we demonstrate the practicability of the micro-trench platform to determine the time-to-death after induction of cell death with Vincristine and Daunorubicin. At high concentration Vincristine stimulates microtubule depolymerization and mitotic spindle destruction. At lower clinically relevant concentrations, it blocks mitotic progression. As a result, we expected a negative correlation between the time spent in the cell cycle and the time-to-death in the case of VCR, since a cell that spent a long large amount of time in the cell cycle should be closer to the M-phase so it should have a shorter time-to-death i.e. it should die earlier. Indeed here we observed that the time-to-death negatively correlates with the time spent in the cell cycle and that this correlation becomes more prominent with increasing VCR concentration up to 100 nM, but there is no correlation at the highest concentration (1000 nM). The reason for no correlation in the 1000 nM might be side effect toxicities that happen through the whole cell cycle and as it has been shown before \cite{gascoigne2008cancer}, after exposure to antimitotic drugs cells display complex fate profiles, such as unequal cell division producing aneuploid daughter cells, exiting the cell cycle without undergoing cell division (mitotic slippage), or exiting G1 and undergoing apoptosis or senescence. On the other hand, the correlation of the time-to-death with the time spent in the cell cycle is more prominent in the case of Daunorubicin (100 nM) and the deviation of the time-to-death for the cells in the S-phase during drug addition, is larger compared to the cells in G1 or G2/M phase (Figure \ref{fig:ttd_hist_vcr}).
 
 The measured cell cycle durations, while sparse in the synchronized population, also follows previous findings regarding the cell cycle duration \cite{sekhavati2015dynamic}. The underlying Gamma distribution, while not as obvious as previous finding by Sekhavati \cite{sekhavati2015dynamic}, still shows a semblance to a Gamma distributed variable. We also observe the significant relatedness of the measured cell cycle duration between sister cells
 vis-\`a-vis randomly selected pairs. This is shown by the significant difference in Pearson's correlation coefficient and its p-value between the two (see Subfigures \ref{fig:ccd_diff_all}b and \ref{fig:ccd_diff_all}d) showing the heritability of cell cycle duration. Axelrod \cite{axelrod1993persistence} shows for example that cell cycle durations are passed down even multiple generations down the line \cite{axelrod1993persistence}.
+
+The observed lognormal cell cycle duration distribution is well documented in literature, with both the size of mammalian cells as well as cell doubling times following a lognormal distribution \cite{hosoda2011origin, paulus1975platelet}. The underlying mechanism of cell division timing is an active field of research. It is however assumed that the so-called added model accepted in bacteria \cite{campos2014constant} is also valid in somatic cells. In general size regulation can arise from various types of coupling between cell size, cell growth and cell cycle progression \cite{cadart2017size}. It has also been proposed, based on a coupled mathematical model of mammalian cell cycle and circadian clock, that the circadian clock triggers critical size control in the mammalian cell cycle and that it is more readily observed in cell trees that contain circadian rhythms \cite{zamborszky2007computational}. In this context it is important that the adder mechanism also predicts exponential time correlation between sister cells as observed in our experiments \cite{campos2014constant}.
 
 We furthermore find that the sister cell correlation of the time-to-death differs from non-sister correlation of the time-to-death as shown by differing results in the unsynchronized experiment which are taken from sister cells and synchronized experiment which are taken from cells which happened to occupy the same micro-trench. This is not the case in the synchronized experiment. This, combined with related results regarding the correlation of the cell cycle duration between sister cells, confirm the hereditary factor playing a role in the cell response to cancer drug treatment.
 
@@ -2563,8 +2626,8 @@ Pos. & $\delta_x$ & $\delta_y$
 20 & -6 & -4
 \\
 21 & -7 & -5
-%\\
-%\hline
+\\
+\hline
 \end{tabular}
 ~
 \begin{tabular}[t]{ c | c | c }
@@ -2613,8 +2676,8 @@ Pos. & $\delta_x$ & $\delta_y$
 41 & -7 & -3
 \\
 42 & -7 & -3
-%\\
-%\hline
+\\
+\hline
 \end{tabular}
 ~
 \begin{tabular}[t]{ c | c | c }
@@ -2663,8 +2726,8 @@ Pos. & $\delta_x$ & $\delta_y$
 62 & -3 & -2
 \\
 63 & -4 & -2
-%\\
-%\hline
+\\
+\hline
 \end{tabular}
 \caption[The inferred shift (in pixels) for each image position in unsynchronized experiment]{The inferred shift (in pixels) for each image position in unsynchronized experiment. The shifts are inferred using the shift correction algorithm explained in Subsection \ref{subsection:shift_correction}.}
 \label{table:inferred_shift}
@@ -2729,8 +2792,8 @@ Pos. & Det. & Occ. & 1 & 2 & 3 & 4+
 31 & 307 & 87 & 64 & 18 & 4 & 1
 \\
 32 & 292 & 40 & 35 & 5 & 0 & 0
-%\\
-%\hline
+\\
+\hline
 \end{tabular}
 ~
 \begin{tabular}[t]{ c | c | c | c | c | c | c }
@@ -2787,8 +2850,8 @@ Pos. & Det. & Occ. & 1 & 2 & 3 & 4+
 62 & 298 & 101 & 83 & 16 & 2 & 0
 \\
 63 & 214 & 51 & 48 & 3 & 0 & 0
-%\\
-%\hline
+\\
+\hline
 \end{tabular}
 \caption[The occupancy statistics of the unsynchronized experiment]{The number of detected micro-trenches (Det.), occupied micro-trenches (Occ.), micro-trenches with one cell tree (1), micro-trenches with two cell trees (2), micro-trenches with three cells (3) and micro-trenches with more than 3 cells (4+) of the unsynchronized experiment.}
 \label{table:occupancy_statistics_unsyn}
@@ -2847,8 +2910,8 @@ Pos. & Det. & Occ. & 1 & 2 & 3 & 4+
 32 & 306 & 65 & 57 & 7 & 1 & 0
 \\
 33 & 311 & 70 & 62 & 7 & 1 & 0
-%\\
-%\hline
+\\
+\hline
 \end{tabular}
 ~
 \begin{tabular}[t]{ c | c | c | c | c | c | c }
@@ -2897,8 +2960,8 @@ Pos. & Det. & Occ. & 1 & 2 & 3 & 4+
 62 & 304 & 43 & 38 & 5 & 0 & 0
 \\
 63 & 294 & 8 & 8 & 0 & 0 & 0
-%\\
-%\hline
+\\
+\hline
 \end{tabular}
 \caption[The occupancy statistics of the synchronized experiment]{The number of detected micro-trenches (Det.), occupied micro-trenches (Occ.), micro-trenches with one cell tree (1), micro-trenches with two cell trees (2), micro-trenches with three cells (3) and micro-trenches with more than 3 cells (4+) of the synchronized experiment.}
 \end{table}

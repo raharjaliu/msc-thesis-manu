@@ -12,14 +12,14 @@
    version="1.1"
    id="svg2"
    xml:space="preserve"
-   width="954.34668"
-   height="559.97772"
-   viewBox="0 0 954.34666 559.97772"
+   width="954.22021"
+   height="560.51416"
+   viewBox="0 0 954.2202 560.51416"
    sodipodi:docname="vcr_all.svg"
    inkscape:version="0.92.2 (5c3e80d, 2017-08-06)"><metadata
      id="metadata8"><rdf:RDF><cc:Work
          rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title /></cc:Work></rdf:RDF></metadata><defs
      id="defs6"><clipPath
        clipPathUnits="userSpaceOnUse"
        id="clipPath22"><path
@@ -659,21 +659,21 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="2400"
-     inkscape:window-height="1271"
+     inkscape:window-width="1920"
+     inkscape:window-height="1001"
      id="namedview4"
      showgrid="false"
-     inkscape:zoom="1.6388889"
-     inkscape:cx="552.98449"
-     inkscape:cy="276.18151"
-     inkscape:window-x="2391"
+     inkscape:zoom="1.1588695"
+     inkscape:cx="627.13532"
+     inkscape:cy="224.93224"
+     inkscape:window-x="-9"
      inkscape:window-y="-9"
      inkscape:window-maximized="1"
-     inkscape:current-layer="g10" /><g
+     inkscape:current-layer="g226-1" /><g
      id="g10"
      inkscape:groupmode="layer"
      inkscape:label="ttd05"
-     transform="matrix(1.3333333,0,0,-1.3333333,-6.5768228,277.77918)"><path
+     transform="matrix(1.3333333,0,0,-1.3333333,-6.703313,277.77918)"><path
        d="M 36,27 H 259.2 V 194.4 H 36 Z"
        style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none"
        id="path14"
@@ -1046,12 +1046,15 @@
            sodipodi:role="line"
            id="tspan340">35</tspan></text>
 <text
-         transform="matrix(0,1,1,0,12.203125,106.5125)"
+         transform="matrix(0,1,1,0,0,0)"
          style="font-variant:normal;font-weight:normal;font-size:10px;font-family:BitstreamVeraSans;-inkscape-font-specification:BitstreamVeraSans-Roman;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
-         id="text346"><tspan
-           x="0"
-           y="0"
-           id="tspan344">count</tspan></text>
+         id="text346"
+         x="80.625198"
+         y="14.144672"><tspan
+           x="80.625198"
+           y="14.144672"
+           id="tspan344"
+           style="font-size:12px">cell count</tspan></text>
 <text
          transform="matrix(1,0,0,-1,132.88906,199.4)"
          style="font-variant:normal;font-weight:normal;font-size:12px;font-family:BitstreamVeraSans;-inkscape-font-specification:BitstreamVeraSans-Roman;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -1332,10 +1335,11 @@
          transform="matrix(1,0,0,-1,110.90469,0.734375)"
          style="font-variant:normal;font-weight:normal;font-size:10px;font-family:BitstreamVeraSans;-inkscape-font-specification:BitstreamVeraSans-Roman;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
          id="text278-0"><tspan
-           x="0 7.6999998 13.85 19.98 23.9 30.24 33.419998 37.34 40.119999 49.860001 56.009998 59.189999 63.09 69.43"
-           y="0"
            sodipodi:role="line"
-           id="tspan276-8">Death time (h)</tspan></text>
+           id="tspan276-8"
+           style="font-size:12px"
+           x="0"
+           y="0">Death time (h)</tspan></text>
 <path
          d="m 36,29.357746 h 4"
          style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
@@ -1408,7 +1412,18 @@
            y="0"
            sodipodi:role="line"
            id="tspan348-2">1 nM - VCR</tspan></text>
-</g><path
+<flowRoot
+         xml:space="preserve"
+         id="flowRoot941"
+         style="font-style:normal;font-weight:normal;font-size:18.66666603px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+         transform="matrix(0.75000002,0,0,-0.75000002,-225.69581,208.43489)"><flowRegion
+           id="flowRegion943"><rect
+             id="rect945"
+             width="1090.983"
+             height="357.55933"
+             x="-30.508474"
+             y="278.07941" /></flowRegion><flowPara
+           id="flowPara947"></flowPara></flowRoot></g><path
        d="m 496.49591,27.051576 h 223.2 V 194.45157 h -223.2 z"
        style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.99999994"
        id="path14-4"
@@ -2155,12 +2170,15 @@
              sodipodi:role="line"
              id="tspan340-7">35</tspan></text>
 <text
-           transform="matrix(0,1,1,0,12.203125,106.5125)"
+           transform="matrix(0,1,1,0,0,0)"
            style="font-variant:normal;font-weight:normal;font-size:10px;font-family:BitstreamVeraSans;-inkscape-font-specification:BitstreamVeraSans-Roman;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
-           id="text346-5"><tspan
-             x="0"
-             y="0"
-             id="tspan344-7">count</tspan></text>
+           id="text346-5"
+           x="82.56675"
+           y="13.939037"><tspan
+             x="82.56675"
+             y="13.939037"
+             id="tspan344-7"
+             style="font-size:12px">cell count</tspan></text>
 <text
            transform="matrix(1,0,0,-1,110.63125,199.4)"
            style="font-variant:normal;font-weight:normal;font-size:12px;font-family:BitstreamVeraSans;-inkscape-font-specification:BitstreamVeraSans-Roman;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -2793,10 +2811,11 @@
            transform="matrix(1,0,0,-1,110.90469,0.734375)"
            style="font-variant:normal;font-weight:normal;font-size:10px;font-family:BitstreamVeraSans;-inkscape-font-specification:BitstreamVeraSans-Roman;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
            id="text278-2"><tspan
-             x="0 7.6999998 13.85 19.98 23.9 30.24 33.419998 37.34 40.119999 49.860001 56.009998 59.189999 63.09 69.43"
-             y="0"
              sodipodi:role="line"
-             id="tspan276-7">Death time (h)</tspan></text>
+             id="tspan276-7"
+             style="font-size:12px"
+             x="0"
+             y="0">Death time (h)</tspan></text>
 <path
            d="m 36,29.357746 h 4"
            style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
