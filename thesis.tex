@@ -72,7 +72,7 @@
 \includegraphics[width=0.4\textwidth]{logo1.jpg}  
 \\[5cm]
 
-{\Huge Institute of Computational Biology (ICB)}\\[0.5cm]
+{\Huge Institute of Computational Biology}\\[0.5cm]
 {\Huge Helmholtz Zentrum M\"unchen}\\[1cm]
 
 %{\Large Chair of Mathematical Modeling of Biological Systems}\\[0.5cm]
@@ -104,7 +104,7 @@
 \includegraphics[width=0.4\textwidth]{logo1.jpg}  
 \\[1.5cm]  
 
-{\Large Institute of Computational Biology (ICB)}\\[0.5cm]
+{\Large Institute of Computational Biology}\\[0.5cm]
 {\Large Helmholtz Zentrum M\"unchen}\\[1cm]
 
 %{\Large Department of Mathematics}\\[0.5cm]
@@ -119,8 +119,8 @@
 \begin{center}\Large
   \begin{tabular}{ll}
     Author:& Pandu Raharja\\
-    Supervisor: &  Prof. Dr. Fabian Theis, Dr. Carsten Marr\\
-    Advisor:        &  Prof. Dr. Fabian Theis\\
+    Advisor : &  Dr. Carsten Marr\\
+    Examiners: &  Prof. Dr. Fabian Theis\\
     & Prof. Dr. Dmitrij Frishman\\
     Submitted:     &  15/02/2018
   \end{tabular}
@@ -152,7 +152,7 @@ I confirm that this master's thesis is my own work and I have documented all sou
 
   \vspace{3\baselineskip}
   
-  Munich, February 11, 2018  \hspace{0.1\linewidth}\parbox{0.3\linewidth}{\dotfill}
+  Munich, February 12, 2018  \hspace{0.1\linewidth}\parbox{0.3\linewidth}{\dotfill}
 }
 
 \newpage
@@ -247,7 +247,6 @@ SDT &  Sisters death time & See Section \ref{section:ttd_tic_sisters}
 \textbf{Symbol} & \textbf{Explanation} \\
 $\mathbf{B}(x;\,a,b)$ & Beta function\\
 $B_t$ & A 1-bit monochrome image taken at time t (t-th image)\\
-$\rho_{X, Y}$ & Pearson's correlation coefficient (PCC) of two random variables $X$ and $Y$\\
 $\mathbf{cov}(X, Y)$ & Covariance of two random variables $X$ and $Y$\\
 $d(v_i, v_j)$ & $L_2$ distance between two objects\\
 $d_G(G_i, G_j)$ & Sum of intensity difference between two grayscale images\\
@@ -268,8 +267,9 @@ $M_{t, x, y, 1}$ & First channel of pixel $M_{t, x, y}$ \\
 $M^b_t$ & A $b$-bit encoded RGB image captured at time t\\
 $M^m_{t, x, y, i}$ & Pixel-wise mean-substracted pixel $M_{t, x, y}$ \\
 $\langle M \rangle$  & Pixel-wise mean image of stack $M$.\\
+$\Phi_{RBF}(x_i, x_j)$ & An RBF kernel function.\\
+$\rho_{X, Y}$ & Pearson's correlation coefficient (PCC) of two random variables $X$ and $Y$\\
 $T_R$ & Gradient threshold value in a quadtree  (used in RATS algorithm).\\
-$\Phi_{RBF}(x_i, x_j)$ & An RBF kernel function. 
 \end{tabular}
 \endgroup
 
@@ -2516,17 +2516,17 @@ p-value & $1.2 \cdot 10^{-257}$ \\
 \chapter{Conclusion and Outlook}
 \label{chapter:conclusion_and_outlook}
 
-We showed that arrays of micro-structured trenches provide a platform that enables a label-free method for tracking cells and for approximating the cell cycle phase without the use of molecular markers. Our approach allows to set individual clocks in single cells using the first division for each occupied trench as a starting point. This is highly accurate and overcomes typical drawbacks of low detection efficiency of fluorescence-based indicators such as the FUCCI marker, which usually have low transfection efficiency round 20-40\%, and generally short duration of staining, namely ~15 hours \cite{zielke2015fucci}, which is no sufficient for our long-time measurements.
+We showed that arrays of micro-structured trenches provide a platform that enables a label-free method for tracking cells and for approximating the cell cycle phase without the use of molecular markers. Our approach allows to set individual clocks in single cells using the first division for each occupied trench as a starting point. This is highly accurate and overcomes typical drawbacks of low detection efficiency of fluorescence-based indicators such as the FUCCI marker, which usually have low transfection efficiency round 20-40\%, and generally short duration of staining, namely ~15 hours \cite{zielke2015fucci}, which is insufficient for our long-time measurements.
 
-By compartmentalizing the cell population in small groups we enable an image-based cell tracking. Without the use of micro-trench, time-lapse observation of a cell population for very long hours in excess of 24 hours is impossible for both adherent and non-adherent cells since cells escape from the field of view very quickly, as fast as within a few hours. Even assuming that the cells move in random walk fashion, some cells are bound to move beyond the margin of an image position. Even if they came back to the field of view, this cell will not be recognized as a previously tracked cell. Over the long term, the number of cells that stay within an image position approaches zero.
+By compartmentalizing the cell population in small groups we enable an image-based cell tracking. Without the use of micro-trench, time-lapse observation of a cell population for very long hours in excess of 24 hours is impossible for both adherent and non-adherent cells since cells escape from the field of view very quickly within a few hours. Even assuming that the cells move in random walk fashion, some cells are bound to move beyond the margin of an image position. Even if they come back to the field of view, these cells will not be recognized as previously tracked cells. On the long run, the number of cells that stay within an image position approaches zero.
 
-In the context of the cell tracking, compartmentalization improves the tracking quality in two ways. First, it reduces the error of mixing identities of adjacent cells (Figure \ref{fig:cell_placements} visualizes why having two or more cells within moving distance from the other cells in one frame time may cause ambiguity during tracking). Second, it reduces computational time since the range of cell movement is limited by the micro-trench. For example, using micro-trenches we can use much lower maximum distance $d_max$ in our cell tracking algorithm (see Subsection \ref{subsection:cell_tracking}).
+In the context of the cell tracking, compartmentalization improves the tracking quality in two ways. First, it reduces the error of mixing identities of adjacent cells (Figure \ref{fig:cell_placements} visualizes why having two or more cells within moving distance from the other cells in one frame time may cause ambiguity during tracking). Second, it reduces computational time since the range of cell movement is limited by the micro-trench. For example, using micro-trenches we can use much lower maximum distance $d_{max}$ in our cell tracking algorithm (see Subsection \ref{subsection:cell_tracking}).
 
-We also observe an interesting finding regarding the distribution of the cells inside the micro-trenches. The distribution follows closely the Poisson point process, which is widely used to model distribution of independently occurring events on a plane such as rainfall \cite{rodriguez1987some} and photon absorption on a surface \cite{scargle1998studies}. Moreover, Othmer \cite{othmer1988models} shows that the Poisson point process explains well various biological dispersion phenomena, indicating that our finding aligns well with the previous findings in related processes.
+Interestingly, the distribution of the cells inside the micro-trenches follows closely the Poisson point process, which is widely used to model distribution of independently occurring events on a plane such as rainfall \cite{rodriguez1987some} and photon absorption on a surface \cite{scargle1998studies}. Moreover, Othmer \cite{othmer1988models} shows that the Poisson point process explains well various biological dispersion phenomena, indicating that our result aligns well with the previous findings in related processes.
 
-The correlation between cancer drug concentration and cell survival is also shown to be inversely proportional in the logarithmic setting. This is for example in line with the Finding by Jackson and Bender \cite{jackson1979cytotoxic} on the cytotoxicity of Vincristine. Similar finding was also reported by Kobayashi et al. \cite{kobayashi1992relationship}.
+We also showed that the correlation between cancer drug concentration and cell survival is inversely proportional in the logarithmic setting. This is for example in line with the Finding by Jackson and Bender \cite{jackson1979cytotoxic} on the cytotoxicity of Vincristine. Similar finding was also reported by Kobayashi et al. \cite{kobayashi1992relationship}.
 
-In addition, we demonstrate the practicability of the micro-trench platform to determine the time-to-death after induction of cell death with Vincristine and Daunorubicin. At high concentration Vincristine stimulates microtubule depolymerization and mitotic spindle destruction. At lower clinically relevant concentrations, it blocks mitotic progression. As a result, we expected a negative correlation between the time spent in the cell cycle and the time-to-death in the case of VCR, since a cell that spent a long large amount of time in the cell cycle should be closer to the M-phase so it should have a shorter time-to-death i.e. it should die earlier. Indeed here we observed that the time-to-death negatively correlates with the time spent in the cell cycle and that this correlation becomes more prominent with increasing VCR concentration up to 100 nM, but there is no correlation at the highest concentration (1000 nM). The reason for no correlation in the 1000 nM might be side effect toxicities that happen through the whole cell cycle and as it has been shown before \cite{gascoigne2008cancer}, after exposure to antimitotic drugs cells display complex fate profiles, such as unequal cell division producing aneuploid daughter cells, exiting the cell cycle without undergoing cell division (mitotic slippage), or exiting G1 and undergoing apoptosis or senescence. On the other hand, the correlation of the time-to-death with the time spent in the cell cycle is more prominent in the case of Daunorubicin (100 nM) and the deviation of the time-to-death for the cells in the S-phase during drug addition, is larger compared to the cells in G1 or G2/M phase (Figure \ref{fig:ttd_hist_vcr}).
+In addition, we demonstrate the practicability of the micro-trench platform to determine the time-to-death after induction of cell death with Vincristine and Daunorubicin. At high concentration, Vincristine stimulates microtubule depolymerization and mitotic spindle destruction. At lower clinically relevant concentrations, it blocks mitotic progression. As a result, we expected a negative correlation between the time spent in the cell cycle and the time-to-death in the case of VCR, since a cell that spent a long large amount of time in the cell cycle should be closer to the M-phase so it should have a shorter time-to-death i.e. it should die earlier. Indeed here we observed that the time-to-death negatively correlates with the time spent in the cell cycle and that this correlation becomes more prominent with increasing VCR concentration up to 100 nM, but there is no correlation at the highest concentration (1000 nM). The reason for no correlation in the 1000 nM might be side effect toxicities that happen through the whole cell cycle and as it has been shown before \cite{gascoigne2008cancer}, after exposure to antimitotic drugs cells display complex fate profiles, such as unequal cell division producing aneuploid daughter cells, exiting the cell cycle without undergoing cell division (mitotic slippage), or exiting G1 and undergoing apoptosis or senescence. On the other hand, the correlation of the time-to-death with the time spent in the cell cycle is more prominent in the case of Daunorubicin (100 nM) and the deviation of the time-to-death for the cells in the S-phase during drug addition, is larger compared to the cells in G1 or G2/M phase (Figure \ref{fig:ttd_hist_vcr}).
 
 The measured cell cycle durations, while sparse in the synchronized population, also follows previous findings regarding the cell cycle duration \cite{sekhavati2015dynamic}. The underlying Gamma distribution, while not as obvious as previous finding by Sekhavati \cite{sekhavati2015dynamic}, still shows a semblance to a Gamma distributed variable. We also observe the significant relatedness of the measured cell cycle duration between sister cells
 vis-\`a-vis randomly selected pairs. This is shown by the significant difference in Pearson's correlation coefficient and its p-value between the two (see Subfigures \ref{fig:ccd_diff_all}b and \ref{fig:ccd_diff_all}d) showing the heritability of cell cycle duration. Axelrod \cite{axelrod1993persistence} shows for example that cell cycle durations are passed down even multiple generations down the line \cite{axelrod1993persistence}.
@@ -2535,7 +2535,7 @@ The observed lognormal cell cycle duration distribution is well documented in li
 
 We furthermore find that the sister cell correlation of the time-to-death differs from non-sister correlation of the time-to-death as shown by differing results in the unsynchronized experiment which are taken from sister cells and synchronized experiment which are taken from cells which happened to occupy the same micro-trench. This is not the case in the synchronized experiment. This, combined with related results regarding the correlation of the cell cycle duration between sister cells, confirm the hereditary factor playing a role in the cell response to cancer drug treatment.
 
-At the same time the distributions of the time-to-death (average of all different drug concentrations) of the unsynchronized and the synchronized populations are similar, which would suggest that synchronizing the cells with the double thymidine block did not affect their response to both tested drugs. Combined with the fact that thymidine block synchronizes the cell phase, this suggest suggests that the double thymidine block procedure has an effect on the cell response heterogeneity to Vincristine and Daunorubicin. Several authors \cite{bhola2009determinism, rehm2009dynamics} previously reported that sister cells undergo apoptosis synchronously. In another study \cite{spencer2009non}, sister cell fate in response to TRAIL-induced apoptosis correlated, as did also the time-to-death between HeLa sister cells but this correlation decayed as a function of time since division, the time period tested was 8 hours. Based on this observation, the transient heritability in fate model was proposed, which states that protein synthesis promotes cell divergence so that sister cells soon become no more similar to each other than random paired cells.
+At the same time the distributions of the time-to-death (average of all different drug concentrations) of the unsynchronized and the synchronized populations are similar, which suggests that synchronizing the cells with the double thymidine block did not affect their response to both tested drugs. Combined with the fact that thymidine block synchronizes the cell phase, this suggests that the double thymidine block procedure does not have an effect on the cell response heterogeneity to Vincristine and Daunorubicin. Several authors \cite{bhola2009determinism, rehm2009dynamics} previously reported that sister cells undergo apoptosis synchronously. In another study \cite{spencer2009non}, sister cell fate in response to TRAIL-induced apoptosis was correlated, as did also the time-to-death between HeLa sister cells but this correlation decayed as a function of time since division (the time period tested was 8 hours). Based on this observation, the transient heritability in fate model was proposed, which states that protein synthesis promotes cell divergence so that sister cells soon become no more similar to each other than random paired cells.
 
 %TODO possilbe extension
 
@@ -2543,7 +2543,7 @@ At the same time the distributions of the time-to-death (average of all differen
 
 \subsection{More advanced use cases for micro-trench experiments}
 
-In future work, the micro-trenches array can be used with more than one drug, namely for combination therapy, to determine the optimal administration timing of each drug. Microfluidic devices have facilitated single-cell studies and boosted the collection of quantitative experimental data, such as the measurement of single-cell mass with high accuracy \cite{son2012direct}. Measuring the cell size or the volume added to the cell after its mother division are crucial quantitative data to elucidate the underlying mechanisms that drive cell division. The micro-trenches array coupled with time-lapse microscopy and automated image analysis is a step toward this direction.
+In future work, the micro-trench arrays can be used with more than one drug, namely for combination therapy, to determine the optimal administration timing of each drug. Microfluidic devices have facilitated single-cell studies and boosted the collection of quantitative experimental data, such as the measurement of single-cell mass with high accuracy \cite{son2012direct}. Measuring the cell size or the volume added to the cell after its mother division are crucial quantitative data to elucidate the underlying mechanisms that drive cell division. The micro-trench array coupled with time-lapse microscopy and automated image analysis is a step toward this direction.
 
 \subsection{Fully automated microfluidics pipeline}
 
@@ -2551,11 +2551,11 @@ An interesting improvement possibility for the microfluidics would be designing 
 
 \subsection{Fully automated pipeline for single-cell analysis}
 
-One positive thing about the design of our data analysis pipeline is the modularity of its component. As mentioned multiple times in this thesis (in particular in Subsection \ref{subsection:micro_trench_masking}, our method can well be improved by automatizing the micro-trench masking process. Although itself not a bottleneck of the process, as the entire dataset of 63 image positions could be processed in less than an hour, automating this process will save time and more importantly, clicking and draging efforts, thus lets scientists do the things that matter more for them.
+One advantage about the design of our data analysis pipeline is the modularity of its components. As mentioned multiple times in this thesis (in particular in Subsection \ref{subsection:micro_trench_masking}), our method can well be improved by automatizing the micro-trench masking process. Although being not a bottleneck of the process, as the entire dataset of 63 image positions could be processed in less than one hour, automating this process will save time and more importantly, clicking and draging efforts.
 
-There are several methods that came to mind in improving the micro-trench masking, which generally can be separated in two groups: ML-based methods and non-ML-based methods. ML-based methods generally require either a manual annotation of correctly recognized micro-trench (a class of methods called supervised learning methods) or certain prior knowledge regarding distinctive features of micro-trench that separate it from background image and/or the cells (a class of methods called unsupervised/semi-supervised learning methods).
+There are several methods that came to mind in improving the micro-trench masking, which generally can be separated in two groups: ML-based methods and non-ML-based methods. ML-based methods generally require either a manual annotation of correctly recognized micro-trench (supervised learning methods) or certain prior knowledge regarding distinctive features of micro-trench that separate it from background image and/or the cells (unsupervised/semi-supervised learning methods).
 
-In his master's thesis, Oliver Hilsenbeck introduced a masking tool that requires minimum amount of annotation data \cite{hilsenbeck2014maximally}. As one of recent series of groundbreaking papers, Jonathan Long proposes fully convolutional extension \cite{long2015fully} of previously state of the art convolutional networks \cite{simonyan2014very, szegedy2015going} thereby improving the performance and speed of the process. Considering the relatively simple form of micro-trench, training a model for trench detection seems to be the next natural step to improve on the pipeline.
+In his master's thesis, Oliver Hilsenbeck introduced a masking tool that requires a minimum amount of annotation data \cite{hilsenbeck2014maximally}. As one of the recent series of groundbreaking papers, Jonathan Long proposes fully convolutional extension \cite{long2015fully} of the previously state of the art convolutional networks \cite{simonyan2014very, szegedy2015going} thereby improving the performance and speed of the process. Considering the relatively simple form of micro-trench, training a model for trench detection seems to be the next natural step to improve on the pipeline.
 
 %TODO continue
 
@@ -2580,7 +2580,7 @@ All our code are available in the github repository:
 \href{https://github.com/raharjaliu/MA}{https://github.com/raharjaliu/MA}.
 \end{center}
 
-Following scripts are particularly interesting:
+Following parts are particularly interesting:
 
 \begin{itemize}
 \item \texttt{fij.py} contains Jython implementation of the image pre-processing pipeline.
